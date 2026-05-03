@@ -137,6 +137,15 @@ function ProfileHero({ tutor, onBook, onContact }) {
     <section className="mx-auto max-w-6xl px-6 pt-10">
 
       <div className="overflow-hidden rounded-[2.75rem] bg-white shadow-[0_40px_120px_rgba(15,23,42,0.12)] ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10">
+        <div className="relative h-28 w-full overflow-hidden bg-slate-200 dark:bg-slate-800 md:h-36">
+          {tutor.coverImage ? (
+            <img
+              src={tutor.coverImage}
+              alt={`${tutor.name} cover`}
+              className="h-full w-full object-cover"
+            />
+          ) : null}
+        </div>
         <div className="grid grid-cols-1 gap-8 p-8 md:grid-cols-[auto_1fr] md:p-12">
           <motion.div
             initial={{ opacity: 0, scale: 0.92 }}

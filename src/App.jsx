@@ -4,6 +4,7 @@ import { AnimatePresence, motion, useInView } from "framer-motion";
 import {
   ArrowUpRight,
   Atom,
+  BadgeCheck,
   BookOpen,
   Calculator,
   CheckCircle2,
@@ -11,6 +12,7 @@ import {
   Eye,
   EyeOff,
   FlaskConical,
+  GraduationCap,
   Languages,
   Landmark,
   MapPin,
@@ -42,6 +44,14 @@ import AllTutorsPage from "./pages/AllTutorsPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import PublicOnlyRoute from "./components/auth/PublicOnlyRoute";
 import { useAuth } from "./context/AuthContext";
+import { fetchTutorDirectoryFromSupabase } from "./lib/tutorDirectory";
+import { isSupabaseConfigured } from "./lib/supabase";
+
+function getStartedPath(user) {
+  if (!user) return "/signup";
+  if (user.user_metadata?.role === "student") return "/student-dashboard";
+  return "/tutor-dashboard";
+}
 
 const heroContainer = {
   hidden: { opacity: 0 },
@@ -113,44 +123,9 @@ const popularSubjects = [
   }
 ];
 
-const homeFeaturedTutors = [
-  {
-    id: "featured",
-    name: "Priya Wickramasinghe",
-    initials: "PW",
-    subject: "Top-Rated Mentor",
-    rating: 5.0,
-    description: "Award-winning tutor coaching students across Maths, Science & English.",
-    location: "Colombo · Remote"
-  },
-  {
-    id: "tharushi",
-    name: "Tharushi Karunaratne",
-    initials: "TK",
-    subject: "ICT · A/L",
-    rating: 4.9,
-    description: "Programming & database fundamentals delivered in clear, project-based lessons.",
-    location: "Kandy"
-  },
-  {
-    id: "dineth",
-    name: "Dineth Abeysinghe",
-    initials: "DA",
-    subject: "Business Studies",
-    rating: 4.7,
-    description: "Real-world case studies and revision plans for O/L and A/L commerce streams.",
-    location: "Colombo"
-  },
-  {
-    id: "sahani",
-    name: "Sahani De Silva",
-    initials: "SD",
-    subject: "Biology · A/L",
-    rating: 4.8,
-    description: "Medical-faculty mentor turning complex diagrams into simple, sticky concepts.",
-    location: "Gampaha"
-  }
-];
+function isVerifiedTutor(tutor) {
+  return Boolean(tutor?.verifiedBlueMark || Number(tutor?.verifiedMarks) > 0);
+}
 
 function formatTutorRating(rating) {
   return typeof rating === "number" ? rating.toFixed(1) : "N/A";
@@ -633,6 +608,9 @@ function FeaturedTutors({ tutors }) {
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         {tutors.map((tutor) => {
+          const hasVerifiedBlueMark = Boolean(
+            tutor.verifiedBlueMark || Number(tutor.verifiedMarks) > 0
+          );
           return (
             <Link
               key={tutor.id}
@@ -643,15 +621,33 @@ function FeaturedTutors({ tutors }) {
             >
               <div className="relative z-10 flex items-center gap-3">
                 <div
-                  className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-950 text-sm font-semibold text-white dark:bg-white dark:text-slate-950"
+                  className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-slate-950 text-sm font-semibold text-white dark:bg-white dark:text-slate-950"
                 >
-                  {tutor.initials}
+                  {tutor.avatar_url ? (
+                    <img
+                      src={tutor.avatar_url}
+                      alt={`${tutor.name} avatar`}
+                      className="h-full w-full object-cover"
+                      loading="lazy"
+                    />
+                  ) : (
+                    tutor.initials
+                  )}
                 </div>
                 <div className="min-w-0">
-                  <p className="truncate text-base font-semibold text-slate-950 dark:text-white">
+                  <p className="inline-flex max-w-full items-center gap-1 truncate text-base font-semibold text-slate-950 dark:text-white">
                     {tutor.name}
                   </p>
-                  <p className="truncate text-sm text-slate-500 dark:text-slate-400">
+                  <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                    {hasVerifiedBlueMark ? (
+                      <p className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-bold text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">
+                        <BadgeCheck size={10} />
+                        Verified
+                      </p>
+                    ) : null}
+                  </div>
+                  <p className="mt-1 inline-flex items-center gap-1 truncate text-xs font-semibold text-slate-500 dark:text-slate-400">
+                    <GraduationCap size={11} />
                     {tutor.subject}
                   </p>
                 </div>
@@ -678,6 +674,7 @@ function FeaturedTutors({ tutors }) {
 }
 
 function HomePage() {
+  const { user } = useAuth();
   const [heroAnimation, setHeroAnimation] = useState(null);
   const [successAnimation, setSuccessAnimation] = useState(null);
   const [isJoinOpen, setIsJoinOpen] = useState(false);
@@ -732,11 +729,13 @@ function HomePage() {
             className="mx-auto mt-9 flex w-full max-w-sm flex-col gap-3 sm:max-w-none sm:flex-row md:mx-0"
           >
             <Button
+              asChild
               className="h-12 rounded-full bg-slate-950 px-7 text-base text-white shadow-sm hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200 sm:w-auto"
-              onClick={() => setIsJoinOpen(true)}
               size="lg"
             >
-              Get Started <ArrowUpRight />
+              <Link to={getStartedPath(user)} className="inline-flex items-center gap-2">
+                Get Started <ArrowUpRight />
+              </Link>
             </Button>
             <Button
               asChild
@@ -792,7 +791,7 @@ function HomePage() {
               </div>
 
               <div className="space-y-3">
-                {homeFeaturedTutors.slice(0, 3).map((tutor, index) => {
+                {[].map((tutor, index) => {
                   return (
                     <div
                       key={tutor.id}
@@ -862,7 +861,7 @@ function HomePage() {
 
       <PopularSubjects />
 
-      <FeaturedTutors tutors={homeFeaturedTutors} />
+      <FeaturedTutors tutors={[]} />
 
       <TestimonialSlider />
 
@@ -983,9 +982,11 @@ function HomePage() {
 }
 
 function AppleHomePage() {
+  const { user } = useAuth();
   const [heroAnimation, setHeroAnimation] = useState(null);
   const [successAnimation, setSuccessAnimation] = useState(null);
   const [isJoinOpen, setIsJoinOpen] = useState(false);
+  const [featuredTutors, setFeaturedTutors] = useState([]);
 
   useEffect(() => {
     fetch("https://assets10.lottiefiles.com/packages/lf20_touohxv0.json")
@@ -997,6 +998,22 @@ function AppleHomePage() {
       .then((res) => res.json())
       .then((data) => setSuccessAnimation(data))
       .catch(() => setSuccessAnimation(null));
+  }, []);
+
+  useEffect(() => {
+    if (!isSupabaseConfigured) return undefined;
+    let cancelled = false;
+
+    fetchTutorDirectoryFromSupabase().then((rows) => {
+      if (cancelled) return;
+      const verifiedRecent = rows.filter(isVerifiedTutor).slice(0, 4);
+      const next = verifiedRecent.length ? verifiedRecent : rows.slice(0, 4);
+      setFeaturedTutors(next);
+    });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return (
@@ -1029,11 +1046,13 @@ function AppleHomePage() {
             className="mt-9 flex w-full max-w-sm flex-col justify-center gap-3 sm:max-w-none sm:flex-row"
           >
             <Button
+              asChild
               className="h-12 rounded-full bg-slate-950 px-7 text-base font-semibold text-white shadow-sm hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
-              onClick={() => setIsJoinOpen(true)}
               size="lg"
             >
-              Get Started <ArrowUpRight />
+              <Link to={getStartedPath(user)} className="inline-flex items-center gap-2">
+                Get Started <ArrowUpRight />
+              </Link>
             </Button>
             <Button
               asChild
@@ -1099,11 +1118,20 @@ function AppleHomePage() {
                   </div>
 
                   <div className="grid gap-4 lg:grid-cols-3">
-                    {homeFeaturedTutors.slice(0, 3).map((tutor) => {
+                    {featuredTutors.slice(0, 3).map((tutor) => {
                       return (
                         <div key={tutor.id} className="rounded-[2rem] bg-white p-5 shadow-sm ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10">
-                          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-950 text-sm font-semibold text-white dark:bg-white dark:text-slate-950">
-                            {tutor.initials}
+                          <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-slate-950 text-sm font-semibold text-white dark:bg-white dark:text-slate-950">
+                            {tutor.avatar_url ? (
+                              <img
+                                src={tutor.avatar_url}
+                                alt={`${tutor.name} avatar`}
+                                className="h-full w-full object-cover"
+                                loading="lazy"
+                              />
+                            ) : (
+                              tutor.initials
+                            )}
                           </div>
                           <p className="mt-5 truncate text-lg font-semibold tracking-[-0.02em] text-slate-950 dark:text-white">
                             {tutor.name}
@@ -1191,7 +1219,7 @@ function AppleHomePage() {
 
       <PopularSubjects />
 
-      <FeaturedTutors tutors={homeFeaturedTutors} />
+      <FeaturedTutors tutors={featuredTutors} />
 
       <TestimonialSlider />
 

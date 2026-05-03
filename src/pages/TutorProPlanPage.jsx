@@ -10,7 +10,6 @@ import {
   getPayHereConfig,
   validatePayHereConfig
 } from "../lib/payhere";
-import { saveTutorProStatus } from "../lib/tutorProStatus";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -66,26 +65,42 @@ export default function TutorProPlanPage() {
     return <Navigate to="/student-dashboard" replace />;
   }
 
+  const persistProStatusToSupabase = async () => {
+    if (!supabase || !user?.id) {
+      return { ok: false, reason: "Supabase is not configured or user is missing." };
+    }
+
+    const payloads = [
+      { profile_boost: true, verified_marks: 5 },
+      { is_profile_boosted: true, is_verified_blue_mark: true, pro_verified_marks: 5 }
+    ];
+
+    let lastError = null;
+    for (const payload of payloads) {
+      const { error } = await supabase
+        .from(TUTOR_PROFILES_TABLE)
+        .update(payload)
+        .eq("id", user.id);
+      if (!error) return { ok: true };
+      lastError = error;
+    }
+
+    return {
+      ok: false,
+      reason: lastError?.message || "Could not update tutor pro status in database."
+    };
+  };
+
   const applyProSuccess = async (plan) => {
     if (!user?.id) return;
-    saveTutorProStatus(user.id, {
-      planId: plan.id,
-      isBoosted: true,
-      verifiedBlueMark: true,
-      verifiedMarks: 5
-    });
-
-    // Best effort DB update (works once schema has pro columns).
-    if (supabase) {
-      await supabase
-        .from(TUTOR_PROFILES_TABLE)
-        .update({
-          profile_boost: true,
-          verified_marks: 5
-        })
-        .eq("id", user.id);
+    const dbResult = await persistProStatusToSupabase();
+    if (!dbResult.ok) {
+      setMessage(`Payment completed, but database update failed: ${dbResult.reason}`);
+      return false;
     }
+
     await refreshProfile?.();
+    return true;
   };
 
   const handlePay = async (plan) => {
@@ -102,7 +117,12 @@ export default function TutorProPlanPage() {
         return;
       }
       payhere.onCompleted = async () => {
-        await applyProSuccess(plan);
+        const ok = await applyProSuccess(plan);
+        if (!ok) {
+          setPayingPlanId("");
+          navigate("/payment/failed");
+          return;
+        }
         setMessage("Payment success! Verified blue mark and profile boost are now active.");
         setPayingPlanId("");
         navigate("/payment/success");
@@ -152,8 +172,13 @@ export default function TutorProPlanPage() {
       };
       payhere.startPayment(payment);
     } catch (error) {
-      setMessage("Could not start PayHere checkout. Applying success in demo mode.");
-      await applyProSuccess(plan);
+      setMessage("Could not start PayHere checkout. Trying direct Pro activation.");
+      const ok = await applyProSuccess(plan);
+      if (!ok) {
+        setPayingPlanId("");
+        navigate("/payment/failed");
+        return;
+      }
       setPayingPlanId("");
     }
   };

@@ -12,7 +12,6 @@ import {
   X
 } from "lucide-react";
 
-import { tutorsById } from "../data/tutors";
 import { fetchTutorDirectoryFromSupabase } from "../lib/tutorDirectory";
 import { isSupabaseConfigured } from "../lib/supabase";
 
@@ -56,9 +55,6 @@ const SORT_OPTIONS = [
   { id: "name", label: "Name (A → Z)" }
 ];
 
-// Default rates filled in when a tutor record doesn't list `hourlyRate`.
-const FALLBACK_RATE = 3500;
-
 export default function AllTutorsPage() {
   const [remoteTutors, setRemoteTutors] = useState([]);
   const [searchParams] = useSearchParams();
@@ -75,15 +71,7 @@ export default function AllTutorsPage() {
     };
   }, []);
 
-  const allTutors = useMemo(() => {
-    const demo = Object.values(tutorsById).map((t) => ({
-      ...t,
-      hourlyRate: t.hourlyRate ?? FALLBACK_RATE,
-      reviewsCount: t.reviewsCount ?? 124,
-      source: "demo"
-    }));
-    return [...remoteTutors, ...demo];
-  }, [remoteTutors]);
+  const allTutors = useMemo(() => remoteTutors, [remoteTutors]);
 
   const [query, setQuery] = useState(searchParams.get("q") ?? "");
   const [subject, setSubject] = useState("all");

@@ -72,6 +72,8 @@ export function mapTutorProfileRowToDirectoryTutor(row) {
     profileUrl: `/tutor/${row.id}`,
     hourlyRate: row.hourly_rate ?? null,
     reviewsCount: row.reviews_count ?? null,
+    profile_boost: row.profile_boost ?? null,
+    verified_marks: row.verified_marks ?? null,
     source: "supabase"
   };
   return withTutorProDecorations(mapped);

@@ -6,11 +6,9 @@ import {
   CheckCircle2,
   Eye,
   EyeOff,
-  GraduationCap,
   Loader2,
   Lock,
   Mail,
-  ShieldCheck,
   UserRound
 } from "lucide-react";
 
@@ -19,15 +17,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
+import AuthLayout from "../components/auth/AuthLayout";
 import SupabaseSetupNotice from "../components/auth/SupabaseSetupNotice";
 import { useAuth } from "../context/AuthContext";
 
@@ -37,6 +29,28 @@ const benefits = [
   "Save favourite tutors and message them instantly",
   "Track your learning journey from one dashboard"
 ];
+
+const studentSignupAside = (
+  <>
+    <h3 className="max-w-sm text-3xl font-semibold leading-[1.08] tracking-[-0.04em] text-foreground">
+      Find your perfect tutor in minutes.
+    </h3>
+    <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
+      Create a free student account to browse, save and connect with the best
+      tutors near you — all from a single dashboard.
+    </p>
+    <ul className="mt-7 space-y-2.5 text-sm font-medium text-foreground/90">
+      {benefits.map((item) => (
+        <li key={item} className="flex items-center gap-2">
+          <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center bg-background/95 text-foreground shadow-sm backdrop-blur-sm">
+            <CheckCircle2 size={13} />
+          </span>
+          {item}
+        </li>
+      ))}
+    </ul>
+  </>
+);
 
 export default function StudentRegisterPage({ embedded = false }) {
   const navigate = useNavigate();
@@ -131,7 +145,7 @@ export default function StudentRegisterPage({ embedded = false }) {
                       className={cn(
                         "pl-9",
                         fieldErrors.name &&
-                          "border-destructive focus-visible:ring-destructive/40"
+                          "border-destructive focus-visible:border-destructive"
                       )}
                     />
                   </div>
@@ -162,7 +176,7 @@ export default function StudentRegisterPage({ embedded = false }) {
                       className={cn(
                         "pl-9",
                         fieldErrors.email &&
-                          "border-destructive focus-visible:ring-destructive/40"
+                          "border-destructive focus-visible:border-destructive"
                       )}
                     />
                   </div>
@@ -193,7 +207,7 @@ export default function StudentRegisterPage({ embedded = false }) {
                       className={cn(
                         "pl-9 pr-10",
                         fieldErrors.password &&
-                          "border-destructive focus-visible:ring-destructive/40"
+                          "border-destructive focus-visible:border-destructive"
                       )}
                     />
                     <button
@@ -244,7 +258,7 @@ export default function StudentRegisterPage({ embedded = false }) {
                       className={cn(
                         "pl-9 pr-10",
                         fieldErrors.confirm &&
-                          "border-destructive focus-visible:ring-destructive/40"
+                          "border-destructive focus-visible:border-destructive"
                       )}
                     />
                     <button
@@ -358,81 +372,19 @@ export default function StudentRegisterPage({ embedded = false }) {
     </>
   );
 
-  const signUpCard = (
-    <Card className="w-full max-w-md rounded-[2.5rem] border-0 bg-white shadow-[0_40px_120px_rgba(15,23,42,0.12)] ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10">
-      <CardHeader className="px-6 pt-6">
-        <div className="mb-3 inline-flex w-fit items-center gap-2 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
-          <UserRound size={12} />
-          Student sign up
-        </div>
-        <CardTitle className="text-3xl font-semibold tracking-[-0.045em] text-slate-950 md:text-4xl dark:text-white">
-          Create your account
-        </CardTitle>
-        <CardDescription className="text-sm leading-6 text-slate-500 dark:text-slate-400">
-          Join in under a minute and start finding tutors that fit your goals.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="px-6 pb-6">{signUpFormInner}</CardContent>
-    </Card>
-  );
-
   if (embedded) {
     return <div className="w-full">{signUpFormInner}</div>;
   }
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] w-full overflow-hidden bg-[#f5f5f7] dark:bg-slate-950">
-      <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-10 px-6 py-12 md:py-16 lg:grid-cols-[1.05fr_1fr] lg:gap-14">
-        <aside className="hidden flex-col justify-between lg:flex">
-          <div>
-            <Link
-              to="/"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-slate-950 dark:text-slate-400 dark:hover:text-white"
-            >
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white text-slate-950 shadow-sm ring-1 ring-slate-200 dark:bg-slate-900 dark:text-white dark:ring-white/10">
-                <GraduationCap size={16} />
-              </span>
-              Smart Tuition Finder
-            </Link>
-
-            <h2 className="mt-10 max-w-md text-5xl font-semibold leading-[0.98] tracking-[-0.06em] text-slate-950 dark:text-white">
-              Find your perfect tutor in minutes.
-            </h2>
-            <p className="mt-5 max-w-md text-lg leading-8 text-slate-500 dark:text-slate-400">
-              Create a free student account to browse, save and connect with the
-              best tutors near you — all from a single, modern dashboard.
-            </p>
-
-            <ul className="mt-8 space-y-3">
-              {benefits.map((item) => (
-                <li
-                  key={item}
-                  className="flex items-start gap-3 text-sm font-medium text-slate-700 dark:text-slate-300"
-                >
-                  <span className="mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-white text-slate-950 shadow-sm ring-1 ring-slate-200 dark:bg-slate-900 dark:text-white dark:ring-white/10">
-                    <CheckCircle2 size={12} />
-                  </span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="mt-10 rounded-[2rem] bg-white p-6 shadow-sm ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10">
-            <div className="flex items-center gap-2 text-sm font-semibold text-slate-950 dark:text-white">
-              <ShieldCheck size={16} />
-              Trusted by 1,000+ Sri Lankan students
-            </div>
-            <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
-              Your information is encrypted and never shared. You control which
-              tutors see your details.
-            </p>
-          </div>
-        </aside>
-
-        <div className="flex items-center justify-center">{signUpCard}</div>
-      </div>
-    </div>
+    <AuthLayout
+      fullPage
+      aside={studentSignupAside}
+      title="Create your account"
+      subtitle="Join in under a minute and start finding tutors that fit your goals."
+    >
+      {signUpFormInner}
+    </AuthLayout>
   );
 }
 

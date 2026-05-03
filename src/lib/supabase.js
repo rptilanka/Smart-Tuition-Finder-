@@ -66,7 +66,7 @@ export const supabase = isSupabaseConfigured
   : null;
 
 /** Canonical tutor profile table linked 1:1 with auth.users. */
-export const TUTOR_PROFILES_TABLE = "tutor_profiles";
+export const TUTOR_PROFILES_TABLE = "tutor_accounts";
 
 /** Legacy alias kept for compatibility with older code paths. */
 export const TUTOR_ACCOUNTS_TABLE = TUTOR_PROFILES_TABLE;

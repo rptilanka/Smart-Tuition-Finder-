@@ -174,6 +174,10 @@ export function sanitizeTutorProfilePatch(patch) {
     out.avatar_url =
       patch.avatar_url === null ? null : clampStr(patch.avatar_url, 2000);
   }
+  if (patch.cover_image !== undefined) {
+    out.cover_image =
+      patch.cover_image === null ? null : clampStr(patch.cover_image, 2000);
+  }
   if (patch.qualifications_experience !== undefined) {
     out.qualifications_experience = clampStr(
       patch.qualifications_experience,

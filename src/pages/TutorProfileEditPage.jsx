@@ -15,6 +15,11 @@ import {
   UserRound
 } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+
 import { useAuth } from "../context/AuthContext";
 import { updateTutorProfile } from "../lib/profile";
 import {
@@ -23,6 +28,7 @@ import {
   subjectsGradesFromDb
 } from "../lib/tutorProfileNormalize";
 import AvatarUploader from "../components/tutor-profile/AvatarUploader";
+import CoverImageUploader from "../components/tutor-profile/CoverImageUploader";
 import SaveStatusBadge from "../components/tutor-profile/SaveStatusBadge";
 import TutorQualificationsEditor from "../components/tutor-profile/edit/TutorQualificationsEditor";
 import TutorSubjectsGradesEditor from "../components/tutor-profile/edit/TutorSubjectsGradesEditor";
@@ -268,9 +274,9 @@ export default function TutorProfileEditPage() {
       <div className="mb-5">
         <Link
           to="/tutor-dashboard"
-          className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-600 shadow-sm ring-1 ring-slate-200/70 transition hover:text-slate-950 dark:bg-slate-900 dark:text-slate-300 dark:ring-white/10 dark:hover:text-white"
+          className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-white/10 dark:bg-slate-950 dark:text-slate-100 dark:hover:bg-slate-800"
         >
-          <ArrowLeft size={12} /> Back to dashboard
+          <ArrowLeft size={14} /> Back to dashboard
         </Link>
       </div>
 
@@ -316,14 +322,15 @@ export default function TutorProfileEditPage() {
           </div>
           <div className="flex items-center gap-2">
             <SaveStatusBadge status={status} errorMessage={errorMessage} />
-            <button
+            <Button
               type="button"
+              size="sm"
               onClick={runSave}
               disabled={saveDisabled}
-              className="inline-flex items-center rounded-full bg-slate-950 px-4 py-2 text-xs font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+              className="rounded-full bg-slate-950 px-4 py-2 text-xs font-semibold text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
             >
               {status === "saving" ? "Saving..." : "Save"}
-            </button>
+            </Button>
           </div>
         </header>
 
@@ -337,6 +344,16 @@ export default function TutorProfileEditPage() {
               userId={user?.id}
               name={name || profile?.name}
               avatarUrl={profile?.avatar_url ?? null}
+              onUpdated={handleAvatarUpdated}
+              fallbackEmail={user?.email ?? ""}
+              fallbackDisplayName={
+                (user?.user_metadata?.name ?? "").trim() || name || ""
+              }
+            />
+            <CoverImageUploader
+              userId={user?.id}
+              name={name || profile?.name}
+              coverImageUrl={profile?.cover_image ?? null}
               onUpdated={handleAvatarUpdated}
               fallbackEmail={user?.email ?? ""}
               fallbackDisplayName={
@@ -369,84 +386,99 @@ export default function TutorProfileEditPage() {
             </div>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <Field label="Display name" icon={UserRound}>
-                <input
+              <Field id="profile-name" label="Display name" icon={UserRound}>
+                <Input
+                  id="profile-name"
                   value={name}
                   onChange={handleNameChange}
                   placeholder="e.g. Priya Wickramasinghe"
                   maxLength={80}
-                  className={inputClass}
+                  disabled={disabled}
+                  className="pl-9"
                 />
               </Field>
 
-              <Field label="Email" icon={Mail}>
-                <input
+              <Field id="profile-email" label="Email" icon={Mail}>
+                <Input
+                  id="profile-email"
                   value={user?.email ?? ""}
                   readOnly
-                  className={`${inputClass} cursor-not-allowed bg-slate-100/60 text-slate-500 dark:bg-slate-800/50 dark:text-slate-400`}
+                  className="cursor-not-allowed bg-muted/60 pl-9 text-muted-foreground"
                 />
               </Field>
             </div>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <Field label="Public subject/title" icon={Landmark}>
-                <input
+              <Field id="profile-subject" label="Public subject/title" icon={Landmark}>
+                <Input
+                  id="profile-subject"
                   value={profileSubject}
                   onChange={handleSubjectChange}
                   placeholder="e.g. Mathematics · A/L"
                   maxLength={120}
-                  className={inputClass}
+                  disabled={disabled}
+                  className="pl-9"
                 />
               </Field>
-              <Field label="Public location" icon={MapPin}>
-                <input
+              <Field id="profile-location" label="Public location" icon={MapPin}>
+                <Input
+                  id="profile-location"
                   value={profileLocation}
                   onChange={handleLocationChange}
                   placeholder="e.g. Colombo, Sri Lanka"
                   maxLength={120}
-                  className={inputClass}
+                  disabled={disabled}
+                  className="pl-9"
                 />
               </Field>
-              <Field label="WhatsApp number" icon={Phone}>
-                <input
+              <Field id="profile-whatsapp" label="WhatsApp number" icon={Phone}>
+                <Input
+                  id="profile-whatsapp"
                   value={whatsappNumber}
                   onChange={handleWhatsappNumberChange}
                   placeholder="e.g. +94771234567"
                   maxLength={32}
-                  className={inputClass}
+                  disabled={disabled}
+                  className="pl-9"
                 />
               </Field>
-              <Field label="Years experience" icon={Clock3}>
-                <input
+              <Field id="profile-years" label="Years experience" icon={Clock3}>
+                <Input
+                  id="profile-years"
                   type="number"
                   min="0"
                   step="1"
                   value={yearsExperience}
                   onChange={handleYearsChange}
                   placeholder="e.g. 8"
-                  className={inputClass}
+                  disabled={disabled}
+                  className="pl-9"
                 />
               </Field>
-              <Field label="Hourly rate (LKR)" icon={Wallet}>
-                <input
+              <Field id="profile-rate" label="Hourly rate (LKR)" icon={Wallet}>
+                <Input
+                  id="profile-rate"
                   type="number"
                   min="0"
                   step="100"
                   value={hourlyRate}
                   onChange={handleRateChange}
                   placeholder="e.g. 4500"
-                  className={inputClass}
+                  disabled={disabled}
+                  className="pl-9"
                 />
               </Field>
-              <Field label="Reviews count" icon={Star}>
-                <input
+              <Field id="profile-reviews" label="Reviews count" icon={Star}>
+                <Input
+                  id="profile-reviews"
                   type="number"
                   min="0"
                   step="1"
                   value={reviewsCount}
                   onChange={handleReviewsChange}
                   placeholder="e.g. 24"
-                  className={inputClass}
+                  disabled={disabled}
+                  className="pl-9"
                 />
               </Field>
             </div>
@@ -474,21 +506,24 @@ export default function TutorProfileEditPage() {
               </p>
             </div>
           </header>
-          <label className="block">
-            <span className="sr-only">About you</span>
-            <textarea
+          <div className="space-y-1.5">
+            <Label htmlFor="profile-bio" className="sr-only">
+              About you
+            </Label>
+            <Textarea
+              id="profile-bio"
               value={bio}
               onChange={handleBioChange}
               disabled={disabled}
               rows={6}
               maxLength={2000}
               placeholder="Tell students about your teaching style, experience and what makes your sessions effective."
-              className={`${inputClass} resize-y leading-relaxed`}
+              className="resize-y leading-relaxed md:text-sm"
             />
-            <p className="mt-1 text-[11px] text-slate-400">
+            <p className="text-[11px] text-muted-foreground">
               {bio.length}/2000 characters
             </p>
-          </label>
+          </div>
         </section>
 
         <TutorQualificationsEditor
@@ -523,15 +558,20 @@ export default function TutorProfileEditPage() {
   );
 }
 
-function Field({ label, icon: Icon, children }) {
+function Field({ id, label, icon: Icon, children }) {
   return (
-    <label className="block">
-      <span className="mb-2 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
-        {Icon ? <Icon size={11} /> : null}
-        {label}
-      </span>
-      {children}
-    </label>
+    <div className="space-y-1.5">
+      <Label htmlFor={id}>{label}</Label>
+      <div className="relative">
+        {Icon ? (
+          <Icon
+            size={16}
+            className="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-muted-foreground"
+          />
+        ) : null}
+        {children}
+      </div>
+    </div>
   );
 }
 
@@ -545,9 +585,6 @@ function PreviewStat({ label, value }) {
     </div>
   );
 }
-
-const inputClass =
-  "w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-medium text-slate-900 placeholder:text-slate-400 transition focus:border-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-950/10 dark:border-white/10 dark:bg-slate-950 dark:text-white dark:focus:bg-slate-900 dark:focus:ring-white/10";
 
 function initialsFor(value) {
   if (!value) return "T";

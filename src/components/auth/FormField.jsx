@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 /**
  * Accessible, reusable form field used by both login and register forms.
  * Supports:
  *   · label + optional hint text
  *   · per-field error message
- *   · left-icon slot
+ *   · left-icon slot (default variant)
  *   · password visibility toggle when type="password"
+ *   · variant="blocks" — bold labels, flat bordered inputs (login / shadcn-style)
  */
 export default function FormField({
   id,
@@ -22,13 +24,80 @@ export default function FormField({
   autoComplete,
   placeholder,
   required,
-  disabled
+  disabled,
+  variant = "default"
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = type === "password";
   const effectiveType = isPassword ? (showPassword ? "text" : "password") : type;
 
   const hasError = Boolean(error);
+  const isBlocks = variant === "blocks";
+
+  if (isBlocks) {
+    return (
+      <div>
+        <label
+          htmlFor={id}
+          className="mb-2 block text-sm font-semibold text-slate-950 dark:text-white"
+        >
+          {label}
+        </label>
+        <div
+          className={cn(
+            "flex items-center rounded-lg border border-gray-200 bg-white transition-colors focus-within:border-black dark:border-white/15 dark:bg-slate-950 dark:focus-within:border-white",
+            hasError &&
+              "border-red-500 focus-within:border-red-500 dark:border-red-500",
+            disabled && "opacity-60"
+          )}
+        >
+          <input
+            id={id}
+            name={name}
+            type={effectiveType}
+            value={value}
+            onChange={onChange}
+            autoComplete={autoComplete}
+            placeholder={placeholder}
+            required={required}
+            disabled={disabled}
+            aria-invalid={hasError}
+            aria-describedby={
+              hasError ? `${id}-error` : hint ? `${id}-hint` : undefined
+            }
+            className="min-h-[52px] w-full flex-1 border-0 bg-transparent px-4 py-3 text-sm text-slate-950 placeholder:text-gray-400 focus:outline-none focus:ring-0 dark:text-white dark:placeholder:text-slate-500"
+          />
+          {isPassword ? (
+            <button
+              type="button"
+              onClick={() => setShowPassword((v) => !v)}
+              className="mr-2 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-gray-500 transition hover:bg-gray-100 hover:text-gray-800 dark:text-slate-400 dark:hover:bg-white/10 dark:hover:text-white"
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              tabIndex={-1}
+            >
+              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
+          ) : null}
+        </div>
+
+        {hasError ? (
+          <p
+            id={`${id}-error`}
+            className="mt-1.5 text-xs font-semibold text-destructive"
+          >
+            {error}
+          </p>
+        ) : hint ? (
+          <p
+            id={`${id}-hint`}
+            className="mt-1.5 text-xs text-muted-foreground"
+          >
+            {hint}
+          </p>
+        ) : null}
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -41,8 +110,8 @@ export default function FormField({
       <div
         className={`group relative flex items-center gap-2 rounded-2xl border bg-slate-50 px-3 transition focus-within:bg-white dark:bg-slate-950 dark:focus-within:bg-slate-900 ${
           hasError
-            ? "border-rose-400/80 focus-within:ring-2 focus-within:ring-rose-400/40"
-            : "border-slate-200 focus-within:border-slate-400 focus-within:ring-2 focus-within:ring-slate-950/10 dark:border-white/10 dark:focus-within:ring-white/10"
+            ? "border-rose-400/80 focus-within:border-rose-500 focus-within:ring-0"
+            : "border-slate-200 focus-within:border-black focus-within:ring-0 dark:border-white/10 dark:focus-within:border-white"
         } ${disabled ? "opacity-60" : ""}`}
       >
         {Icon ? (
@@ -66,7 +135,9 @@ export default function FormField({
           required={required}
           disabled={disabled}
           aria-invalid={hasError}
-          aria-describedby={hasError ? `${id}-error` : hint ? `${id}-hint` : undefined}
+          aria-describedby={
+            hasError ? `${id}-error` : hint ? `${id}-hint` : undefined
+          }
           className="w-full bg-transparent py-2.5 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none dark:text-white"
         />
         {isPassword ? (

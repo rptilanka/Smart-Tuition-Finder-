@@ -66,7 +66,7 @@ const Footer = () => {
             <h6 className="font-medium text-white">Stay up to date</h6>
             <form className="mt-6 flex flex-col gap-2 sm:flex-row sm:items-center">
               <Input
-                className="h-10 w-full rounded-full border-white/15 bg-white/10 px-4 text-white placeholder:text-white/40 focus-visible:ring-white/20 sm:w-64"
+                className="h-10 w-full rounded-full border-white/15 bg-white/10 px-4 text-white placeholder:text-white/40 focus-visible:border-white focus-visible:ring-0 sm:w-64"
                 placeholder="Enter your email"
                 type="email"
               />
