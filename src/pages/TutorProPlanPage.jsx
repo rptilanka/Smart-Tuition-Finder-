@@ -1,6 +1,12 @@
 import { useMemo, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowRight, BadgeCheck, CircleCheck, Sparkles } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  BadgeCheck,
+  CircleCheck,
+  Sparkles,
+} from "lucide-react";
 
 import { useAuth } from "../context/AuthContext";
 import { supabase, TUTOR_PROFILES_TABLE } from "../lib/supabase";
@@ -8,7 +14,7 @@ import {
   buildPayHereHash,
   ensurePayHereScript,
   getPayHereConfig,
-  validatePayHereConfig
+  validatePayHereConfig,
 } from "../lib/payhere";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,7 +22,7 @@ import {
   CardContent,
   CardFooter,
   CardHeader,
-  CardTitle
+  CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
@@ -30,9 +36,10 @@ const plans = [
       { text: "Profile boost in tutor search" },
       { text: "Verified blue mark on tutor card and profile" },
       { text: "Priority placement in subject categories" },
-      { text: "Basic Pro analytics dashboard" }
+      { text: "Basic Pro analytics dashboard" },
     ],
-    button: { text: "Pay with PayHere" }
+
+    button: { text: "Pay with PayHere" },
   },
   {
     id: "pro-max",
@@ -43,10 +50,11 @@ const plans = [
       { text: "Everything in Pro Plus" },
       { text: "Stronger boost in lists and featured rows" },
       { text: "Priority support response" },
-      { text: "Advanced lead insights and conversion trends" }
+      { text: "Advanced lead insights and conversion trends" },
     ],
-    button: { text: "Pay with PayHere" }
-  }
+
+    button: { text: "Pay with PayHere" },
+  },
 ];
 
 export default function TutorProPlanPage() {
@@ -67,12 +75,19 @@ export default function TutorProPlanPage() {
 
   const persistProStatusToSupabase = async () => {
     if (!supabase || !user?.id) {
-      return { ok: false, reason: "Supabase is not configured or user is missing." };
+      return {
+        ok: false,
+        reason: "Supabase is not configured or user is missing.",
+      };
     }
 
     const payloads = [
       { profile_boost: true, verified_marks: 5 },
-      { is_profile_boosted: true, is_verified_blue_mark: true, pro_verified_marks: 5 }
+      {
+        is_profile_boosted: true,
+        is_verified_blue_mark: true,
+        pro_verified_marks: 5,
+      },
     ];
 
     let lastError = null;
@@ -87,7 +102,8 @@ export default function TutorProPlanPage() {
 
     return {
       ok: false,
-      reason: lastError?.message || "Could not update tutor pro status in database."
+      reason:
+        lastError?.message || "Could not update tutor pro status in database.",
     };
   };
 
@@ -95,7 +111,9 @@ export default function TutorProPlanPage() {
     if (!user?.id) return;
     const dbResult = await persistProStatusToSupabase();
     if (!dbResult.ok) {
-      setMessage(`Payment completed, but database update failed: ${dbResult.reason}`);
+      setMessage(
+        `Payment completed, but database update failed: ${dbResult.reason}`,
+      );
       return false;
     }
 
@@ -123,7 +141,9 @@ export default function TutorProPlanPage() {
           navigate("/payment/failed");
           return;
         }
-        setMessage("Payment success! Verified blue mark and profile boost are now active.");
+        setMessage(
+          "Payment success! Verified blue mark and profile boost are now active.",
+        );
         setPayingPlanId("");
         navigate("/payment/success");
       };
@@ -147,7 +167,7 @@ export default function TutorProPlanPage() {
         orderId,
         amount: plan.price,
         currency: "LKR",
-        merchantSecret: cfg.merchantSecret
+        merchantSecret: cfg.merchantSecret,
       });
       const payment = {
         sandbox: true,
@@ -168,11 +188,13 @@ export default function TutorProPlanPage() {
         city: cfg.city,
         country: cfg.country,
         custom_1: user.id,
-        custom_2: plan.id
+        custom_2: plan.id,
       };
       payhere.startPayment(payment);
     } catch (error) {
-      setMessage("Could not start PayHere checkout. Trying direct Pro activation.");
+      setMessage(
+        "Could not start PayHere checkout. Trying direct Pro activation.",
+      );
       const ok = await applyProSuccess(plan);
       if (!ok) {
         setPayingPlanId("");
@@ -234,14 +256,18 @@ export default function TutorProPlanPage() {
                   <Separator className="mb-6 bg-slate-200" />
                   <ul className="space-y-4">
                     {plan.features.map((feature, index) => (
-                      <li key={`${plan.id}-${index}`} className="flex items-center gap-2 text-slate-700">
+                      <li
+                        key={`${plan.id}-${index}`}
+                        className="flex items-center gap-2 text-slate-700"
+                      >
                         <CircleCheck className="size-4 text-slate-500" />
                         <span>{feature.text}</span>
                       </li>
                     ))}
                   </ul>
                   <div className="mt-4 inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
-                    <Sparkles className="size-3" /> Includes verified blue mark + profile boost
+                    <Sparkles className="size-3" /> Includes verified blue mark
+                    + profile boost
                   </div>
                 </CardContent>
 
@@ -252,7 +278,9 @@ export default function TutorProPlanPage() {
                     disabled={payingPlanId === plan.id}
                     className="w-full rounded-lg bg-slate-950 text-white hover:bg-slate-800"
                   >
-                    {payingPlanId === plan.id ? "Processing..." : plan.button.text}
+                    {payingPlanId === plan.id
+                      ? "Processing..."
+                      : plan.button.text}
                     <ArrowRight className="ml-2 size-4" />
                   </Button>
                 </CardFooter>
@@ -264,7 +292,9 @@ export default function TutorProPlanPage() {
               {message}
             </p>
           ) : null}
-          <p className="text-xs text-slate-500">Complete payment to activate Pro status instantly.</p>
+          <p className="text-xs text-slate-500">
+            Complete payment to activate Pro status instantly.
+          </p>
           <div className="mt-2">
             <Button asChild variant="outline">
               <Link to="/tutors">

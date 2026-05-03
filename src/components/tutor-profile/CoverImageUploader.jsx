@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import { ImageIcon, Loader2, Trash2, UploadCloud } from "lucide-react";
+import { ImageIcon, Loader2, Link2, Trash2, UploadCloud } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 import {
-  removeAvatarByUrl,
-  uploadAvatar,
-  validateAvatarFile
+  removeCoverImageByUrl,
+  uploadCoverImage,
+  validateAvatarFile,
 } from "../../lib/storage";
 import { updateTutorProfile } from "../../lib/profile";
 
@@ -14,13 +17,15 @@ export default function CoverImageUploader({
   coverImageUrl,
   onUpdated,
   fallbackEmail = "",
-  fallbackDisplayName = ""
+  fallbackDisplayName = "",
 }) {
   const fileInputRef = useRef(null);
   const [previewUrl, setPreviewUrl] = useState(coverImageUrl ?? null);
   const [uploading, setUploading] = useState(false);
+  const [savingUrl, setSavingUrl] = useState(false);
   const [removing, setRemoving] = useState(false);
   const [error, setError] = useState("");
+  const [urlDraft, setUrlDraft] = useState("");
 
   useEffect(() => {
     setPreviewUrl(coverImageUrl ?? null);
@@ -40,28 +45,27 @@ export default function CoverImageUploader({
       return;
     }
 
-    const localUrl = URL.createObjectURL(file);
     const previousPreview = previewUrl;
     const previousCover = coverImageUrl;
-    setPreviewUrl(localUrl);
     setUploading(true);
 
-    const { data: upload, error: uploadError } = await uploadAvatar({ userId, file });
+    const { data: upload, error: uploadError } = await uploadCoverImage({
+      userId,
+      file,
+    });
     if (uploadError) {
       setError(uploadError.message ?? "Upload failed.");
       setPreviewUrl(previousPreview);
       setUploading(false);
-      URL.revokeObjectURL(localUrl);
       return;
     }
 
     const { data: profile, error: dbError } = await updateTutorProfile(
       userId,
       { cover_image: upload.publicUrl },
-      { email: fallbackEmail, displayName: fallbackDisplayName }
+      { email: fallbackEmail, displayName: fallbackDisplayName },
     );
 
-    URL.revokeObjectURL(localUrl);
     setUploading(false);
 
     if (dbError) {
@@ -73,20 +77,70 @@ export default function CoverImageUploader({
     setPreviewUrl(upload.publicUrl);
     onUpdated?.(profile);
     if (previousCover && previousCover !== upload.publicUrl) {
-      removeAvatarByUrl(previousCover);
+      removeCoverImageByUrl(previousCover);
     }
   };
 
+  const applyImageUrl = async () => {
+    setError("");
+    const raw = urlDraft.trim();
+    if (!raw) {
+      setError("Enter an image URL, or use file upload above.");
+      return;
+    }
+    let parsed;
+    try {
+      parsed = new URL(raw);
+    } catch {
+      setError("That doesn’t look like a valid URL.");
+      return;
+    }
+    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+      setError("Use an http or https image URL.");
+      return;
+    }
+
+    const previousPreview = previewUrl;
+    const previousCover = coverImageUrl;
+    setPreviewUrl(raw);
+    setSavingUrl(true);
+
+    const { data: profile, error: dbError } = await updateTutorProfile(
+      userId,
+      { cover_image: raw },
+      { email: fallbackEmail, displayName: fallbackDisplayName },
+    );
+
+    setSavingUrl(false);
+    if (dbError) {
+      setError(dbError.message ?? "Couldn't save the cover image URL.");
+      setPreviewUrl(previousPreview);
+      return;
+    }
+
+    onUpdated?.(profile);
+    setUrlDraft("");
+    if (previousCover && previousCover !== raw) {
+      removeCoverImageByUrl(previousCover);
+    }
+  };
+
+  const effectiveCoverUrl = coverImageUrl
+    ? coverImageUrl
+    : previewUrl && /^https?:\/\//i.test(previewUrl)
+      ? previewUrl
+      : null;
+
   const handleRemove = async () => {
-    if (!coverImageUrl) return;
+    if (!effectiveCoverUrl) return;
     setError("");
     setRemoving(true);
-    const previousCover = coverImageUrl;
+    const previousCover = effectiveCoverUrl;
 
     const { data: profile, error: dbError } = await updateTutorProfile(
       userId,
       { cover_image: null },
-      { email: fallbackEmail, displayName: fallbackDisplayName }
+      { email: fallbackEmail, displayName: fallbackDisplayName },
     );
 
     setRemoving(false);
@@ -97,7 +151,7 @@ export default function CoverImageUploader({
 
     setPreviewUrl(null);
     onUpdated?.(profile);
-    removeAvatarByUrl(previousCover);
+    removeCoverImageByUrl(previousCover);
   };
 
   return (
@@ -121,7 +175,7 @@ export default function CoverImageUploader({
             No cover image
           </div>
         )}
-        {uploading ? (
+        {uploading || savingUrl ? (
           <div className="absolute inset-0 flex items-center justify-center bg-slate-950/40 backdrop-blur-sm">
             <Loader2 size={22} className="animate-spin text-white" />
           </div>
@@ -132,23 +186,71 @@ export default function CoverImageUploader({
         <button
           type="button"
           onClick={handlePick}
-          disabled={uploading}
+          disabled={uploading || savingUrl}
           className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
         >
-          {uploading ? <Loader2 size={13} className="animate-spin" /> : <UploadCloud size={13} />}
-          {uploading ? "Uploading..." : coverImageUrl ? "Replace cover" : "Upload cover"}
+          {uploading ? (
+            <Loader2 size={13} className="animate-spin" />
+          ) : (
+            <UploadCloud size={13} />
+          )}
+          {uploading
+            ? "Uploading..."
+            : effectiveCoverUrl
+              ? "Replace cover"
+              : "Upload cover"}
         </button>
-        {coverImageUrl ? (
+        {effectiveCoverUrl ? (
           <button
             type="button"
             onClick={handleRemove}
-            disabled={removing || uploading}
+            disabled={removing || uploading || savingUrl}
             className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-800"
           >
-            {removing ? <Loader2 size={13} className="animate-spin" /> : <Trash2 size={13} />}
+            {removing ? (
+              <Loader2 size={13} className="animate-spin" />
+            ) : (
+              <Trash2 size={13} />
+            )}
             Remove
           </button>
         ) : null}
+      </div>
+
+      <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center">
+        <div className="flex min-w-0 flex-1 items-center gap-2">
+          <Link2
+            size={14}
+            className="shrink-0 text-slate-400 dark:text-slate-500"
+            aria-hidden
+          />
+
+          <Input
+            type="url"
+            value={urlDraft}
+            onChange={(e) => setUrlDraft(e.target.value)}
+            placeholder="Or paste cover image URL (https://…)"
+            disabled={uploading || savingUrl || removing}
+            className="h-9 text-xs"
+          />
+        </div>
+        <Button
+          type="button"
+          size="sm"
+          variant="outline"
+          disabled={uploading || savingUrl || removing}
+          onClick={applyImageUrl}
+          className="inline-flex shrink-0 gap-1.5 rounded-full text-xs font-semibold"
+        >
+          {savingUrl ? (
+            <>
+              <Loader2 size={13} className="animate-spin" />
+              Saving…
+            </>
+          ) : (
+            "Use URL"
+          )}
+        </Button>
       </div>
 
       {error ? (

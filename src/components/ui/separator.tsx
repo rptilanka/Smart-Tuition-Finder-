@@ -1,7 +1,7 @@
-import * as React from "react"
-import { Separator as SeparatorPrimitive } from "radix-ui"
+import * as React from "react";
+import { Separator as SeparatorPrimitive } from "radix-ui";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 function Separator({
   className,
@@ -18,11 +18,11 @@ function Separator({
         orientation === "horizontal"
           ? "h-px w-full shrink-0 bg-border"
           : "h-full w-px shrink-0 bg-border",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-export { Separator }
+export { Separator };

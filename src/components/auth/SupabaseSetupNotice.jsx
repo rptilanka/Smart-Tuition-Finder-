@@ -1,10 +1,5 @@
 import { AlertTriangle } from "lucide-react";
 
-/**
- * Shown on the login / register pages when the Supabase env vars aren't
- * set yet. Gives the developer a clear path to enabling the full auth
- * flow without the app silently failing.
- */
 export default function SupabaseSetupNotice() {
   return (
     <div className="mb-5 rounded-2xl border border-amber-300/60 bg-amber-50/80 p-4 text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200">

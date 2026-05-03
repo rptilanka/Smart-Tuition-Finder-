@@ -1,7 +1,3 @@
-/**
- * Normalise tutor profile payloads before writing to Supabase JSONB / text columns.
- */
-
 const MAX_BIO = 2000;
 const MAX_QUALIFICATIONS = 4000;
 const MAX_AVAILABILITY = 4000;
@@ -49,9 +45,6 @@ export function youtubeThumbnailFromUrl(videoUrl) {
   return id ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : "";
 }
 
-/**
- * @returns {Array<{ subject: string, grades: string[] }>}
- */
 export function normalizeSubjectsGrades(input) {
   if (!Array.isArray(input)) return [];
   const out = [];
@@ -79,10 +72,6 @@ export function normalizeSubjectsGrades(input) {
   return out;
 }
 
-/**
- * Stored shape: { id, title, description, video_url, source? }
- * @returns {Array<{ id: string, title: string, description: string, video_url: string, source?: string }>}
- */
 export function normalizeDemoVideos(input) {
   if (!Array.isArray(input)) return [];
   const out = [];
@@ -96,13 +85,15 @@ export function normalizeDemoVideos(input) {
     if (!title && !video_url) continue;
     if (video_url && !/^https?:\/\//i.test(video_url)) continue;
     const id =
-      typeof row.id === "string" && row.id.length > 0 ? row.id : crypto.randomUUID();
+      typeof row.id === "string" && row.id.length > 0
+        ? row.id
+        : crypto.randomUUID();
     out.push({
       id,
       title,
       description,
       video_url,
-      source: source === "upload" ? "upload" : "youtube"
+      source: source === "upload" ? "upload" : "youtube",
     });
   }
   return out;
@@ -111,11 +102,11 @@ export function normalizeDemoVideos(input) {
 const FALLBACK_VIDEO_THUMB =
   "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=900&q=60";
 
-/** Map stored demo row to VideoCard props. */
 export function demoVideoRowToCardShape(row) {
   if (!row?.video_url) return null;
   const source = row.source === "upload" ? "upload" : "youtube";
-  const thumb = source === "youtube" ? youtubeThumbnailFromUrl(row.video_url) : "";
+  const thumb =
+    source === "youtube" ? youtubeThumbnailFromUrl(row.video_url) : "";
   return {
     id: row.id,
     title: row.title || "Demo lesson",
@@ -123,22 +114,14 @@ export function demoVideoRowToCardShape(row) {
     videoUrl: row.video_url,
     thumbnail: thumb || FALLBACK_VIDEO_THUMB,
     duration: row.duration || undefined,
-    source
+    source,
   };
 }
 
-/**
- * @param {unknown} raw — value from Supabase JSONB
- * @returns {Array<{ subject: string, grades: string[] }>}
- */
 export function subjectsGradesFromDb(raw) {
   return normalizeSubjectsGrades(Array.isArray(raw) ? raw : []);
 }
 
-/**
- * @param {unknown} raw
- * @returns {Array<{ id: string, title: string, description: string, video_url: string, source?: string }>}
- */
 export function demoVideosFromDb(raw) {
   const arr = Array.isArray(raw) ? raw : [];
   return arr
@@ -154,7 +137,7 @@ export function demoVideosFromDb(raw) {
       source:
         clampStr(r.source, 24).trim().toLowerCase() === "upload"
           ? "upload"
-          : "youtube"
+          : "youtube",
     }))
     .slice(0, MAX_VIDEO_ROWS);
 }
@@ -181,7 +164,7 @@ export function sanitizeTutorProfilePatch(patch) {
   if (patch.qualifications_experience !== undefined) {
     out.qualifications_experience = clampStr(
       patch.qualifications_experience,
-      MAX_QUALIFICATIONS
+      MAX_QUALIFICATIONS,
     );
   }
   if (patch.subjects_grades !== undefined) {
@@ -191,16 +174,28 @@ export function sanitizeTutorProfilePatch(patch) {
     out.demo_videos = normalizeDemoVideos(patch.demo_videos);
   }
   if (patch.availability_booking !== undefined) {
-    out.availability_booking = clampStr(patch.availability_booking, MAX_AVAILABILITY);
+    out.availability_booking = clampStr(
+      patch.availability_booking,
+      MAX_AVAILABILITY,
+    );
   }
   if (patch.whatsapp_number !== undefined) {
-    out.whatsapp_number = clampStr(patch.whatsapp_number, MAX_WHATSAPP_NUMBER).trim();
+    out.whatsapp_number = clampStr(
+      patch.whatsapp_number,
+      MAX_WHATSAPP_NUMBER,
+    ).trim();
   }
   if (patch.profile_subject !== undefined) {
-    out.profile_subject = clampStr(patch.profile_subject, MAX_PROFILE_SUBJECT).trim();
+    out.profile_subject = clampStr(
+      patch.profile_subject,
+      MAX_PROFILE_SUBJECT,
+    ).trim();
   }
   if (patch.profile_location !== undefined) {
-    out.profile_location = clampStr(patch.profile_location, MAX_PROFILE_LOCATION).trim();
+    out.profile_location = clampStr(
+      patch.profile_location,
+      MAX_PROFILE_LOCATION,
+    ).trim();
   }
   if (patch.years_experience !== undefined) {
     const n = Number(patch.years_experience);

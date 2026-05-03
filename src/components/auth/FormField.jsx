@@ -2,15 +2,6 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-/**
- * Accessible, reusable form field used by both login and register forms.
- * Supports:
- *   · label + optional hint text
- *   · per-field error message
- *   · left-icon slot (default variant)
- *   · password visibility toggle when type="password"
- *   · variant="blocks" — bold labels, flat bordered inputs (login / shadcn-style)
- */
 export default function FormField({
   id,
   name,
@@ -25,11 +16,15 @@ export default function FormField({
   placeholder,
   required,
   disabled,
-  variant = "default"
+  variant = "default",
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = type === "password";
-  const effectiveType = isPassword ? (showPassword ? "text" : "password") : type;
+  const effectiveType = isPassword
+    ? showPassword
+      ? "text"
+      : "password"
+    : type;
 
   const hasError = Boolean(error);
   const isBlocks = variant === "blocks";
@@ -48,7 +43,7 @@ export default function FormField({
             "flex items-center rounded-lg border border-gray-200 bg-white transition-colors focus-within:border-black dark:border-white/15 dark:bg-slate-950 dark:focus-within:border-white",
             hasError &&
               "border-red-500 focus-within:border-red-500 dark:border-red-500",
-            disabled && "opacity-60"
+            disabled && "opacity-60",
           )}
         >
           <input
@@ -67,6 +62,7 @@ export default function FormField({
             }
             className="min-h-[52px] w-full flex-1 border-0 bg-transparent px-4 py-3 text-sm text-slate-950 placeholder:text-gray-400 focus:outline-none focus:ring-0 dark:text-white dark:placeholder:text-slate-500"
           />
+
           {isPassword ? (
             <button
               type="button"
@@ -88,10 +84,7 @@ export default function FormField({
             {error}
           </p>
         ) : hint ? (
-          <p
-            id={`${id}-hint`}
-            className="mt-1.5 text-xs text-muted-foreground"
-          >
+          <p id={`${id}-hint`} className="mt-1.5 text-xs text-muted-foreground">
             {hint}
           </p>
         ) : null}
@@ -140,6 +133,7 @@ export default function FormField({
           }
           className="w-full bg-transparent py-2.5 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none dark:text-white"
         />
+
         {isPassword ? (
           <button
             type="button"
@@ -161,7 +155,10 @@ export default function FormField({
           {error}
         </p>
       ) : hint ? (
-        <p id={`${id}-hint`} className="mt-1.5 text-xs text-slate-500 dark:text-slate-400">
+        <p
+          id={`${id}-hint`}
+          className="mt-1.5 text-xs text-slate-500 dark:text-slate-400"
+        >
           {hint}
         </p>
       ) : null}

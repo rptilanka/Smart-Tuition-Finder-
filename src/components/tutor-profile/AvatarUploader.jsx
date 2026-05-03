@@ -5,26 +5,17 @@ import { Camera, Loader2, Trash2, UploadCloud } from "lucide-react";
 import {
   removeAvatarByUrl,
   uploadAvatar,
-  validateAvatarFile
+  validateAvatarFile,
 } from "../../lib/storage";
 import { updateTutorProfile } from "../../lib/profile";
 
-/**
- * AvatarUploader
- * --------------
- * Lets the tutor pick a new profile photo, shows an immediate local
- * preview (via `URL.createObjectURL`), uploads it to the `avatars`
- * Storage bucket, then persists the resulting public URL on the tutor's
- * profile row. Calls `onUpdated(profile)` when the DB write succeeds so
- * the parent can keep its in-memory state in sync.
- */
 export default function AvatarUploader({
   userId,
   name,
   avatarUrl,
   onUpdated,
   fallbackEmail = "",
-  fallbackDisplayName = ""
+  fallbackDisplayName = "",
 }) {
   const fileInputRef = useRef(null);
   const [previewUrl, setPreviewUrl] = useState(avatarUrl ?? null);
@@ -43,7 +34,7 @@ export default function AvatarUploader({
   const handleFile = async (event) => {
     setError("");
     const file = event.target.files?.[0];
-    event.target.value = ""; // allow re-picking the same file
+    event.target.value = "";
     if (!file) return;
 
     const validationError = validateAvatarFile(file);
@@ -52,33 +43,28 @@ export default function AvatarUploader({
       return;
     }
 
-    // Show the local preview *immediately* so the UI feels instant.
-    const localUrl = URL.createObjectURL(file);
     const previousPreview = previewUrl;
-    setPreviewUrl(localUrl);
     setUploading(true);
 
     const previousAvatar = avatarUrl;
     const { data: upload, error: uploadError } = await uploadAvatar({
       userId,
-      file
+      file,
     });
 
     if (uploadError) {
       setError(uploadError.message ?? "Upload failed.");
       setPreviewUrl(previousPreview);
       setUploading(false);
-      URL.revokeObjectURL(localUrl);
       return;
     }
 
     const { data: profile, error: dbError } = await updateTutorProfile(
       userId,
       { avatar_url: upload.publicUrl },
-      { email: fallbackEmail, displayName: fallbackDisplayName }
+      { email: fallbackEmail, displayName: fallbackDisplayName },
     );
 
-    URL.revokeObjectURL(localUrl);
     setUploading(false);
 
     if (dbError) {
@@ -90,7 +76,6 @@ export default function AvatarUploader({
     setPreviewUrl(upload.publicUrl);
     onUpdated?.(profile);
 
-    // Best-effort cleanup of the previous file in storage.
     if (previousAvatar && previousAvatar !== upload.publicUrl) {
       removeAvatarByUrl(previousAvatar);
     }
@@ -105,7 +90,7 @@ export default function AvatarUploader({
     const { data: profile, error: dbError } = await updateTutorProfile(
       userId,
       { avatar_url: null },
-      { email: fallbackEmail, displayName: fallbackDisplayName }
+      { email: fallbackEmail, displayName: fallbackDisplayName },
     );
 
     setRemoving(false);
@@ -180,7 +165,11 @@ export default function AvatarUploader({
             ) : (
               <UploadCloud size={13} />
             )}
-            {uploading ? "Uploading..." : avatarUrl ? "Replace photo" : "Upload photo"}
+            {uploading
+              ? "Uploading..."
+              : avatarUrl
+                ? "Replace photo"
+                : "Upload photo"}
           </button>
 
           {avatarUrl ? (

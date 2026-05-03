@@ -9,7 +9,7 @@ import {
   Moon,
   Search,
   Sun,
-  X
+  X,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
@@ -18,20 +18,9 @@ const navItems = [
   { label: "Courses", href: "/#features" },
   { label: "Tutors", href: "/tutors", route: true },
   { label: "Reviews", href: "/#reviews" },
-  { label: "Join", href: "/#join" }
+  { label: "Join", href: "/#join" },
 ];
 
-/**
- * Modern course-platform style navigation header.
- *
- *  - Left:   logo + brand
- *  - Center: navigation pill (desktop only)
- *  - Right:  search + dark toggle + (Dashboard / Tutor Login) + Student Login
- *  - Mobile: slide-down glass drawer with everything
- *
- * When a tutor is signed in, the "Tutor Login" CTA is replaced with a
- * "Dashboard" link and a compact sign-out icon button.
- */
 export default function SiteHeader({ isDark, onToggleDark }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
@@ -116,7 +105,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
               >
                 {item.label}
               </a>
-            )
+            ),
           )}
         </div>
 
@@ -189,7 +178,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
             whileHover={{
               scale: 1.05,
               y: -1,
-              boxShadow: "0 18px 34px rgba(168,85,247,0.45)"
+              boxShadow: "0 18px 34px rgba(168,85,247,0.45)",
             }}
             whileTap={{ scale: 0.96 }}
             transition={{ type: "spring", stiffness: 320, damping: 22 }}

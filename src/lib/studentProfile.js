@@ -8,8 +8,7 @@ const ALLOWED_FIELDS = new Set(["name", "bio", "avatar_url"]);
 export async function updateStudentProfile(userId, patch) {
   if (!supabase)
     return { data: null, error: new Error("Supabase is not configured.") };
-  if (!userId)
-    return { data: null, error: new Error("Not signed in.") };
+  if (!userId) return { data: null, error: new Error("Not signed in.") };
 
   const payload = {};
   for (const [k, v] of Object.entries(patch ?? {})) {

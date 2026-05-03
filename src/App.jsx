@@ -22,7 +22,7 @@ import {
   Sparkles,
   Star,
   Users,
-  X
+  X,
 } from "lucide-react";
 import Lottie from "lottie-react";
 import { Button } from "@/components/ui/button";
@@ -33,6 +33,7 @@ import Navbar from "./components/navbar.jsx";
 import TutorProfilePage from "./pages/TutorProfilePage";
 import TutorLoginPage from "./pages/TutorLoginPage";
 import TutorDashboardPage from "./pages/TutorDashboardPage";
+import TutorOwnProfilePage from "./pages/TutorOwnProfilePage";
 import TutorProfileEditPage from "./pages/TutorProfileEditPage";
 import TutorProPlanPage from "./pages/TutorProPlanPage";
 import PaymentStatusPage from "./pages/PaymentStatusPage";
@@ -57,31 +58,34 @@ const heroContainer = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
-    transition: { staggerChildren: 0.14 }
-  }
+    transition: { staggerChildren: 0.14 },
+  },
 };
 
 const heroItem = {
   hidden: { opacity: 0, y: 22 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
 };
 
 const testimonials = [
   {
     name: "Nethmi · Student",
-    message: "I found the right A/L tutor in less than two days. The filtering experience is excellent.",
-    rating: 5
+    message:
+      "I found the right A/L tutor in less than two days. The filtering experience is excellent.",
+    rating: 5,
   },
   {
     name: "Mr. Silva · Parent",
-    message: "Clear profiles and transparent details made tutor selection much easier for our family.",
-    rating: 5
+    message:
+      "Clear profiles and transparent details made tutor selection much easier for our family.",
+    rating: 5,
   },
   {
     name: "Kavisha · Student",
-    message: "The interface feels modern and smooth. Communication with tutors is super quick.",
-    rating: 4
-  }
+    message:
+      "The interface feels modern and smooth. Communication with tutors is super quick.",
+    rating: 4,
+  },
 ];
 
 const popularSubjects = [
@@ -89,38 +93,38 @@ const popularSubjects = [
     id: "maths",
     label: "Maths",
     icon: Calculator,
-    blurb: "Algebra, calculus, statistics & competition prep."
+    blurb: "Algebra, calculus, statistics & competition prep.",
   },
   {
     id: "science",
     label: "Science",
     icon: FlaskConical,
-    blurb: "Biology, chemistry & lab-ready experiments."
+    blurb: "Biology, chemistry & lab-ready experiments.",
   },
   {
     id: "history",
     label: "History",
     icon: Landmark,
-    blurb: "Sri Lanka, world history & critical analysis."
+    blurb: "Sri Lanka, world history & critical analysis.",
   },
   {
     id: "art",
     label: "Art",
     icon: Palette,
-    blurb: "Drawing, painting, design & portfolio building."
+    blurb: "Drawing, painting, design & portfolio building.",
   },
   {
     id: "english",
     label: "English",
     icon: Languages,
-    blurb: "Grammar, literature, IELTS & spoken fluency."
+    blurb: "Grammar, literature, IELTS & spoken fluency.",
   },
   {
     id: "physics",
     label: "Physics",
     icon: Atom,
-    blurb: "Mechanics, electromagnetism & A/L mastery."
-  }
+    blurb: "Mechanics, electromagnetism & A/L mastery.",
+  },
 ];
 
 function isVerifiedTutor(tutor) {
@@ -139,25 +143,27 @@ function formatTutorLocation(location) {
 const highlights = [
   {
     title: "Verified Tutor Profiles",
-    description: "View qualifications, experience, and teaching style in one place.",
-    icon: ShieldCheck
+    description:
+      "View qualifications, experience, and teaching style in one place.",
+    icon: ShieldCheck,
   },
   {
     title: "Smart Local Search",
     description: "Find tutors by city and nearby area for faster onboarding.",
-    icon: MapPin
+    icon: MapPin,
   },
   {
     title: "Fast Communication",
-    description: "Send direct inquiries and get responses without platform friction.",
-    icon: MessageSquareText
-  }
+    description:
+      "Send direct inquiries and get responses without platform friction.",
+    icon: MessageSquareText,
+  },
 ];
 
 const heroStats = [
   { value: "170+", label: "verified tutors" },
   { value: "56K", label: "student inquiries" },
-  { value: "4.9/5", label: "average rating" }
+  { value: "4.9/5", label: "average rating" },
 ];
 
 const learningLevels = ["School", "A/L", "University", "Professional Skills"];
@@ -165,23 +171,28 @@ const learningLevels = ["School", "A/L", "University", "Professional Skills"];
 const platformSteps = [
   {
     title: "Tell us the goal",
-    description: "Choose the subject, level, city, and learning style that fit you.",
-    icon: Sparkles
+    description:
+      "Choose the subject, level, city, and learning style that fit you.",
+    icon: Sparkles,
   },
   {
     title: "Compare trusted tutors",
-    description: "Review verified profiles, ratings, locations, and specialties in minutes.",
-    icon: CheckCircle2
+    description:
+      "Review verified profiles, ratings, locations, and specialties in minutes.",
+    icon: CheckCircle2,
   },
   {
     title: "Start with confidence",
-    description: "Connect quickly and keep momentum with the right learning support.",
-    icon: Clock3
-  }
+    description:
+      "Connect quickly and keep momentum with the right learning support.",
+    icon: Clock3,
+  },
 ];
 
 function useDarkMode() {
-  const [isDark, setIsDark] = useState(() => localStorage.getItem("theme") === "dark");
+  const [isDark, setIsDark] = useState(
+    () => localStorage.getItem("theme") === "dark",
+  );
 
   useEffect(() => {
     if (isDark) {
@@ -231,7 +242,9 @@ function Counter({ value, suffix, label }) {
         {count}
         {suffix}
       </p>
-      <p className="mt-3 text-sm font-medium text-slate-500 dark:text-slate-400">{label}</p>
+      <p className="mt-3 text-sm font-medium text-slate-500 dark:text-slate-400">
+        {label}
+      </p>
     </div>
   );
 }
@@ -240,7 +253,10 @@ function TestimonialSlider() {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    const timer = setInterval(() => setIndex((prev) => (prev + 1) % testimonials.length), 3600);
+    const timer = setInterval(
+      () => setIndex((prev) => (prev + 1) % testimonials.length),
+      3600,
+    );
     return () => clearInterval(timer);
   }, []);
 
@@ -265,7 +281,9 @@ function TestimonialSlider() {
             <p className="mx-auto max-w-3xl text-2xl font-semibold leading-tight tracking-[-0.03em] text-slate-950 md:text-4xl dark:text-white">
               "{item.message}"
             </p>
-            <p className="mt-6 text-sm font-semibold text-slate-500 dark:text-slate-400">{item.name}</p>
+            <p className="mt-6 text-sm font-semibold text-slate-500 dark:text-slate-400">
+              {item.name}
+            </p>
           </motion.div>
         </AnimatePresence>
       </div>
@@ -340,7 +358,7 @@ function JoinUsModal({ isOpen, onClose, animationData, successAnimationData }) {
     if (!isConfigured) {
       setErrors({
         ...nextErrors,
-        form: "Supabase is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to .env.local and restart the dev server."
+        form: "Supabase is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to .env.local and restart the dev server.",
       });
       return;
     }
@@ -350,7 +368,7 @@ function JoinUsModal({ isOpen, onClose, animationData, successAnimationData }) {
       name: fullName.trim(),
       email: email.trim(),
       password,
-      role: role === "Student" ? "student" : "tutor"
+      role: role === "Student" ? "student" : "tutor",
     });
     setIsSubmitting(false);
 
@@ -397,15 +415,25 @@ function JoinUsModal({ isOpen, onClose, animationData, successAnimationData }) {
             <div className="mb-4 flex justify-center">
               <div className="h-24 w-24 overflow-hidden rounded-2xl border border-white/20 bg-white/70 p-1 dark:bg-slate-800/70">
                 {animationData ? (
-                  <Lottie animationData={animationData} loop className="h-full w-full" />
+                  <Lottie
+                    animationData={animationData}
+                    loop
+                    className="h-full w-full"
+                  />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center text-2xl">👋</div>
+                  <div className="flex h-full w-full items-center justify-center text-2xl">
+                    👋
+                  </div>
                 )}
               </div>
             </div>
 
-            <h3 className="text-center text-2xl font-bold text-slate-900 dark:text-white">Join Us</h3>
-            <p className="mb-5 mt-1 text-center text-sm text-slate-600 dark:text-slate-300">Create your Smart Tuition Finder account</p>
+            <h3 className="text-center text-2xl font-bold text-slate-900 dark:text-white">
+              Join Us
+            </h3>
+            <p className="mb-5 mt-1 text-center text-sm text-slate-600 dark:text-slate-300">
+              Create your Smart Tuition Finder account
+            </p>
 
             {!isSuccess ? (
               <form onSubmit={onSubmit} className="space-y-3" noValidate>
@@ -421,7 +449,12 @@ function JoinUsModal({ isOpen, onClose, animationData, successAnimationData }) {
                     placeholder="Full Name"
                     className="filter-input"
                   />
-                  {errors.fullName ? <p className="mt-1 text-xs text-rose-500">{errors.fullName}</p> : null}
+
+                  {errors.fullName ? (
+                    <p className="mt-1 text-xs text-rose-500">
+                      {errors.fullName}
+                    </p>
+                  ) : null}
                 </div>
 
                 <div>
@@ -431,7 +464,10 @@ function JoinUsModal({ isOpen, onClose, animationData, successAnimationData }) {
                     placeholder="Email Address"
                     className="filter-input"
                   />
-                  {errors.email ? <p className="mt-1 text-xs text-rose-500">{errors.email}</p> : null}
+
+                  {errors.email ? (
+                    <p className="mt-1 text-xs text-rose-500">{errors.email}</p>
+                  ) : null}
                 </div>
 
                 <div>
@@ -443,6 +479,7 @@ function JoinUsModal({ isOpen, onClose, animationData, successAnimationData }) {
                       placeholder="Password"
                       className="filter-input pr-10"
                     />
+
                     <button
                       type="button"
                       onClick={() => setShowPassword((prev) => !prev)}
@@ -452,11 +489,17 @@ function JoinUsModal({ isOpen, onClose, animationData, successAnimationData }) {
                       {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                     </button>
                   </div>
-                  {errors.password ? <p className="mt-1 text-xs text-rose-500">{errors.password}</p> : null}
+                  {errors.password ? (
+                    <p className="mt-1 text-xs text-rose-500">
+                      {errors.password}
+                    </p>
+                  ) : null}
                 </div>
 
                 <div>
-                  <p className="mb-2 text-sm font-semibold text-slate-700 dark:text-slate-200">I am joining as</p>
+                  <p className="mb-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
+                    I am joining as
+                  </p>
                   <div className="grid grid-cols-2 gap-2">
                     {["Student", "Tutor"].map((item) => {
                       const active = role === item;
@@ -496,16 +539,30 @@ function JoinUsModal({ isOpen, onClose, animationData, successAnimationData }) {
                 </motion.button>
               </form>
             ) : (
-              <motion.div initial={{ opacity: 0, scale: 0.92 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center py-8">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.92 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="flex flex-col items-center py-8"
+              >
                 <div className="h-20 w-20 overflow-hidden rounded-2xl border border-white/20 bg-white/70 p-1 dark:bg-slate-800/70">
                   {successAnimationData ? (
-                    <Lottie animationData={successAnimationData} loop={false} className="h-full w-full" />
+                    <Lottie
+                      animationData={successAnimationData}
+                      loop={false}
+                      className="h-full w-full"
+                    />
                   ) : (
-                    <div className="flex h-full w-full items-center justify-center text-2xl">✅</div>
+                    <div className="flex h-full w-full items-center justify-center text-2xl">
+                      ✅
+                    </div>
                   )}
                 </div>
-                <p className="mt-3 text-lg font-semibold text-slate-900 dark:text-white">Registration Successful!</p>
-                <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">Welcome to Smart Tuition Finder.</p>
+                <p className="mt-3 text-lg font-semibold text-slate-900 dark:text-white">
+                  Registration Successful!
+                </p>
+                <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+                  Welcome to Smart Tuition Finder.
+                </p>
               </motion.div>
             )}
           </motion.div>
@@ -535,7 +592,8 @@ function PopularSubjects() {
           Every subject feels easy to find.
         </h3>
         <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-500 dark:text-slate-400">
-          Clean subject cards keep the search focused, readable, and fast from the first click.
+          Clean subject cards keep the search focused, readable, and fast from
+          the first click.
         </p>
       </motion.div>
 
@@ -552,9 +610,7 @@ function PopularSubjects() {
               whileHover={{ y: -6 }}
               className="group flex items-center gap-5 rounded-[2rem] bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.06)] ring-1 ring-slate-200/70 transition hover:-translate-y-1 hover:shadow-[0_28px_80px_rgba(15,23,42,0.1)] dark:bg-slate-900 dark:ring-white/10"
             >
-              <span
-                className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-slate-100 text-slate-950 transition-transform duration-300 group-hover:scale-105 dark:bg-slate-800 dark:text-white"
-              >
+              <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-slate-100 text-slate-950 transition-transform duration-300 group-hover:scale-105 dark:bg-slate-800 dark:text-white">
                 <Icon size={20} />
               </span>
               <div>
@@ -576,9 +632,14 @@ function PopularSubjects() {
 function FeaturedTutors({ tutors }) {
   if (!tutors.length) {
     return (
-      <section id="tutors" className="mx-auto mt-28 max-w-6xl px-6 scroll-mt-24">
+      <section
+        id="tutors"
+        className="mx-auto mt-28 max-w-6xl px-6 scroll-mt-24"
+      >
         <div className="rounded-[2rem] bg-white p-8 text-center shadow-sm ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10">
-          <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">Featured tutors</p>
+          <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">
+            Featured tutors
+          </p>
           <p className="mt-2 text-base text-slate-600 dark:text-slate-300">
             No featured tutor profiles are available yet.
           </p>
@@ -609,7 +670,7 @@ function FeaturedTutors({ tutors }) {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         {tutors.map((tutor) => {
           const hasVerifiedBlueMark = Boolean(
-            tutor.verifiedBlueMark || Number(tutor.verifiedMarks) > 0
+            tutor.verifiedBlueMark || Number(tutor.verifiedMarks) > 0,
           );
           return (
             <Link
@@ -620,9 +681,7 @@ function FeaturedTutors({ tutors }) {
               className="group relative block overflow-hidden rounded-[2rem] bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.06)] ring-1 ring-slate-200/70 transition duration-300 hover:-translate-y-1 hover:shadow-[0_28px_80px_rgba(15,23,42,0.1)] dark:bg-slate-900 dark:ring-white/10"
             >
               <div className="relative z-10 flex items-center gap-3">
-                <div
-                  className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-slate-950 text-sm font-semibold text-white dark:bg-white dark:text-slate-950"
-                >
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-slate-950 text-sm font-semibold text-white dark:bg-white dark:text-slate-950">
                   {tutor.avatar_url ? (
                     <img
                       src={tutor.avatar_url}
@@ -685,7 +744,9 @@ function HomePage() {
       .then((data) => setHeroAnimation(data))
       .catch(() => setHeroAnimation(null));
 
-    fetch("https://lottie.host/8f6ef5f4-a4ab-44f2-ad6c-b8570e610b43/0W9F4ehT60.json")
+    fetch(
+      "https://lottie.host/8f6ef5f4-a4ab-44f2-ad6c-b8570e610b43/0W9F4ehT60.json",
+    )
       .then((res) => res.json())
       .then((data) => setSuccessAnimation(data))
       .catch(() => setSuccessAnimation(null));
@@ -693,9 +754,15 @@ function HomePage() {
 
   return (
     <div className="relative isolate animate-fade-in overflow-hidden bg-slate-50 dark:bg-slate-950">
-      <div aria-hidden className="absolute inset-x-0 top-0 -z-10 h-px bg-slate-200 dark:bg-white/10" />
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 -z-10 h-px bg-slate-200 dark:bg-white/10"
+      />
 
-      <section id="home" className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-16 scroll-mt-24 md:grid-cols-[1.02fr_0.98fr] md:py-24">
+      <section
+        id="home"
+        className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-16 scroll-mt-24 md:grid-cols-[1.02fr_0.98fr] md:py-24"
+      >
         <motion.div
           variants={heroContainer}
           initial="hidden"
@@ -721,7 +788,9 @@ function HomePage() {
             variants={heroItem}
             className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-600 md:mx-0 md:text-xl dark:text-slate-300"
           >
-            Smart Tuition Finder helps students and parents compare verified tutors, filter by subject and location, and start conversations from a simple SaaS-style dashboard.
+            Smart Tuition Finder helps students and parents compare verified
+            tutors, filter by subject and location, and start conversations from
+            a simple SaaS-style dashboard.
           </motion.p>
 
           <motion.div
@@ -733,7 +802,10 @@ function HomePage() {
               className="h-12 rounded-full bg-slate-950 px-7 text-base text-white shadow-sm hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200 sm:w-auto"
               size="lg"
             >
-              <Link to={getStartedPath(user)} className="inline-flex items-center gap-2">
+              <Link
+                to={getStartedPath(user)}
+                className="inline-flex items-center gap-2"
+              >
                 Get Started <ArrowUpRight />
               </Link>
             </Button>
@@ -752,9 +824,16 @@ function HomePage() {
             className="mt-10 grid grid-cols-3 gap-3 rounded-[1.75rem] border border-slate-200 bg-white p-3 shadow-sm dark:border-white/10 dark:bg-slate-900"
           >
             {heroStats.map((stat) => (
-              <div key={stat.label} className="rounded-2xl px-2 py-3 text-center md:text-left">
-                <p className="text-xl font-black tracking-tight text-slate-950 dark:text-white">{stat.value}</p>
-                <p className="mt-1 text-xs font-medium text-slate-500 dark:text-slate-400">{stat.label}</p>
+              <div
+                key={stat.label}
+                className="rounded-2xl px-2 py-3 text-center md:text-left"
+              >
+                <p className="text-xl font-black tracking-tight text-slate-950 dark:text-white">
+                  {stat.value}
+                </p>
+                <p className="mt-1 text-xs font-medium text-slate-500 dark:text-slate-400">
+                  {stat.label}
+                </p>
               </div>
             ))}
           </motion.div>
@@ -772,8 +851,12 @@ function HomePage() {
                 <CheckCircle2 size={18} />
               </span>
               <div>
-                <p className="text-xs font-bold text-slate-950 dark:text-white">Verified match</p>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400">Maths · Colombo</p>
+                <p className="text-xs font-bold text-slate-950 dark:text-white">
+                  Verified match
+                </p>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                  Maths · Colombo
+                </p>
               </div>
             </div>
           </div>
@@ -782,7 +865,9 @@ function HomePage() {
             <div className="rounded-[1.75rem] border border-slate-200 bg-white p-4 text-slate-950 dark:border-white/10 dark:bg-slate-950 dark:text-white">
               <div className="mb-5 flex items-center justify-between border-b border-slate-100 pb-4 dark:border-white/10">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">Live matches</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
+                    Live matches
+                  </p>
                   <h3 className="mt-1 text-2xl font-black">Tutor shortlist</h3>
                 </div>
                 <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-bold text-slate-700 dark:border-white/10 dark:bg-slate-900 dark:text-slate-300">
@@ -798,14 +883,16 @@ function HomePage() {
                       className="rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-white/10 dark:bg-slate-900"
                     >
                       <div className="flex items-center gap-3">
-                        <div
-                          className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-950 text-sm font-black text-white dark:bg-white dark:text-slate-950"
-                        >
+                        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-950 text-sm font-black text-white dark:bg-white dark:text-slate-950">
                           {tutor.initials}
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-bold">{tutor.name}</p>
-                          <p className="truncate text-xs text-slate-500 dark:text-slate-400">{tutor.subject}</p>
+                          <p className="truncate text-sm font-bold">
+                            {tutor.name}
+                          </p>
+                          <p className="truncate text-xs text-slate-500 dark:text-slate-400">
+                            {tutor.subject}
+                          </p>
                         </div>
                         <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-2 py-1 text-xs font-bold text-slate-700 dark:border-white/10 dark:bg-slate-950 dark:text-slate-300">
                           <Star size={12} fill="currentColor" />
@@ -827,12 +914,16 @@ function HomePage() {
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-white/10 dark:bg-slate-900">
                   <BookOpen className="h-5 w-5 text-slate-700 dark:text-slate-300" />
                   <p className="mt-3 text-lg font-black">24</p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">subjects covered</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    subjects covered
+                  </p>
                 </div>
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-white/10 dark:bg-slate-900">
                   <Users className="h-5 w-5 text-slate-700 dark:text-slate-300" />
                   <p className="mt-3 text-lg font-black">8 min</p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">avg. shortlist time</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    avg. shortlist time
+                  </p>
                 </div>
               </div>
             </div>
@@ -865,7 +956,10 @@ function HomePage() {
 
       <TestimonialSlider />
 
-      <section id="features" className="mx-auto mt-16 max-w-6xl px-4 pb-16 scroll-mt-24">
+      <section
+        id="features"
+        className="mx-auto mt-16 max-w-6xl px-4 pb-16 scroll-mt-24"
+      >
         <div className="mb-8 text-center">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
             How it works
@@ -890,8 +984,12 @@ function HomePage() {
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-950 text-white dark:bg-white dark:text-slate-950">
                   <Icon size={20} />
                 </div>
-                <h4 className="mt-5 text-lg font-black text-slate-950 dark:text-white">{item.title}</h4>
-                <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{item.description}</p>
+                <h4 className="mt-5 text-lg font-black text-slate-950 dark:text-white">
+                  {item.title}
+                </h4>
+                <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                  {item.description}
+                </p>
               </motion.article>
             );
           })}
@@ -918,8 +1016,12 @@ function HomePage() {
                 <span className="inline-flex rounded-2xl border border-slate-200 bg-slate-50 p-3 text-slate-900 dark:border-white/10 dark:bg-slate-800 dark:text-white">
                   <Icon size={18} />
                 </span>
-                <h4 className="mt-4 text-lg font-black text-slate-950 dark:text-white">{item.title}</h4>
-                <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{item.description}</p>
+                <h4 className="mt-4 text-lg font-black text-slate-950 dark:text-white">
+                  {item.title}
+                </h4>
+                <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                  {item.description}
+                </p>
               </motion.article>
             );
           })}
@@ -935,18 +1037,37 @@ function HomePage() {
             One polished place for learners and tutors
           </h3>
           <p className="mt-3 max-w-2xl text-slate-600 dark:text-slate-300">
-            Join as a student to discover the right tutor, or as a tutor to turn your expertise into a stronger teaching profile.
+            Join as a student to discover the right tutor, or as a tutor to turn
+            your expertise into a stronger teaching profile.
           </p>
           <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6 dark:border-white/10 dark:bg-slate-950">
-              <h4 className="text-xl font-black text-slate-950 dark:text-white">For Students</h4>
-              <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">Find tutors by subject, location, and level with less effort.</p>
-              <button onClick={() => setIsJoinOpen(true)} className="mt-5 rounded-full bg-slate-950 px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200">Student Sign Up</button>
+              <h4 className="text-xl font-black text-slate-950 dark:text-white">
+                For Students
+              </h4>
+              <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                Find tutors by subject, location, and level with less effort.
+              </p>
+              <button
+                onClick={() => setIsJoinOpen(true)}
+                className="mt-5 rounded-full bg-slate-950 px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+              >
+                Student Sign Up
+              </button>
             </div>
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-slate-900">
-              <h4 className="text-xl font-black text-slate-950 dark:text-white">For Tutors</h4>
-              <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">Create your profile and connect with quality students quickly.</p>
-              <button onClick={() => setIsJoinOpen(true)} className="mt-5 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-950 shadow-sm hover:bg-slate-50 dark:border-white/10 dark:bg-slate-950 dark:text-white dark:hover:bg-slate-800">Tutor Sign Up</button>
+              <h4 className="text-xl font-black text-slate-950 dark:text-white">
+                For Tutors
+              </h4>
+              <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                Create your profile and connect with quality students quickly.
+              </p>
+              <button
+                onClick={() => setIsJoinOpen(true)}
+                className="mt-5 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-950 shadow-sm hover:bg-slate-50 dark:border-white/10 dark:bg-slate-950 dark:text-white dark:hover:bg-slate-800"
+              >
+                Tutor Sign Up
+              </button>
             </div>
           </div>
         </div>
@@ -954,9 +1075,12 @@ function HomePage() {
 
       <section className="mx-auto max-w-6xl px-4 pb-16">
         <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-slate-950 p-8 text-center text-white shadow-md md:p-10 dark:border-white/10">
-          <h3 className="text-3xl font-black tracking-tight md:text-4xl">Build better learning outcomes today</h3>
+          <h3 className="text-3xl font-black tracking-tight md:text-4xl">
+            Build better learning outcomes today
+          </h3>
           <p className="mx-auto mt-3 max-w-2xl text-slate-300">
-            Smart Tuition Finder brings students, parents, and tutors together through a calm, modern platform.
+            Smart Tuition Finder brings students, parents, and tutors together
+            through a calm, modern platform.
           </p>
           <motion.button
             whileHover={{ scale: 1.04, y: -1 }}
@@ -994,7 +1118,9 @@ function AppleHomePage() {
       .then((data) => setHeroAnimation(data))
       .catch(() => setHeroAnimation(null));
 
-    fetch("https://lottie.host/8f6ef5f4-a4ab-44f2-ad6c-b8570e610b43/0W9F4ehT60.json")
+    fetch(
+      "https://lottie.host/8f6ef5f4-a4ab-44f2-ad6c-b8570e610b43/0W9F4ehT60.json",
+    )
       .then((res) => res.json())
       .then((data) => setSuccessAnimation(data))
       .catch(() => setSuccessAnimation(null));
@@ -1018,15 +1144,16 @@ function AppleHomePage() {
 
   return (
     <div className="relative overflow-hidden bg-[#f5f5f7] dark:bg-slate-950">
-      <section id="home" className="mx-auto max-w-7xl px-6 pb-16 pt-20 text-center scroll-mt-24 md:pb-24 md:pt-28">
+      <section
+        id="home"
+        className="mx-auto max-w-7xl px-6 pb-16 pt-20 text-center scroll-mt-24 md:pb-24 md:pt-28"
+      >
         <motion.div
           variants={heroContainer}
           initial="hidden"
           animate="show"
           className="mx-auto flex max-w-5xl flex-col items-center"
         >
-       
-
           <motion.h1
             variants={heroItem}
             className="mt-7 max-w-5xl text-6xl font-semibold leading-[0.94] tracking-[-0.075em] text-slate-950 sm:text-7xl md:text-8xl lg:text-9xl dark:text-white"
@@ -1038,7 +1165,8 @@ function AppleHomePage() {
             variants={heroItem}
             className="mx-auto mt-7 max-w-3xl text-xl font-medium leading-8 tracking-[-0.02em] text-slate-500 md:text-2xl md:leading-9 dark:text-slate-400"
           >
-            A calm, modern way to discover tutors, compare profiles, and choose the right learning support without clutter.
+            A calm, modern way to discover tutors, compare profiles, and choose
+            the right learning support without clutter.
           </motion.p>
 
           <motion.div
@@ -1050,7 +1178,10 @@ function AppleHomePage() {
               className="h-12 rounded-full bg-slate-950 px-7 text-base font-semibold text-white shadow-sm hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
               size="lg"
             >
-              <Link to={getStartedPath(user)} className="inline-flex items-center gap-2">
+              <Link
+                to={getStartedPath(user)}
+                className="inline-flex items-center gap-2"
+              >
                 Get Started <ArrowUpRight />
               </Link>
             </Button>
@@ -1084,30 +1215,43 @@ function AppleHomePage() {
 
               <div className="grid gap-6 p-5 text-left md:grid-cols-[0.85fr_1.15fr] md:p-8">
                 <aside className="rounded-[2rem] bg-white p-5 shadow-sm ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10">
-                  <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">Search</p>
+                  <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">
+                    Search
+                  </p>
                   <h2 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-slate-950 dark:text-white">
                     Match by what matters.
                   </h2>
 
                   <div className="mt-6 space-y-3">
-                    {["Subject: Maths", "Area: Colombo", "Level: A/L"].map((item) => (
-                      <div key={item} className="flex items-center justify-between rounded-2xl bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-200">
-                        <span>{item}</span>
-                        <CheckCircle2 size={16} />
-                      </div>
-                    ))}
+                    {["Subject: Maths", "Area: Colombo", "Level: A/L"].map(
+                      (item) => (
+                        <div
+                          key={item}
+                          className="flex items-center justify-between rounded-2xl bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                        >
+                          <span>{item}</span>
+                          <CheckCircle2 size={16} />
+                        </div>
+                      ),
+                    )}
                   </div>
 
                   <div className="mt-6 rounded-3xl bg-slate-950 p-5 text-white dark:bg-white dark:text-slate-950">
-                    <p className="text-sm font-medium opacity-70">Recommended match</p>
-                    <p className="mt-2 text-4xl font-semibold tracking-[-0.05em]">96%</p>
+                    <p className="text-sm font-medium opacity-70">
+                      Recommended match
+                    </p>
+                    <p className="mt-2 text-4xl font-semibold tracking-[-0.05em]">
+                      96%
+                    </p>
                   </div>
                 </aside>
 
                 <div className="space-y-4">
                   <div className="flex items-center justify-between gap-4">
                     <div>
-                      <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">Tutor shortlist</p>
+                      <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">
+                        Tutor shortlist
+                      </p>
                       <h2 className="mt-1 text-3xl font-semibold tracking-[-0.04em] text-slate-950 dark:text-white">
                         Clean profiles. Clear choices.
                       </h2>
@@ -1120,7 +1264,10 @@ function AppleHomePage() {
                   <div className="grid gap-4 lg:grid-cols-3">
                     {featuredTutors.slice(0, 3).map((tutor) => {
                       return (
-                        <div key={tutor.id} className="rounded-[2rem] bg-white p-5 shadow-sm ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10">
+                        <div
+                          key={tutor.id}
+                          className="rounded-[2rem] bg-white p-5 shadow-sm ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10"
+                        >
                           <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-slate-950 text-sm font-semibold text-white dark:bg-white dark:text-slate-950">
                             {tutor.avatar_url ? (
                               <img
@@ -1136,7 +1283,9 @@ function AppleHomePage() {
                           <p className="mt-5 truncate text-lg font-semibold tracking-[-0.02em] text-slate-950 dark:text-white">
                             {tutor.name}
                           </p>
-                          <p className="mt-1 truncate text-sm text-slate-500 dark:text-slate-400">{tutor.subject}</p>
+                          <p className="mt-1 truncate text-sm text-slate-500 dark:text-slate-400">
+                            {tutor.subject}
+                          </p>
                           <div className="mt-5 flex items-center justify-between text-xs font-semibold text-slate-500 dark:text-slate-400">
                             <span className="inline-flex items-center gap-1">
                               <Star size={13} fill="currentColor" />
@@ -1151,9 +1300,16 @@ function AppleHomePage() {
 
                   <div className="grid gap-4 sm:grid-cols-3">
                     {heroStats.map((stat) => (
-                      <div key={stat.label} className="rounded-[1.75rem] bg-white p-5 shadow-sm ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10">
-                        <p className="text-3xl font-semibold tracking-[-0.05em] text-slate-950 dark:text-white">{stat.value}</p>
-                        <p className="mt-2 text-sm font-medium text-slate-500 dark:text-slate-400">{stat.label}</p>
+                      <div
+                        key={stat.label}
+                        className="rounded-[1.75rem] bg-white p-5 shadow-sm ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10"
+                      >
+                        <p className="text-3xl font-semibold tracking-[-0.05em] text-slate-950 dark:text-white">
+                          {stat.value}
+                        </p>
+                        <p className="mt-2 text-sm font-medium text-slate-500 dark:text-slate-400">
+                          {stat.label}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -1180,9 +1336,14 @@ function AppleHomePage() {
         </div>
       </section>
 
-      <section id="features" className="mx-auto mt-28 max-w-6xl px-6 scroll-mt-24">
+      <section
+        id="features"
+        className="mx-auto mt-28 max-w-6xl px-6 scroll-mt-24"
+      >
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">Designed for focus</p>
+          <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">
+            Designed for focus
+          </p>
           <h2 className="mt-3 text-4xl font-semibold tracking-[-0.055em] text-slate-950 md:text-6xl dark:text-white">
             Everything feels calm, clear, and intentional.
           </h2>
@@ -1203,8 +1364,12 @@ function AppleHomePage() {
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-950 dark:bg-slate-800 dark:text-white">
                   <Icon size={20} />
                 </div>
-                <h3 className="mt-10 text-2xl font-semibold tracking-[-0.04em] text-slate-950 dark:text-white">{item.title}</h3>
-                <p className="mt-3 text-base leading-7 text-slate-500 dark:text-slate-400">{item.description}</p>
+                <h3 className="mt-10 text-2xl font-semibold tracking-[-0.04em] text-slate-950 dark:text-white">
+                  {item.title}
+                </h3>
+                <p className="mt-3 text-base leading-7 text-slate-500 dark:text-slate-400">
+                  {item.description}
+                </p>
               </motion.article>
             );
           })}
@@ -1223,30 +1388,45 @@ function AppleHomePage() {
 
       <TestimonialSlider />
 
-      <section id="join" className="mx-auto mt-28 max-w-6xl px-6 pb-16 scroll-mt-24">
+      <section
+        id="join"
+        className="mx-auto mt-28 max-w-6xl px-6 pb-16 scroll-mt-24"
+      >
         <div className="overflow-hidden rounded-[2.75rem] bg-white shadow-[0_30px_90px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10">
           <div className="grid gap-0 md:grid-cols-2">
             <div className="p-8 md:p-12">
-              <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">For students</p>
+              <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">
+                For students
+              </p>
               <h2 className="mt-3 text-4xl font-semibold tracking-[-0.055em] text-slate-950 md:text-5xl dark:text-white">
                 Find the tutor that fits your goals.
               </h2>
               <p className="mt-5 text-lg leading-8 text-slate-500 dark:text-slate-400">
-                Compare subject fit, location, ratings, and teaching style in a clean experience.
+                Compare subject fit, location, ratings, and teaching style in a
+                clean experience.
               </p>
-              <button onClick={() => setIsJoinOpen(true)} className="mt-8 rounded-full bg-slate-950 px-6 py-3 text-sm font-semibold text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200">
+              <button
+                onClick={() => setIsJoinOpen(true)}
+                className="mt-8 rounded-full bg-slate-950 px-6 py-3 text-sm font-semibold text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+              >
                 Student Sign Up
               </button>
             </div>
             <div className="border-t border-slate-200 bg-[#fbfbfd] p-8 md:border-l md:border-t-0 md:p-12 dark:border-white/10 dark:bg-slate-950">
-              <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">For tutors</p>
+              <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">
+                For tutors
+              </p>
               <h2 className="mt-3 text-4xl font-semibold tracking-[-0.055em] text-slate-950 md:text-5xl dark:text-white">
                 Present your teaching beautifully.
               </h2>
               <p className="mt-5 text-lg leading-8 text-slate-500 dark:text-slate-400">
-                Build a profile that helps students understand your strengths at a glance.
+                Build a profile that helps students understand your strengths at
+                a glance.
               </p>
-              <button onClick={() => setIsJoinOpen(true)} className="mt-8 rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-950 hover:bg-slate-50 dark:border-white/10 dark:bg-slate-900 dark:text-white dark:hover:bg-slate-800">
+              <button
+                onClick={() => setIsJoinOpen(true)}
+                className="mt-8 rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-950 hover:bg-slate-50 dark:border-white/10 dark:bg-slate-900 dark:text-white dark:hover:bg-slate-800"
+              >
                 Tutor Sign Up
               </button>
             </div>
@@ -1256,9 +1436,12 @@ function AppleHomePage() {
 
       <section className="mx-auto max-w-6xl px-6 pb-24">
         <div className="rounded-[2.75rem] bg-slate-950 px-8 py-16 text-center text-white shadow-[0_30px_90px_rgba(15,23,42,0.18)] md:px-12">
-          <h2 className="text-4xl font-semibold tracking-[-0.055em] md:text-6xl">Ready when you are.</h2>
+          <h2 className="text-4xl font-semibold tracking-[-0.055em] md:text-6xl">
+            Ready when you are.
+          </h2>
           <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-300">
-            Start with a cleaner way to discover tutors and build better learning outcomes.
+            Start with a cleaner way to discover tutors and build better
+            learning outcomes.
           </p>
           <motion.button
             whileHover={{ scale: 1.03, y: -1 }}
@@ -1285,51 +1468,70 @@ function AppleHomePage() {
 
 export default function App() {
   return (
-    <div className="min-h-screen overflow-x-hidden bg-slate-100 text-slate-900 transition-colors dark:bg-slate-950 dark:text-white">
+    <div className="flex min-h-dvh flex-col overflow-x-hidden bg-slate-100 text-slate-900 transition-colors dark:bg-slate-950 dark:text-white">
       <Navbar />
 
-      <Routes>
-        <Route path="/" element={<AppleHomePage />} />
-        <Route path="/tutors" element={<AllTutorsPage />} />
-        <Route path="/tutor/:id" element={<TutorProfilePage />} />
+      <main className="flex w-full min-h-0 flex-1 flex-col">
+        <Routes>
+          <Route path="/" element={<AppleHomePage />} />
+          <Route path="/tutors" element={<AllTutorsPage />} />
+          <Route path="/tutor/:id" element={<TutorProfilePage />} />
 
-        <Route element={<PublicOnlyRoute />}>
-          <Route path="/tutor-login" element={<TutorLoginPage />} />
-          <Route path="/students-login" element={<StudentLoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
+          <Route element={<PublicOnlyRoute />}>
+            <Route path="/tutor-login" element={<TutorLoginPage />} />
+            <Route path="/students-login" element={<StudentLoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route
+              path="/tutor-register"
+              element={<Navigate to="/signup?role=tutor" replace />}
+            />
+
+            <Route
+              path="/students-register"
+              element={<Navigate to="/signup?role=student" replace />}
+            />
+          </Route>
+
           <Route
-            path="/tutor-register"
-            element={<Navigate to="/signup?role=tutor" replace />}
+            path="/student-login"
+            element={<Navigate to="/students-login" replace />}
           />
           <Route
-            path="/students-register"
+            path="/student-register"
             element={<Navigate to="/signup?role=student" replace />}
           />
-        </Route>
 
-        <Route path="/student-login" element={<Navigate to="/students-login" replace />} />
-        <Route path="/student-register" element={<Navigate to="/signup?role=student" replace />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/tutor-dashboard" element={<TutorDashboardPage />} />
+            <Route
+              path="/tutor-profile/edit"
+              element={<TutorProfileEditPage />}
+            />
+            <Route path="/tutor-profile" element={<TutorOwnProfilePage />} />
+            <Route path="/tutor-pro" element={<TutorProPlanPage />} />
+            <Route path="/payment/success" element={<PaymentStatusPage />} />
+            <Route path="/payment/failed" element={<PaymentStatusPage />} />
+          </Route>
 
-        <Route element={<ProtectedRoute />}>
-          <Route path="/tutor-dashboard" element={<TutorDashboardPage />} />
-          <Route path="/tutor-profile" element={<TutorProfileEditPage />} />
-          <Route path="/tutor-pro" element={<TutorProPlanPage />} />
-          <Route path="/payment/success" element={<PaymentStatusPage />} />
-          <Route path="/payment/failed" element={<PaymentStatusPage />} />
-        </Route>
+          <Route element={<ProtectedRoute redirectTo="/students-login" />}>
+            <Route
+              path="/student-dashboard"
+              element={<StudentDashboardPage />}
+            />
+            <Route
+              path="/student-profile"
+              element={<StudentProfileEditPage />}
+            />
+          </Route>
 
-        <Route element={<ProtectedRoute redirectTo="/students-login" />}>
-          <Route path="/student-dashboard" element={<StudentDashboardPage />} />
-          <Route path="/student-profile" element={<StudentProfileEditPage />} />
-        </Route>
+          <Route
+            path="/students-dashboard"
+            element={<Navigate to="/student-dashboard" replace />}
+          />
 
-        <Route
-          path="/students-dashboard"
-          element={<Navigate to="/student-dashboard" replace />}
-        />
-
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </main>
 
       <Footer />
       <GeminiChatbot />

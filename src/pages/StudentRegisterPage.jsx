@@ -9,7 +9,7 @@ import {
   Loader2,
   Lock,
   Mail,
-  UserRound
+  UserRound,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -27,7 +27,7 @@ const benefits = [
   "Discover verified tutors across Sri Lanka",
   "Filter by subject, grade, location and budget",
   "Save favourite tutors and message them instantly",
-  "Track your learning journey from one dashboard"
+  "Track your learning journey from one dashboard",
 ];
 
 const studentSignupAside = (
@@ -79,13 +79,10 @@ export default function StudentRegisterPage({ embedded = false }) {
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
       errs.email = "Enter a valid email address.";
     if (!password) errs.password = "Password is required.";
-    else if (password.length < 8)
-      errs.password = "Use at least 8 characters.";
+    else if (password.length < 8) errs.password = "Use at least 8 characters.";
     if (!confirm) errs.confirm = "Please confirm your password.";
-    else if (confirm !== password)
-      errs.confirm = "Passwords don't match.";
-    if (!agreeTerms)
-      errs.terms = "Please accept the Terms and Privacy Policy.";
+    else if (confirm !== password) errs.confirm = "Passwords don't match.";
+    if (!agreeTerms) errs.terms = "Please accept the Terms and Privacy Policy.";
     setFieldErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -100,7 +97,7 @@ export default function StudentRegisterPage({ embedded = false }) {
       name,
       email,
       password,
-      role: "student"
+      role: "student",
     });
     setSubmitting(false);
 
@@ -116,259 +113,264 @@ export default function StudentRegisterPage({ embedded = false }) {
 
     navigate("/students-login", {
       replace: true,
-      state: { justRegistered: true }
+      state: { justRegistered: true },
     });
   };
 
   const signUpFormInner = (
     <>
-              {!isConfigured ? <SupabaseSetupNotice /> : null}
+      {!isConfigured ? <SupabaseSetupNotice /> : null}
 
-              <form className="space-y-4" onSubmit={handleSubmit} noValidate>
-                <div className="space-y-1.5">
-                  <Label htmlFor="student-register-name">Full name</Label>
-                  <div className="relative">
-                    <UserRound
-                      size={16}
-                      className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-                    />
-                    <Input
-                      id="student-register-name"
-                      name="name"
-                      type="text"
-                      autoComplete="name"
-                      placeholder="e.g. Nethmi Wijesinghe"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      disabled={submitting}
-                      aria-invalid={Boolean(fieldErrors.name)}
-                      className={cn(
-                        "pl-9",
-                        fieldErrors.name &&
-                          "border-destructive focus-visible:border-destructive"
-                      )}
-                    />
-                  </div>
-                  {fieldErrors.name ? (
-                    <p className="text-xs font-medium text-destructive">
-                      {fieldErrors.name}
-                    </p>
-                  ) : null}
-                </div>
+      <form className="space-y-4" onSubmit={handleSubmit} noValidate>
+        <div className="space-y-1.5">
+          <Label htmlFor="student-register-name">Full name</Label>
+          <div className="relative">
+            <UserRound
+              size={16}
+              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+            />
 
-                <div className="space-y-1.5">
-                  <Label htmlFor="student-register-email">Email address</Label>
-                  <div className="relative">
-                    <Mail
-                      size={16}
-                      className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-                    />
-                    <Input
-                      id="student-register-email"
-                      name="email"
-                      type="email"
-                      autoComplete="email"
-                      placeholder="you@example.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      disabled={submitting}
-                      aria-invalid={Boolean(fieldErrors.email)}
-                      className={cn(
-                        "pl-9",
-                        fieldErrors.email &&
-                          "border-destructive focus-visible:border-destructive"
-                      )}
-                    />
-                  </div>
-                  {fieldErrors.email ? (
-                    <p className="text-xs font-medium text-destructive">
-                      {fieldErrors.email}
-                    </p>
-                  ) : null}
-                </div>
+            <Input
+              id="student-register-name"
+              name="name"
+              type="text"
+              autoComplete="name"
+              placeholder="e.g. Nethmi Wijesinghe"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              disabled={submitting}
+              aria-invalid={Boolean(fieldErrors.name)}
+              className={cn(
+                "pl-9",
+                fieldErrors.name &&
+                  "border-destructive focus-visible:border-destructive",
+              )}
+            />
+          </div>
+          {fieldErrors.name ? (
+            <p className="text-xs font-medium text-destructive">
+              {fieldErrors.name}
+            </p>
+          ) : null}
+        </div>
 
-                <div className="space-y-1.5">
-                  <Label htmlFor="student-register-password">Password</Label>
-                  <div className="relative">
-                    <Lock
-                      size={16}
-                      className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-                    />
-                    <Input
-                      id="student-register-password"
-                      name="password"
-                      type={showPassword ? "text" : "password"}
-                      autoComplete="new-password"
-                      placeholder="At least 8 characters"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      disabled={submitting}
-                      aria-invalid={Boolean(fieldErrors.password)}
-                      className={cn(
-                        "pl-9 pr-10",
-                        fieldErrors.password &&
-                          "border-destructive focus-visible:border-destructive"
-                      )}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword((v) => !v)}
-                      className="absolute right-2 top-1/2 inline-flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-md text-muted-foreground transition hover:bg-muted hover:text-foreground"
-                      aria-label={showPassword ? "Hide password" : "Show password"}
-                      tabIndex={-1}
-                    >
-                      {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
-                    </button>
-                  </div>
+        <div className="space-y-1.5">
+          <Label htmlFor="student-register-email">Email address</Label>
+          <div className="relative">
+            <Mail
+              size={16}
+              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+            />
 
-                  {password ? (
-                    <PasswordMeter strength={passwordStrength} />
-                  ) : (
-                    <p className="text-xs text-muted-foreground">
-                      Use 8+ characters with letters and numbers.
-                    </p>
-                  )}
+            <Input
+              id="student-register-email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={submitting}
+              aria-invalid={Boolean(fieldErrors.email)}
+              className={cn(
+                "pl-9",
+                fieldErrors.email &&
+                  "border-destructive focus-visible:border-destructive",
+              )}
+            />
+          </div>
+          {fieldErrors.email ? (
+            <p className="text-xs font-medium text-destructive">
+              {fieldErrors.email}
+            </p>
+          ) : null}
+        </div>
 
-                  {fieldErrors.password ? (
-                    <p className="text-xs font-medium text-destructive">
-                      {fieldErrors.password}
-                    </p>
-                  ) : null}
-                </div>
+        <div className="space-y-1.5">
+          <Label htmlFor="student-register-password">Password</Label>
+          <div className="relative">
+            <Lock
+              size={16}
+              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+            />
 
-                <div className="space-y-1.5">
-                  <Label htmlFor="student-register-confirm">
-                    Confirm password
-                  </Label>
-                  <div className="relative">
-                    <Lock
-                      size={16}
-                      className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-                    />
-                    <Input
-                      id="student-register-confirm"
-                      name="confirmPassword"
-                      type={showConfirm ? "text" : "password"}
-                      autoComplete="new-password"
-                      placeholder="Re-enter your password"
-                      value={confirm}
-                      onChange={(e) => setConfirm(e.target.value)}
-                      disabled={submitting}
-                      aria-invalid={Boolean(fieldErrors.confirm)}
-                      className={cn(
-                        "pl-9 pr-10",
-                        fieldErrors.confirm &&
-                          "border-destructive focus-visible:border-destructive"
-                      )}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowConfirm((v) => !v)}
-                      className="absolute right-2 top-1/2 inline-flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-md text-muted-foreground transition hover:bg-muted hover:text-foreground"
-                      aria-label={showConfirm ? "Hide password" : "Show password"}
-                      tabIndex={-1}
-                    >
-                      {showConfirm ? <EyeOff size={14} /> : <Eye size={14} />}
-                    </button>
-                  </div>
-                  {fieldErrors.confirm ? (
-                    <p className="text-xs font-medium text-destructive">
-                      {fieldErrors.confirm}
-                    </p>
-                  ) : null}
-                </div>
+            <Input
+              id="student-register-password"
+              name="password"
+              type={showPassword ? "text" : "password"}
+              autoComplete="new-password"
+              placeholder="At least 8 characters"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={submitting}
+              aria-invalid={Boolean(fieldErrors.password)}
+              className={cn(
+                "pl-9 pr-10",
+                fieldErrors.password &&
+                  "border-destructive focus-visible:border-destructive",
+              )}
+            />
 
-                <div className="space-y-1.5 pt-1">
-                  <label className="flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
-                    <Checkbox
-                      checked={agreeTerms}
-                      onCheckedChange={(value) => setAgreeTerms(Boolean(value))}
-                      disabled={submitting}
-                      className="mt-0.5"
-                      aria-invalid={Boolean(fieldErrors.terms)}
-                    />
-                    <span>
-                      I agree to the{" "}
-                      <Link
-                        to="/"
-                        className="font-semibold text-slate-950 hover:underline dark:text-white"
-                      >
-                        Terms of Service
-                      </Link>{" "}
-                      and{" "}
-                      <Link
-                        to="/"
-                        className="font-semibold text-slate-950 hover:underline dark:text-white"
-                      >
-                        Privacy Policy
-                      </Link>
-                      .
-                    </span>
-                  </label>
-                  {fieldErrors.terms ? (
-                    <p className="text-xs font-medium text-destructive">
-                      {fieldErrors.terms}
-                    </p>
-                  ) : null}
-                </div>
+            <button
+              type="button"
+              onClick={() => setShowPassword((v) => !v)}
+              className="absolute right-2 top-1/2 inline-flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-md text-muted-foreground transition hover:bg-muted hover:text-foreground"
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              tabIndex={-1}
+            >
+              {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
+            </button>
+          </div>
 
-                {formError ? (
-                  <div className="flex items-start gap-2 rounded-lg border border-destructive/40 bg-destructive/10 p-3 text-xs font-semibold text-destructive">
-                    <AlertCircle size={14} className="mt-0.5 shrink-0" />
-                    <span>{formError}</span>
-                  </div>
-                ) : null}
+          {password ? (
+            <PasswordMeter strength={passwordStrength} />
+          ) : (
+            <p className="text-xs text-muted-foreground">
+              Use 8+ characters with letters and numbers.
+            </p>
+          )}
 
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="w-full rounded-full bg-slate-950 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
-                  disabled={submitting || !isConfigured}
-                >
-                  {submitting ? (
-                    <>
-                      <Loader2 className="animate-spin" />
-                      Creating your account...
-                    </>
-                  ) : (
-                    <>
-                      Create student account
-                      <ArrowRight />
-                    </>
-                  )}
-                </Button>
-              </form>
+          {fieldErrors.password ? (
+            <p className="text-xs font-medium text-destructive">
+              {fieldErrors.password}
+            </p>
+          ) : null}
+        </div>
 
-              <div className="my-6 flex items-center gap-3">
-                <Separator className="flex-1" />
-                <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  or
-                </span>
-                <Separator className="flex-1" />
-              </div>
+        <div className="space-y-1.5">
+          <Label htmlFor="student-register-confirm">Confirm password</Label>
+          <div className="relative">
+            <Lock
+              size={16}
+              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+            />
 
-              <div className="space-y-3 text-center text-sm">
-                <p className="text-muted-foreground">
-                  Already have an account?{" "}
-                  <Link
-                    to="/students-login"
-                    className="font-semibold text-slate-950 hover:underline dark:text-white"
-                  >
-                    Sign in instead
-                  </Link>
-                </p>
-                {!embedded ? (
-                  <p className="text-muted-foreground">
-                    Teaching on the platform?{" "}
-                    <Link
-                      to="/signup?role=tutor"
-                      className="font-semibold text-foreground hover:underline"
-                    >
-                      Tutor registration
-                    </Link>
-                  </p>
-                ) : null}
-              </div>
+            <Input
+              id="student-register-confirm"
+              name="confirmPassword"
+              type={showConfirm ? "text" : "password"}
+              autoComplete="new-password"
+              placeholder="Re-enter your password"
+              value={confirm}
+              onChange={(e) => setConfirm(e.target.value)}
+              disabled={submitting}
+              aria-invalid={Boolean(fieldErrors.confirm)}
+              className={cn(
+                "pl-9 pr-10",
+                fieldErrors.confirm &&
+                  "border-destructive focus-visible:border-destructive",
+              )}
+            />
+
+            <button
+              type="button"
+              onClick={() => setShowConfirm((v) => !v)}
+              className="absolute right-2 top-1/2 inline-flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-md text-muted-foreground transition hover:bg-muted hover:text-foreground"
+              aria-label={showConfirm ? "Hide password" : "Show password"}
+              tabIndex={-1}
+            >
+              {showConfirm ? <EyeOff size={14} /> : <Eye size={14} />}
+            </button>
+          </div>
+          {fieldErrors.confirm ? (
+            <p className="text-xs font-medium text-destructive">
+              {fieldErrors.confirm}
+            </p>
+          ) : null}
+        </div>
+
+        <div className="space-y-1.5 pt-1">
+          <label className="flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
+            <Checkbox
+              checked={agreeTerms}
+              onCheckedChange={(value) => setAgreeTerms(Boolean(value))}
+              disabled={submitting}
+              className="mt-0.5"
+              aria-invalid={Boolean(fieldErrors.terms)}
+            />
+
+            <span>
+              I agree to the{" "}
+              <Link
+                to="/"
+                className="font-semibold text-slate-950 hover:underline dark:text-white"
+              >
+                Terms of Service
+              </Link>{" "}
+              and{" "}
+              <Link
+                to="/"
+                className="font-semibold text-slate-950 hover:underline dark:text-white"
+              >
+                Privacy Policy
+              </Link>
+              .
+            </span>
+          </label>
+          {fieldErrors.terms ? (
+            <p className="text-xs font-medium text-destructive">
+              {fieldErrors.terms}
+            </p>
+          ) : null}
+        </div>
+
+        {formError ? (
+          <div className="flex items-start gap-2 rounded-lg border border-destructive/40 bg-destructive/10 p-3 text-xs font-semibold text-destructive">
+            <AlertCircle size={14} className="mt-0.5 shrink-0" />
+            <span>{formError}</span>
+          </div>
+        ) : null}
+
+        <Button
+          type="submit"
+          size="lg"
+          className="w-full rounded-full bg-slate-950 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+          disabled={submitting || !isConfigured}
+        >
+          {submitting ? (
+            <>
+              <Loader2 className="animate-spin" />
+              Creating your account...
+            </>
+          ) : (
+            <>
+              Create student account
+              <ArrowRight />
+            </>
+          )}
+        </Button>
+      </form>
+
+      <div className="my-6 flex items-center gap-3">
+        <Separator className="flex-1" />
+        <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+          or
+        </span>
+        <Separator className="flex-1" />
+      </div>
+
+      <div className="space-y-3 text-center text-sm">
+        <p className="text-muted-foreground">
+          Already have an account?{" "}
+          <Link
+            to="/students-login"
+            className="font-semibold text-slate-950 hover:underline dark:text-white"
+          >
+            Sign in instead
+          </Link>
+        </p>
+        {!embedded ? (
+          <p className="text-muted-foreground">
+            Teaching on the platform?{" "}
+            <Link
+              to="/signup?role=tutor"
+              className="font-semibold text-foreground hover:underline"
+            >
+              Tutor registration
+            </Link>
+          </p>
+        ) : null}
+      </div>
     </>
   );
 
@@ -395,7 +397,7 @@ function PasswordMeter({ strength }) {
     "bg-destructive",
     "bg-slate-400",
     "bg-slate-700",
-    "bg-slate-950 dark:bg-white"
+    "bg-slate-950 dark:bg-white",
   ];
 
   return (
@@ -406,7 +408,7 @@ function PasswordMeter({ strength }) {
             key={seg}
             className={cn(
               "h-1.5 flex-1 rounded-full bg-muted transition-colors",
-              seg < strength.score && colors[strength.score - 1]
+              seg < strength.score && colors[strength.score - 1],
             )}
           />
         ))}

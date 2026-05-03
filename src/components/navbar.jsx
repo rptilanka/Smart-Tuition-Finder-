@@ -39,7 +39,10 @@ const Navbar = () => {
     <div className="sticky top-0 z-50 border-b border-slate-200/70 bg-white/75 px-4 backdrop-blur-2xl dark:border-white/10 dark:bg-slate-950/75 md:px-6">
       <nav className="mx-auto flex h-14 max-w-screen-xl items-center justify-between">
         <div className="flex items-center gap-4">
-          <Link className="text-sm font-semibold tracking-[-0.01em] text-slate-950 dark:text-white" to="/">
+          <Link
+            className="text-sm font-semibold tracking-[-0.01em] text-slate-950 dark:text-white"
+            to="/"
+          >
             Smart Tuition
           </Link>
         </div>
@@ -84,10 +87,16 @@ const Navbar = () => {
                     </span>
                   ) : null}
                 </span>
-                <LogOut className="h-4 w-4 shrink-0 text-slate-400 dark:text-slate-500" aria-hidden />
+                <LogOut
+                  className="h-4 w-4 shrink-0 text-slate-400 dark:text-slate-500"
+                  aria-hidden
+                />
               </button>
             ) : (
-              <Button asChild className="h-9 rounded-full bg-slate-950 px-4 text-sm text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200">
+              <Button
+                asChild
+                className="h-9 rounded-full bg-slate-950 px-4 text-sm text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+              >
                 <Link to="/signup">
                   Sign up <ArrowUpRight />
                 </Link>

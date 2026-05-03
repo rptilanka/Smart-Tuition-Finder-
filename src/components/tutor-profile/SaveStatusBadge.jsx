@@ -1,10 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
 
-/**
- * Inline indicator used by auto-saving sections to communicate state.
- * `status` is one of: 'idle' | 'saving' | 'saved' | 'error'.
- */
 export default function SaveStatusBadge({ status, errorMessage }) {
   return (
     <AnimatePresence mode="wait">

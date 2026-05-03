@@ -20,7 +20,7 @@ const signupAside = (
       {[
         "Role-specific dashboards after sign-in",
         "Secure email and password sign-up",
-        "Built for learners and educators in Sri Lanka"
+        "Built for learners and educators in Sri Lanka",
       ].map((item) => (
         <li key={item} className="flex items-center gap-2">
           <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center bg-background/95 text-foreground shadow-sm backdrop-blur-sm">
@@ -44,12 +44,11 @@ export default function SignupPage() {
       title="Create an account"
       subtitle="Choose student or tutor, then complete the form below."
     >
-
       <Tabs
         value={role}
         onValueChange={(value) => {
           setSearchParams(value === "tutor" ? { role: "tutor" } : {}, {
-            replace: true
+            replace: true,
           });
         }}
         className="flex flex-col"

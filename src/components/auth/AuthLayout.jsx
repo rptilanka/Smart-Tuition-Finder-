@@ -40,10 +40,12 @@ function MarketingPanel({ aside }) {
         alt=""
         className="absolute inset-0 h-full w-full object-cover"
       />
+
       <div
         className="absolute inset-0 bg-gradient-to-t from-background from-[26%] via-background/78 to-transparent dark:from-background dark:via-background/72"
         aria-hidden
       />
+
       <div className="relative z-10 flex h-full min-h-[calc(100vh-56px-2rem)] flex-col justify-end p-8 lg:p-10">
         {aside}
       </div>
@@ -51,11 +53,13 @@ function MarketingPanel({ aside }) {
   );
 }
 
-/**
- * Auth shells inspired by shadcn “blocks” login: p-4 grid, full-bleed marketing panel,
- * narrow centered form column with brand + xl title.
- */
-export default function AuthLayout({ title, subtitle, children, aside, fullPage }) {
+export default function AuthLayout({
+  title,
+  subtitle,
+  children,
+  aside,
+  fullPage,
+}) {
   if (fullPage && aside) {
     return (
       <div className="min-h-[calc(100vh-56px)] w-full bg-background p-4">
@@ -96,10 +100,12 @@ export default function AuthLayout({ title, subtitle, children, aside, fullPage 
             alt=""
             className="absolute inset-0 h-full w-full object-cover"
           />
+
           <div
             className="absolute inset-0 bg-gradient-to-t from-background from-[26%] via-background/78 to-transparent dark:from-background dark:via-background/72"
             aria-hidden
           />
+
           <div className="relative z-10 flex h-full min-h-[calc(100vh-56px-2rem)] flex-col justify-end p-8 lg:p-10">
             {aside ?? (
               <>
@@ -118,7 +124,7 @@ export default function AuthLayout({ title, subtitle, children, aside, fullPage 
                   {[
                     "Verified profile with demo videos",
                     "Smart matching with nearby students",
-                    "Built-in session scheduling"
+                    "Built-in session scheduling",
                   ].map((item) => (
                     <li key={item} className="flex items-center gap-2">
                       <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center bg-background/95 text-foreground shadow-sm backdrop-blur-sm">

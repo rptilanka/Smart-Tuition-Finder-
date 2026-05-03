@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   Bookmark,
   BookmarkCheck,
   CalendarDays,
+  LayoutDashboard,
   MessageSquareText,
+  Settings,
   Share2,
-  Star
+  Star,
 } from "lucide-react";
 
 const STORAGE_KEY = "stf:bookmarks";
@@ -24,19 +27,15 @@ function loadBookmarks() {
 function saveBookmarks(set) {
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify([...set]));
-  } catch {
-    /* ignore storage errors */
-  }
+  } catch {}
 }
 
-/**
- * Sticky sidebar with:
- *  - Quick info (rate, rating, experience)
- *  - Next available slots (up to 3)
- *  - Book / Contact / Share buttons
- *  - Bookmark toggle persisted in localStorage
- */
-export default function BookingSidebar({ tutor, onBook, onContact }) {
+export default function BookingSidebar({
+  tutor,
+  onBook,
+  onContact,
+  isOwnProfile,
+}) {
   const [bookmarks, setBookmarks] = useState(() => loadBookmarks());
   const [justCopied, setJustCopied] = useState(false);
 
@@ -66,7 +65,7 @@ export default function BookingSidebar({ tutor, onBook, onContact }) {
     const shareData = {
       title: `${tutor.name} · Smart Tuition Finder`,
       text: `Check out ${tutor.name} on Smart Tuition Finder`,
-      url
+      url,
     };
     try {
       if (navigator.share) {
@@ -75,9 +74,7 @@ export default function BookingSidebar({ tutor, onBook, onContact }) {
       }
       await navigator.clipboard.writeText(url);
       setJustCopied(true);
-    } catch {
-      /* user dismissed share / clipboard unavailable */
-    }
+    } catch {}
   };
 
   const nextSlots = flattenNextSlots(tutor.availability, 3);
@@ -92,39 +89,50 @@ export default function BookingSidebar({ tutor, onBook, onContact }) {
           aria-hidden
           className="pointer-events-none absolute -top-16 -right-14 h-40 w-40 rounded-full blur-3xl opacity-70"
           style={{
-            background: tutor.accent ?? "linear-gradient(135deg,#14b8a6,#0ea5e9)"
+            background:
+              tutor.accent ?? "linear-gradient(135deg,#14b8a6,#0ea5e9)",
           }}
         />
 
         <div className="relative z-10 flex items-start justify-between gap-3">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-teal-600 dark:text-teal-300">
-              Book a session
+              {isOwnProfile ? "Your profile" : "Book a session"}
             </p>
             <p className="mt-1 text-2xl font-extrabold text-slate-900 dark:text-white">
-              {hasRate ? `LKR ${tutor.hourlyRate.toLocaleString()}` : "Rate not set"}
+              {hasRate
+                ? `LKR ${tutor.hourlyRate.toLocaleString()}`
+                : "Rate not set"}
               <span className="ml-1 text-xs font-semibold text-slate-500 dark:text-slate-400">
                 {hasRate ? "/ hour" : ""}
               </span>
             </p>
           </div>
 
-          <motion.button
-            type="button"
-            onClick={toggleBookmark}
-            whileTap={{ scale: 0.92 }}
-            aria-pressed={isBookmarked}
-            aria-label={
-              isBookmarked ? "Remove bookmark" : "Save this tutor to bookmarks"
-            }
-            className={`inline-flex h-10 w-10 items-center justify-center rounded-full border transition ${
-              isBookmarked
-                ? "border-amber-400/60 bg-amber-400/15 text-amber-500"
-                : "border-white/30 bg-white/55 text-slate-600 hover:text-amber-500 dark:border-white/10 dark:bg-slate-800/50 dark:text-slate-300"
-            }`}
-          >
-            {isBookmarked ? <BookmarkCheck size={16} /> : <Bookmark size={16} />}
-          </motion.button>
+          {!isOwnProfile ? (
+            <motion.button
+              type="button"
+              onClick={toggleBookmark}
+              whileTap={{ scale: 0.92 }}
+              aria-pressed={isBookmarked}
+              aria-label={
+                isBookmarked
+                  ? "Remove bookmark"
+                  : "Save this tutor to bookmarks"
+              }
+              className={`inline-flex h-10 w-10 items-center justify-center rounded-full border transition ${
+                isBookmarked
+                  ? "border-amber-400/60 bg-amber-400/15 text-amber-500"
+                  : "border-white/30 bg-white/55 text-slate-600 hover:text-amber-500 dark:border-white/10 dark:bg-slate-800/50 dark:text-slate-300"
+              }`}
+            >
+              {isBookmarked ? (
+                <BookmarkCheck size={16} />
+              ) : (
+                <Bookmark size={16} />
+              )}
+            </motion.button>
+          ) : null}
         </div>
 
         <div className="relative z-10 mt-4 flex items-center gap-3 text-[12px] font-semibold text-slate-600 dark:text-slate-300">
@@ -146,30 +154,51 @@ export default function BookingSidebar({ tutor, onBook, onContact }) {
         </div>
 
         <div className="relative z-10 mt-5 space-y-2">
-          <motion.button
-            type="button"
-            onClick={onBook}
-            whileHover={{
-              y: -1,
-              boxShadow: "0 18px 36px rgba(13,148,136,0.45)"
-            }}
-            whileTap={{ scale: 0.98 }}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-500 px-4 py-3 text-sm font-bold text-white shadow-[0_12px_26px_rgba(13,148,136,0.35)]"
-          >
-            <CalendarDays size={16} />
-            Book a session
-          </motion.button>
+          {isOwnProfile ? (
+            <>
+              <Link
+                to="/tutor-profile/edit"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-500 px-4 py-3 text-sm font-bold text-white shadow-[0_12px_26px_rgba(13,148,136,0.35)] transition hover:brightness-110"
+              >
+                <Settings size={16} />
+                Edit profile
+              </Link>
+              <Link
+                to="/tutor-dashboard"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border-2 border-teal-500/60 bg-transparent px-4 py-3 text-sm font-bold text-teal-600 transition hover:bg-teal-500/10 dark:text-teal-300 dark:hover:bg-teal-500/15"
+              >
+                <LayoutDashboard size={16} />
+                Dashboard
+              </Link>
+            </>
+          ) : (
+            <>
+              <motion.button
+                type="button"
+                onClick={onBook}
+                whileHover={{
+                  y: -1,
+                  boxShadow: "0 18px 36px rgba(13,148,136,0.45)",
+                }}
+                whileTap={{ scale: 0.98 }}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-500 px-4 py-3 text-sm font-bold text-white shadow-[0_12px_26px_rgba(13,148,136,0.35)]"
+              >
+                <CalendarDays size={16} />
+                Book a session
+              </motion.button>
 
-          <motion.button
-            type="button"
-            onClick={onContact}
-            whileHover={{ y: -1 }}
-            whileTap={{ scale: 0.98 }}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-xl border-2 border-teal-500/60 bg-transparent px-4 py-3 text-sm font-bold text-teal-600 transition hover:bg-teal-500/10 dark:text-teal-300 dark:hover:bg-teal-500/15"
-          >
-            <MessageSquareText size={16} />
-            Contact tutor
-          </motion.button>
+              <motion.button
+                type="button"
+                onClick={onContact}
+                whileHover={{ y: -1 }}
+                whileTap={{ scale: 0.98 }}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border-2 border-teal-500/60 bg-transparent px-4 py-3 text-sm font-bold text-teal-600 transition hover:bg-teal-500/10 dark:text-teal-300 dark:hover:bg-teal-500/15"
+              >
+                <MessageSquareText size={16} />
+                Contact tutor
+              </motion.button>
+            </>
+          )}
 
           <div className="flex items-center gap-2">
             <motion.button

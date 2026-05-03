@@ -30,6 +30,7 @@ export function mapTutorRowToProfileModel(row) {
     reviewsCount: row.reviews_count ?? null,
     profile_boost: row.profile_boost ?? null,
     verified_marks: row.verified_marks ?? null,
+    is_verified_blue_mark: row.is_verified_blue_mark ?? null,
     avatar_url: row.avatar_url ?? null,
     coverImage: row.cover_image ?? null,
     bio: row.bio ?? "",
@@ -39,7 +40,7 @@ export function mapTutorRowToProfileModel(row) {
     availability_booking: row.availability_booking ?? "",
     whatsapp_number: row.whatsapp_number ?? "",
     reviews: [],
-    availability: []
+    availability: [],
   };
   return withTutorProDecorations(mapped);
 }

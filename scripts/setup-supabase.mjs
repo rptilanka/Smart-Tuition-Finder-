@@ -1,23 +1,4 @@
 #!/usr/bin/env node
-/**
- * One-shot Supabase setup for Smart Tuition Finder.
- *
- * Creates the `avatars` storage bucket (public read) using the service
- * role key. Bucket creation can't be done from the browser with the
- * publishable key — that's why this lives in a server-side script.
- *
- * Usage:
- *   1. Add to .env.local (do NOT commit this key):
- *        SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOi...   ← from Supabase
- *                                                    Project Settings → API
- *   2. Run:
- *        node scripts/setup-supabase.mjs
- *
- * After running, also paste `supabase/schema.sql` into the Supabase SQL
- * editor (one click) to install `tutor_accounts`, `student_accounts`, RLS, and the
- * on_auth_user_created trigger. SQL DDL can't be executed via the
- * REST API, so it stays a manual step.
- */
 
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -57,9 +38,7 @@ const fileEnv = loadEnvFile(ENV_PATH);
 const env = { ...fileEnv, ...process.env };
 
 const url =
-  env.SUPABASE_URL ||
-  env.VITE_SUPABASE_URL ||
-  env.NEXT_PUBLIC_SUPABASE_URL;
+  env.SUPABASE_URL || env.VITE_SUPABASE_URL || env.NEXT_PUBLIC_SUPABASE_URL;
 
 const serviceKey =
   env.SUPABASE_SERVICE_ROLE_KEY ||
@@ -68,7 +47,7 @@ const serviceKey =
 
 if (!url) {
   console.error(
-    "[setup] Missing Supabase URL. Add VITE_SUPABASE_URL or SUPABASE_URL to .env.local."
+    "[setup] Missing Supabase URL. Add VITE_SUPABASE_URL or SUPABASE_URL to .env.local.",
   );
   process.exit(1);
 }
@@ -78,52 +57,66 @@ if (!serviceKey) {
     "[setup] Missing SUPABASE_SERVICE_ROLE_KEY in .env.local.\n" +
       "        Find it in Supabase → Project Settings → API → 'service_role' secret.\n" +
       "        Add it as: SUPABASE_SERVICE_ROLE_KEY=your-secret-here\n" +
-      "        (Keep this key out of git — .env.local is already in .gitignore.)"
+      "        (Keep this key out of git — .env.local is already in .gitignore.)",
   );
   process.exit(1);
 }
 
 const admin = createClient(url, serviceKey, {
-  auth: { autoRefreshToken: false, persistSession: false }
+  auth: { autoRefreshToken: false, persistSession: false },
 });
 
-const BUCKET = "avatars";
+const IMAGE_MIME = ["image/png", "image/jpeg", "image/webp", "image/gif"];
+const SMART_MIME = [
+  ...IMAGE_MIME,
+  "video/mp4",
+  "video/webm",
+  "video/quicktime",
+  "video/x-m4v",
+];
 
-async function ensureBucket() {
-  const { data: buckets, error: listError } =
-    await admin.storage.listBuckets();
+async function ensureBucket(name, { fileSizeLimit, allowedMimeTypes } = {}) {
+  const { data: buckets, error: listError } = await admin.storage.listBuckets();
   if (listError) throw listError;
 
-  const existing = buckets.find((b) => b.name === BUCKET);
+  const existing = buckets.find((b) => b.name === name);
   if (existing) {
     if (!existing.public) {
-      const { error } = await admin.storage.updateBucket(BUCKET, {
-        public: true
+      const { error } = await admin.storage.updateBucket(name, {
+        public: true,
       });
       if (error) throw error;
-      console.log(`[setup] '${BUCKET}' bucket exists — switched to public.`);
+      console.log(`[setup] '${name}' bucket exists — switched to public.`);
     } else {
-      console.log(`[setup] '${BUCKET}' bucket already exists (public). ✓`);
+      console.log(`[setup] '${name}' bucket already exists (public). ✓`);
     }
     return;
   }
 
-  const { error } = await admin.storage.createBucket(BUCKET, {
+  const { error } = await admin.storage.createBucket(name, {
     public: true,
-    fileSizeLimit: 5 * 1024 * 1024,
-    allowedMimeTypes: ["image/png", "image/jpeg", "image/webp", "image/gif"]
+    fileSizeLimit,
+    allowedMimeTypes,
   });
   if (error) throw error;
-  console.log(`[setup] Created public '${BUCKET}' bucket. ✓`);
+  console.log(`[setup] Created public '${name}' bucket. ✓`);
 }
 
 async function main() {
   console.log(`[setup] Project: ${url}`);
-  await ensureBucket();
+  await ensureBucket("avatars", {
+    fileSizeLimit: 5 * 1024 * 1024,
+    allowedMimeTypes: IMAGE_MIME,
+  });
+
+  await ensureBucket("smart", {
+    fileSizeLimit: 100 * 1024 * 1024,
+    allowedMimeTypes: SMART_MIME,
+  });
   console.log(
     "\n[setup] Done. Final manual step:\n" +
       "        Open Supabase → SQL Editor → paste supabase/schema.sql → Run.\n" +
-      "        That installs tutor_accounts, student_accounts, RLS + auth trigger.\n"
+      "        That installs tutor_accounts, student_accounts, RLS + auth trigger.\n",
   );
 }
 

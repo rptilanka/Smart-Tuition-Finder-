@@ -43,6 +43,6 @@ export function getTutorProfile(id) {
     demoVideos: base.demoVideos ?? defaultDemoVideos,
     reviews: base.reviews ?? defaultReviews,
     availability: base.availability ?? defaultAvailability,
-    profileUrl: base.profileUrl ?? `/tutor/${id}`
+    profileUrl: base.profileUrl ?? `/tutor/${id}`,
   };
 }

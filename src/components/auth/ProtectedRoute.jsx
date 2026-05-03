@@ -2,22 +2,6 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
-/**
- * Gate for authenticated routes.
- * Wrap routes that require a signed-in tutor:
- *
- *   <Route element={<ProtectedRoute />}>
- *     <Route path="/tutor-dashboard" element={<TutorDashboardPage />} />
- *   </Route>
- *
- * Behaviour:
- *   · While the initial session is loading, render a spinner (prevents
- *     the dashboard from flashing then redirecting).
- *   · If there is no session, redirect to /tutor-login and remember
- *     the intended destination via `state.from` so we can send the user
- *     back after they sign in.
- *   · If there is a session, render the nested routes.
- */
 export default function ProtectedRoute({ redirectTo = "/tutor-login" }) {
   const { isAuthenticated, loading } = useAuth();
   const location = useLocation();

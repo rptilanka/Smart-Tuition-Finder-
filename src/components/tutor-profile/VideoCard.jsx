@@ -2,12 +2,6 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, X } from "lucide-react";
 
-/**
- * Reusable tutor demo video card.
- * - Shows a thumbnail with duration pill and play overlay.
- * - Hover effect: subtle scale + brighten + animated play button.
- * - Click opens an embedded YouTube iframe in a lightbox modal.
- */
 export default function VideoCard({ video }) {
   const [open, setOpen] = useState(false);
   const embedUrl = toEmbedUrl(video.videoUrl);
@@ -29,6 +23,7 @@ export default function VideoCard({ video }) {
             loading="lazy"
             className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.05] group-hover:brightness-110"
           />
+
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/75 via-slate-900/20 to-transparent" />
 
           {video.duration ? (
@@ -108,7 +103,9 @@ export default function VideoCard({ video }) {
               </div>
               <div className="p-4">
                 <p className="text-sm font-bold text-white">{video.title}</p>
-                <p className="mt-1 text-xs text-slate-300">{video.description}</p>
+                <p className="mt-1 text-xs text-slate-300">
+                  {video.description}
+                </p>
               </div>
             </motion.div>
           </motion.div>

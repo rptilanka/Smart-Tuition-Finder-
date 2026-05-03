@@ -1,8 +1,8 @@
-import * as React from "react"
-import { Accordion as AccordionPrimitive } from "radix-ui"
+import * as React from "react";
+import { Accordion as AccordionPrimitive } from "radix-ui";
 
-import { cn } from "@/lib/utils"
-import { ChevronDownIcon, ChevronUpIcon } from "lucide-react"
+import { cn } from "@/lib/utils";
+import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 
 function Accordion({
   className,
@@ -14,7 +14,7 @@ function Accordion({
       className={cn("flex w-full flex-col", className)}
       {...props}
     />
-  )
+  );
 }
 
 function AccordionItem({
@@ -27,7 +27,7 @@ function AccordionItem({
       className={cn("border-b", className)}
       {...props}
     />
-  )
+  );
 }
 
 function AccordionTrigger({
@@ -41,7 +41,7 @@ function AccordionTrigger({
         data-slot="accordion-trigger"
         className={cn(
           "group relative flex flex-1 items-start justify-between rounded-lg border border-transparent py-2.5 text-left text-sm font-medium transition-all outline-none hover:underline focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
-          className
+          className,
         )}
         {...props}
       >
@@ -50,7 +50,7 @@ function AccordionTrigger({
         <ChevronUpIcon className="ml-auto hidden h-4 w-4 shrink-0 text-muted-foreground transition-transform group-data-[state=open]:inline" />
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
-  )
+  );
 }
 
 function AccordionContent({
@@ -67,13 +67,13 @@ function AccordionContent({
       <div
         className={cn(
           "pb-2.5 pt-0 [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4",
-          className
+          className,
         )}
       >
         {children}
       </div>
     </AccordionPrimitive.Content>
-  )
+  );
 }
 
-export { Accordion, AccordionItem, AccordionTrigger, AccordionContent }
+export { Accordion, AccordionItem, AccordionTrigger, AccordionContent };

@@ -8,7 +8,7 @@ import {
   EyeOff,
   Loader2,
   Lock,
-  Mail
+  Mail,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -35,7 +35,7 @@ const tutorLoginAside = (
       {[
         "Verified profile with demo videos",
         "Smart matching with nearby students",
-        "Built-in session scheduling"
+        "Built-in session scheduling",
       ].map((item) => (
         <li key={item} className="flex items-center gap-2">
           <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center bg-background/95 text-foreground shadow-sm backdrop-blur-sm">
@@ -112,6 +112,7 @@ export default function TutorLoginPage() {
               size={16}
               className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
             />
+
             <Input
               id="tutor-login-email"
               name="email"
@@ -125,7 +126,7 @@ export default function TutorLoginPage() {
               className={cn(
                 "pl-9",
                 fieldErrors.email &&
-                  "border-destructive focus-visible:border-destructive"
+                  "border-destructive focus-visible:border-destructive",
               )}
             />
           </div>
@@ -143,6 +144,7 @@ export default function TutorLoginPage() {
               size={16}
               className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
             />
+
             <Input
               id="tutor-login-password"
               name="password"
@@ -156,9 +158,10 @@ export default function TutorLoginPage() {
               className={cn(
                 "pl-9 pr-10",
                 fieldErrors.password &&
-                  "border-destructive focus-visible:border-destructive"
+                  "border-destructive focus-visible:border-destructive",
               )}
             />
+
             <button
               type="button"
               onClick={() => setShowPassword((v) => !v)}

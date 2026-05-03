@@ -8,7 +8,7 @@ import {
   EyeOff,
   Loader2,
   Lock,
-  Mail
+  Mail,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -26,14 +26,14 @@ const studentLoginAside = (
       Find your perfect tutor in minutes.
     </h3>
     <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
-      Sign in to browse verified tutors, save favourites, and manage your learning
-      from one dashboard.
+      Sign in to browse verified tutors, save favourites, and manage your
+      learning from one dashboard.
     </p>
     <ul className="mt-7 space-y-2.5 text-sm font-medium text-foreground/90">
       {[
         "Browse tutors across Sri Lanka",
         "Message tutors and track your progress",
-        "Your student dashboard after sign-in"
+        "Your student dashboard after sign-in",
       ].map((item) => (
         <li key={item} className="flex items-center gap-2">
           <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center bg-background/95 text-foreground shadow-sm backdrop-blur-sm">
@@ -110,6 +110,7 @@ export default function StudentLoginPage() {
               size={16}
               className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
             />
+
             <Input
               id="student-login-email"
               name="email"
@@ -123,7 +124,7 @@ export default function StudentLoginPage() {
               className={cn(
                 "pl-9",
                 fieldErrors.email &&
-                  "border-destructive focus-visible:border-destructive"
+                  "border-destructive focus-visible:border-destructive",
               )}
             />
           </div>
@@ -141,6 +142,7 @@ export default function StudentLoginPage() {
               size={16}
               className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
             />
+
             <Input
               id="student-login-password"
               name="password"
@@ -154,9 +156,10 @@ export default function StudentLoginPage() {
               className={cn(
                 "pl-9 pr-10",
                 fieldErrors.password &&
-                  "border-destructive focus-visible:border-destructive"
+                  "border-destructive focus-visible:border-destructive",
               )}
             />
+
             <button
               type="button"
               onClick={() => setShowPassword((v) => !v)}

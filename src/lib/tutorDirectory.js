@@ -11,7 +11,7 @@ const ACCENTS = [
   "linear-gradient(135deg,#d97706,#b45309)",
   "linear-gradient(135deg,#ec4899,#8b5cf6)",
   "linear-gradient(135deg,#0ea5e9,#6366f1)",
-  "linear-gradient(135deg,#10b981,#0ea5e9)"
+  "linear-gradient(135deg,#10b981,#0ea5e9)",
 ];
 
 function initialsFor(name) {
@@ -41,7 +41,9 @@ function subjectLabelFromRow(row) {
   const subjects = subjectsGradesFromDb(row.subjects_grades);
   const first = subjects[0];
   if (!first?.subject) return "Tutor";
-  const grades = Array.isArray(first.grades) ? first.grades.filter(Boolean) : [];
+  const grades = Array.isArray(first.grades)
+    ? first.grades.filter(Boolean)
+    : [];
   if (!grades.length) return first.subject;
   return `${first.subject} · ${grades.slice(0, 2).join(", ")}`;
 }
@@ -49,14 +51,14 @@ function subjectLabelFromRow(row) {
 function descriptionFromRow(row) {
   const bio = typeof row.bio === "string" ? row.bio.trim() : "";
   if (bio) return bio.length > 200 ? `${bio.slice(0, 197)}…` : bio;
-  const q = typeof row.qualifications_experience === "string"
-    ? row.qualifications_experience.trim()
-    : "";
+  const q =
+    typeof row.qualifications_experience === "string"
+      ? row.qualifications_experience.trim()
+      : "";
   if (q) return q.length > 200 ? `${q.slice(0, 197)}…` : q;
   return "View profile for subjects, rates, and availability.";
 }
 
-/** Shape expected by `AllTutorsPage` / `TutorCard`. */
 export function mapTutorProfileRowToDirectoryTutor(row) {
   if (!row) return null;
   const mapped = {
@@ -74,15 +76,12 @@ export function mapTutorProfileRowToDirectoryTutor(row) {
     reviewsCount: row.reviews_count ?? null,
     profile_boost: row.profile_boost ?? null,
     verified_marks: row.verified_marks ?? null,
-    source: "supabase"
+    is_verified_blue_mark: row.is_verified_blue_mark ?? null,
+    source: "supabase",
   };
   return withTutorProDecorations(mapped);
 }
 
-/**
- * All public tutor profile rows for the directory.
- * @returns {Promise<Array<ReturnType<typeof mapTutorProfileRowToDirectoryTutor>>>}
- */
 export async function fetchTutorDirectoryFromSupabase() {
   if (!supabase) return [];
   const { data, error } = await supabase
@@ -90,7 +89,10 @@ export async function fetchTutorDirectoryFromSupabase() {
     .select(TUTOR_ACCOUNT_SELECT_COLUMNS)
     .order("updated_at", { ascending: false });
   if (error) {
-    console.warn("[tutorDirectory] Failed to load tutor_profiles:", error.message);
+    console.warn(
+      "[tutorDirectory] Failed to load tutor_profiles:",
+      error.message,
+    );
     return [];
   }
   return (data ?? [])

@@ -92,7 +92,7 @@ const FAQ = () => {
                   <AccordionPrimitive.Trigger
                     className={cn(
                       "flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-45",
-                      "text-start text-lg"
+                      "text-start text-lg",
                     )}
                   >
                     {question}
@@ -119,7 +119,7 @@ const FAQ = () => {
                   <AccordionPrimitive.Trigger
                     className={cn(
                       "flex flex-1 items-center justify-between py-4 font-medium tracking-tight transition-all hover:underline [&[data-state=open]>svg]:rotate-45",
-                      "text-start text-lg"
+                      "text-start text-lg",
                     )}
                   >
                     {question}

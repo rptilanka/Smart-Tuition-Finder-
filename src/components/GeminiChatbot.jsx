@@ -2,15 +2,11 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Bot, MessageCircle, Send, User, X } from "lucide-react";
 
-/**
- * Free tier: `gemini-2.0-flash` often shows limit 0; prefer 2.5 Flash-Lite (higher RPD), then fallbacks.
- * Optional: set VITE_GEMINI_MODEL to try that model first, then the chain below.
- */
 const MODEL_FALLBACK_CHAIN = [
   "gemini-2.5-flash-lite",
   "gemini-2.5-flash",
   "gemini-2.0-flash-lite",
-  "gemini-2.0-flash"
+  "gemini-2.0-flash",
 ];
 
 const SYSTEM_PROMPT = `You are the in-app assistant for Smart Tuition Finder: students and parents discover tutors by subject, level, and location (including Sri Lanka). Answer clearly. Stay on tutor discovery and how the site works; do not claim live database access. Be concise unless asked for detail.
@@ -29,7 +25,7 @@ function isRetriableWithOtherModel(status, apiMessage) {
     status === 429 ||
     status === 404 ||
     /quota|resource_exhausted|limit:\s*0|not found|does not exist|unsupported|is not found/i.test(
-      m
+      m,
     )
   );
 }
@@ -42,7 +38,7 @@ function friendlyError(raw) {
       "",
       "What you can do: wait until the reset time if the API message included one; check usage at https://ai.dev/rate-limit ; review limits at https://ai.google.dev/gemini-api/docs/rate-limits ; or enable billing on your Google AI / Cloud project for higher limits.",
       "",
-      "You can also set VITE_GEMINI_MODEL in `.env.local` to a model your project still has quota for, then restart the dev server."
+      "You can also set VITE_GEMINI_MODEL in `.env.local` to a model your project still has quota for, then restart the dev server.",
     ].join("\n");
   }
   return r.length > 1400 ? `${r.slice(0, 1400)}…` : r;
@@ -59,16 +55,15 @@ async function callGenerateContent(apiKey, model, contents) {
         contents,
         generationConfig: {
           temperature: 0.65,
-          maxOutputTokens: 512
-        }
-      })
-    }
+          maxOutputTokens: 512,
+        },
+      }),
+    },
   );
   const data = await response.json();
   return { response, data, model };
 }
 
-/** Strip markdown-style formatting so chat bubbles stay readable as plain text. */
 function plainTextAssistantReply(raw) {
   if (typeof raw !== "string" || !raw) return raw;
   let t = raw;
@@ -92,7 +87,7 @@ function extractReplyFromData(data) {
     return {
       ok: false,
       error:
-        "That message couldn’t be processed. Try asking in different words."
+        "That message couldn’t be processed. Try asking in different words.",
     };
   }
 
@@ -110,7 +105,7 @@ function extractReplyFromData(data) {
   if (finish === "SAFETY" || finish === "RECITATION") {
     return {
       ok: false,
-      error: "The reply was filtered. Try a shorter or more general question."
+      error: "The reply was filtered. Try a shorter or more general question.",
     };
   }
 
@@ -118,7 +113,7 @@ function extractReplyFromData(data) {
     typeof data?.error?.message === "string" ? data.error.message : null;
   return {
     ok: false,
-    error: apiErr || "No reply text came back. Another model may work."
+    error: apiErr || "No reply text came back. Another model may work.",
   };
 }
 
@@ -141,8 +136,8 @@ export default function GeminiChatbot() {
         { role: "user", text: prompt },
         {
           role: "model",
-          text: "The assistant isn’t configured yet. Add VITE_GEMINI_API_KEY to `.env.local`, restart the dev server, then try again."
-        }
+          text: "The assistant isn’t configured yet. Add VITE_GEMINI_API_KEY to `.env.local`, restart the dev server, then try again.",
+        },
       ]);
       setInput("");
       return;
@@ -156,7 +151,7 @@ export default function GeminiChatbot() {
     try {
       const contents = nextMessages.map((message) => ({
         role: message.role,
-        parts: [{ text: message.text }]
+        parts: [{ text: message.text }],
       }));
 
       let lastError = "Request failed.";
@@ -165,13 +160,16 @@ export default function GeminiChatbot() {
         const { response, data } = await callGenerateContent(
           apiKey,
           model,
-          contents
+          contents,
         );
 
         if (response.ok) {
           const parsed = extractReplyFromData(data);
           if (parsed.ok) {
-            setMessages((prev) => [...prev, { role: "model", text: parsed.text }]);
+            setMessages((prev) => [
+              ...prev,
+              { role: "model", text: parsed.text },
+            ]);
             return;
           }
           lastError = parsed.error;
@@ -203,8 +201,8 @@ export default function GeminiChatbot() {
           text:
             error instanceof Error
               ? error.message
-              : "Something went wrong. Please try again in a moment."
-        }
+              : "Something went wrong. Please try again in a moment.",
+        },
       ]);
     } finally {
       setIsLoading(false);
@@ -265,7 +263,10 @@ export default function GeminiChatbot() {
               {messages.map((message, index) => {
                 const isUser = message.role === "user";
                 return (
-                  <div key={`${message.role}-${index}`} className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
+                  <div
+                    key={`${message.role}-${index}`}
+                    className={`flex ${isUser ? "justify-end" : "justify-start"}`}
+                  >
                     <div
                       className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${
                         isUser
@@ -278,7 +279,9 @@ export default function GeminiChatbot() {
                         {isUser ? "You" : "Tutor Guide"}
                       </div>
                       <p className="whitespace-pre-wrap">
-                        {isUser ? message.text : plainTextAssistantReply(message.text)}
+                        {isUser
+                          ? message.text
+                          : plainTextAssistantReply(message.text)}
                       </p>
                     </div>
                   </div>
@@ -294,7 +297,10 @@ export default function GeminiChatbot() {
               ) : null}
             </div>
 
-            <form onSubmit={onSubmit} className="border-t border-white/10 bg-black p-3">
+            <form
+              onSubmit={onSubmit}
+              className="border-t border-white/10 bg-black p-3"
+            >
               <div className="flex items-center gap-2">
                 <input
                   value={input}
@@ -302,6 +308,7 @@ export default function GeminiChatbot() {
                   placeholder="Type your question…"
                   className="w-full rounded-xl border border-white/15 bg-zinc-900 px-3 py-2 text-sm text-white placeholder:text-white/45 outline-none transition focus:border-white/45"
                 />
+
                 <button
                   type="submit"
                   disabled={isLoading}

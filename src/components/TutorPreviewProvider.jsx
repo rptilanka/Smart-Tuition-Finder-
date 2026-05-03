@@ -5,49 +5,24 @@ import {
   useEffect,
   useMemo,
   useRef,
-  useState
+  useState,
 } from "react";
 import {
   AnimatePresence,
   motion,
   useMotionValue,
   useSpring,
-  useTransform
+  useTransform,
 } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowUpRight, MapPin, Star } from "lucide-react";
-
-/**
- * Global tutor-preview system.
- *
- * Usage:
- *   <TutorPreviewProvider tutors={tutorsById}>
- *     <App />
- *   </TutorPreviewProvider>
- *
- * Then anywhere in the tree:
- *   <div data-tutor-id="maths" data-tutor-magnetic>...</div>
- *
- * The provider listens globally (event delegation) for `mouseover`,
- * `mouseout`, `mousemove`, `touchstart` and renders a single floating
- * neutral preview card that follows the cursor with a soft spring
- * lag. No per-element handlers required.
- *
- * Opt-in data attributes:
- *   data-tutor-id="<id>"         → Required. Registry key.
- *   data-tutor-magnetic          → Optional. Enables CSS transform based
- *                                   magnetic pull + hover scale. Only put
- *                                   this on plain DOM nodes (not `motion.*`
- *                                   elements whose transform is controlled
- *                                   by framer-motion).
- */
 
 const TutorPreviewContext = createContext({
   tutor: null,
   show: () => {},
   hide: () => {},
   register: () => {},
-  isTouch: false
+  isTouch: false,
 });
 
 export function useTutorPreview() {
@@ -71,12 +46,11 @@ export function TutorPreviewProvider({ children, tutors, resolveTutor }) {
   const [isTouch, setIsTouch] = useState(false);
   const [viewport, setViewport] = useState(() => ({
     w: typeof window === "undefined" ? 1280 : window.innerWidth,
-    h: typeof window === "undefined" ? 720 : window.innerHeight
+    h: typeof window === "undefined" ? 720 : window.innerHeight,
   }));
 
   const activeElRef = useRef(null);
 
-  // Lazy-init registry so first render already has the tutors available.
   const registryRef = useRef(null);
   if (registryRef.current === null) {
     const map = new Map();
@@ -95,8 +69,16 @@ export function TutorPreviewProvider({ children, tutors, resolveTutor }) {
 
   const mouseX = useMotionValue(-9999);
   const mouseY = useMotionValue(-9999);
-  const springX = useSpring(mouseX, { stiffness: 210, damping: 24, mass: 0.55 });
-  const springY = useSpring(mouseY, { stiffness: 210, damping: 24, mass: 0.55 });
+  const springX = useSpring(mouseX, {
+    stiffness: 210,
+    damping: 24,
+    mass: 0.55,
+  });
+  const springY = useSpring(mouseY, {
+    stiffness: 210,
+    damping: 24,
+    mass: 0.55,
+  });
 
   const resolve = useCallback(
     (id) => {
@@ -105,7 +87,7 @@ export function TutorPreviewProvider({ children, tutors, resolveTutor }) {
       if (resolveTutor) return resolveTutor(id);
       return null;
     },
-    [resolveTutor]
+    [resolveTutor],
   );
 
   const register = useCallback((id, data) => {
@@ -118,7 +100,7 @@ export function TutorPreviewProvider({ children, tutors, resolveTutor }) {
       const data = resolve(id);
       if (data) setTutor(data);
     },
-    [resolve]
+    [resolve],
   );
 
   const hide = useCallback(() => {
@@ -143,10 +125,6 @@ export function TutorPreviewProvider({ children, tutors, resolveTutor }) {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  // ------------------------------------------------------------------
-  // Global delegation: mousemove / mouseover / mouseout / touchstart.
-  // Uses refs for hot-path values so we never re-render on cursor move.
-  // ------------------------------------------------------------------
   const pinnedRef = useRef(false);
   pinnedRef.current = pinned;
   const isTouchRef = useRef(false);
@@ -202,7 +180,6 @@ export function TutorPreviewProvider({ children, tutors, resolveTutor }) {
       const related = event.relatedTarget;
       if (related && target.contains(related)) return;
 
-      // Moving directly onto another tutor target? Let mouseover update.
       const relatedTutorEl = related?.closest?.("[data-tutor-id]");
       clearActive(target);
       if (activeElRef.current === target) activeElRef.current = null;
@@ -256,7 +233,7 @@ export function TutorPreviewProvider({ children, tutors, resolveTutor }) {
 
   const contextValue = useMemo(
     () => ({ tutor, show, hide, register, isTouch }),
-    [tutor, show, hide, register, isTouch]
+    [tutor, show, hide, register, isTouch],
   );
 
   return (
@@ -275,9 +252,6 @@ export function TutorPreviewProvider({ children, tutors, resolveTutor }) {
   );
 }
 
-// --------------------------------------------------------------------
-// Floating neutral preview card.
-// --------------------------------------------------------------------
 function TutorPreviewCard({
   tutor,
   springX,
@@ -285,7 +259,7 @@ function TutorPreviewCard({
   viewport,
   pinned,
   isTouch,
-  onDismiss
+  onDismiss,
 }) {
   const anchorToBottom = isTouch && pinned;
 
@@ -324,7 +298,7 @@ function TutorPreviewCard({
             x: translateX,
             y: translateY,
             width: CARD_WIDTH,
-            pointerEvents: pinned ? "auto" : "none"
+            pointerEvents: pinned ? "auto" : "none",
           }}
           initial={{ opacity: 0, scale: 0.88, filter: "blur(6px)" }}
           animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}

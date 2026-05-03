@@ -3,7 +3,8 @@ import http from "node:http";
 import { URLSearchParams } from "node:url";
 
 const PORT = Number(process.env.PAYHERE_NOTIFY_PORT || 8787);
-const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+const SUPABASE_URL =
+  process.env.VITE_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 const MERCHANT_SECRET =
   process.env.PAYHERE_API_KEY || process.env.VITE_PAYHERE_API_KEY || "";
@@ -24,14 +25,14 @@ function parseFormBody(rawBody) {
     status_message: params.get("status_message") || "",
     authorization_token: params.get("authorization_token") || "",
     custom_1: params.get("custom_1") || "",
-    custom_2: params.get("custom_2") || ""
+    custom_2: params.get("custom_2") || "",
   };
 }
 
 function verifyNotification(body) {
   if (!MERCHANT_SECRET) return false;
   const local = md5Upper(
-    `${body.merchant_id}${body.order_id}${body.payhere_amount}${body.payhere_currency}${body.status_code}${md5Upper(MERCHANT_SECRET)}`
+    `${body.merchant_id}${body.order_id}${body.payhere_amount}${body.payhere_currency}${body.status_code}${md5Upper(MERCHANT_SECRET)}`,
   );
   return local === body.md5sig;
 }
@@ -42,7 +43,8 @@ async function applyTutorProStatus({ tutorId, planId }) {
   const payload = {
     profile_boost: true,
     verified_marks,
-    pro_plan_id: planId || "pro-plus"
+    is_verified_blue_mark: true,
+    pro_plan_id: planId || "pro-plus",
   };
   await fetch(`${SUPABASE_URL}/rest/v1/tutor_profiles?id=eq.${tutorId}`, {
     method: "PATCH",
@@ -50,9 +52,9 @@ async function applyTutorProStatus({ tutorId, planId }) {
       apikey: SUPABASE_SERVICE_ROLE_KEY,
       Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
       "Content-Type": "application/json",
-      Prefer: "return=minimal"
+      Prefer: "return=minimal",
     },
-    body: JSON.stringify(payload)
+    body: JSON.stringify(payload),
   });
 }
 
@@ -80,7 +82,7 @@ const server = http.createServer(async (req, res) => {
     if (statusCode === 2 || statusCode === 3) {
       await applyTutorProStatus({
         tutorId: body.custom_1,
-        planId: body.custom_2
+        planId: body.custom_2,
       });
     }
 
@@ -90,13 +92,14 @@ const server = http.createServer(async (req, res) => {
         ok: true,
         order_id: body.order_id,
         status_code: body.status_code,
-        status_message: body.status_message
-      })
+        status_message: body.status_message,
+      }),
     );
   });
 });
 
 server.listen(PORT, () => {
-  console.log(`PayHere notify server listening on http://localhost:${PORT}/api/payhere/notify`);
+  console.log(
+    `PayHere notify server listening on http://localhost:${PORT}/api/payhere/notify`,
+  );
 });
-

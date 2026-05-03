@@ -4,19 +4,13 @@ import { sanitizeTutorProfilePatch } from "./tutorProfileNormalize";
 
 export const TUTOR_PROFILE_COLUMNS = TUTOR_ACCOUNT_SELECT_COLUMNS;
 
-/**
- * @param {{ email?: string | null; displayName?: string | null }} [fallbacks]
- *        Used when inserting the first row (no tutor_profiles yet).
- */
 export async function updateTutorProfile(userId, patch, fallbacks = {}) {
   if (!supabase)
     return { data: null, error: new Error("Supabase is not configured.") };
-  if (!userId)
-    return { data: null, error: new Error("Not signed in.") };
+  if (!userId) return { data: null, error: new Error("Not signed in.") };
 
   const sanitized = sanitizeTutorProfilePatch(patch ?? {});
-  if (Object.keys(sanitized).length === 0)
-    return { data: null, error: null };
+  if (Object.keys(sanitized).length === 0) return { data: null, error: null };
 
   const { data: existing, error: readErr } = await supabase
     .from(TUTOR_PROFILES_TABLE)
@@ -31,7 +25,10 @@ export async function updateTutorProfile(userId, patch, fallbacks = {}) {
   const fbEmail = (fallbacks.email ?? "").trim();
   const fbName = (fallbacks.displayName ?? "").trim();
   const emailResolved = (existing?.email ?? "").trim() || fbEmail;
-  const hasNameInPatch = Object.prototype.hasOwnProperty.call(sanitized, "name");
+  const hasNameInPatch = Object.prototype.hasOwnProperty.call(
+    sanitized,
+    "name",
+  );
   const nameResolved =
     (hasNameInPatch ? sanitized.name : (existing?.name ?? "").trim()) ||
     fbName ||
@@ -41,7 +38,7 @@ export async function updateTutorProfile(userId, patch, fallbacks = {}) {
   if (!emailResolved) {
     return {
       data: null,
-      error: new Error("Cannot save profile: missing email. Sign in again.")
+      error: new Error("Cannot save profile: missing email. Sign in again."),
     };
   }
 
@@ -49,14 +46,28 @@ export async function updateTutorProfile(userId, patch, fallbacks = {}) {
     id: userId,
     email: emailResolved,
     name: nameResolved,
-    ...sanitized
+    ...sanitized,
   };
 
   const { data, error } = await supabase
     .from(TUTOR_PROFILES_TABLE)
     .upsert(merged, { onConflict: "id" })
     .select(TUTOR_ACCOUNT_SELECT_COLUMNS)
-    .single();
+    .maybeSingle();
 
-  return { data, error };
+  if (error) {
+    return { data: null, error };
+  }
+
+  if (data) {
+    return { data, error: null };
+  }
+
+  const refetch = await supabase
+    .from(TUTOR_PROFILES_TABLE)
+    .select(TUTOR_ACCOUNT_SELECT_COLUMNS)
+    .eq("id", userId)
+    .maybeSingle();
+
+  return { data: refetch.data ?? null, error: refetch.error };
 }

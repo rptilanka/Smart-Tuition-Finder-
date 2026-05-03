@@ -20,11 +20,11 @@ export function getPayHereConfig() {
     merchantSecret,
     returnUrl: readEnv(
       "VITE_PAYHERE_RETURN_URL",
-      `${window.location.origin}/payment/success`
+      `${window.location.origin}/payment/success`,
     ),
     cancelUrl: readEnv(
       "VITE_PAYHERE_CANCEL_URL",
-      `${window.location.origin}/payment/failed`
+      `${window.location.origin}/payment/failed`,
     ),
     notifyUrl: readEnv("VITE_PAYHERE_NOTIFY_URL", ""),
     firstName: readEnv("VITE_PAYHERE_DEFAULT_FIRST_NAME", "Tutor"),
@@ -32,7 +32,7 @@ export function getPayHereConfig() {
     address: readEnv("VITE_PAYHERE_DEFAULT_ADDRESS", "Smart Tuition Finder"),
     city: readEnv("VITE_PAYHERE_DEFAULT_CITY", "Colombo"),
     country: readEnv("VITE_PAYHERE_DEFAULT_COUNTRY", "Sri Lanka"),
-    sandbox: true
+    sandbox: true,
   };
 }
 
@@ -56,16 +56,20 @@ export function buildPayHereHash({
   orderId,
   amount,
   currency,
-  merchantSecret
+  merchantSecret,
 }) {
   const amountFormatted = Number(amount).toFixed(2);
   const secretMd5 = toUpperMd5(merchantSecret);
-  return toUpperMd5(`${merchantId}${orderId}${amountFormatted}${currency}${secretMd5}`);
+  return toUpperMd5(
+    `${merchantId}${orderId}${amountFormatted}${currency}${secretMd5}`,
+  );
 }
 
 export function ensurePayHereScript() {
   if (typeof window === "undefined") {
-    return Promise.reject(new Error("PayHere is only available in the browser."));
+    return Promise.reject(
+      new Error("PayHere is only available in the browser."),
+    );
   }
   if (window.payhere) return Promise.resolve(window.payhere);
   if (payhereScriptPromise) return payhereScriptPromise;
@@ -84,4 +88,3 @@ export function ensurePayHereScript() {
 
   return payhereScriptPromise;
 }
-

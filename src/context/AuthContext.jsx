@@ -5,42 +5,21 @@ import {
   useEffect,
   useMemo,
   useRef,
-  useState
+  useState,
 } from "react";
 import {
   isSupabaseConfigured,
   supabase,
   STUDENT_ACCOUNTS_TABLE,
-  TUTOR_PROFILES_TABLE
+  TUTOR_PROFILES_TABLE,
 } from "../lib/supabase";
 import {
   STUDENT_ACCOUNT_SELECT_COLUMNS,
-  TUTOR_ACCOUNT_SELECT_COLUMNS
+  TUTOR_ACCOUNT_SELECT_COLUMNS,
 } from "../lib/tutorProfileColumns";
-
-/**
- * AuthContext
- * -----------
- * Wraps Supabase auth in a React context so every page/component can
- * read the current session, user, and tutor profile without prop drilling.
- *
- * Responsibilities:
- *   · Hydrate from the persisted Supabase session on first render.
- *   · Subscribe to `onAuthStateChange` so logins/logouts in another tab
- *     propagate to this tab.
- *   · Load `tutor_profiles` or `student_accounts` (via RLS) from `user_metadata.role`.
- *   · Expose `signUp`, `signIn`, `signOut`, `refreshProfile` helpers.
- *   · Surface a stable `{ data, error }` shape from every action so UI
- *     code stays predictable.
- */
 
 const AuthContext = createContext(null);
 
-/**
- * Choose tutor_profiles vs student_accounts.
- * Uses JWT `user_metadata.role` when set; otherwise detects an existing student row
- * (older signups may lack `role` on the token but still have a student_accounts row).
- */
 async function resolveProfileTable(userId, roleHint) {
   if (!supabase || !userId) return TUTOR_PROFILES_TABLE;
   const normalized =
@@ -58,21 +37,20 @@ async function resolveProfileTable(userId, roleHint) {
   return TUTOR_PROFILES_TABLE;
 }
 
-/** Upsert a row into tutor_profiles or student_accounts (requires session for RLS). */
 async function upsertAccountProfile(userId, table, name, email) {
   if (!supabase || !userId) return null;
   const { error } = await supabase.from(table).upsert(
     {
       id: userId,
       name: name?.trim() || email?.split("@")[0] || "User",
-      email: email?.trim() ?? ""
+      email: email?.trim() ?? "",
     },
-    { onConflict: "id" }
+    { onConflict: "id" },
   );
   if (error) {
     console.warn(
       `[auth] Could not upsert ${table} for user ${userId}:`,
-      error.message
+      error.message,
     );
   }
   return error;
@@ -84,14 +62,10 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [profileLoading, setProfileLoading] = useState(false);
 
-  /** Cache key so we reload when e.g. role appears in JWT after refresh. */
   const lastProfileKey = useRef(null);
 
   const user = session?.user ?? null;
 
-  // ---------------------------------------------------------------
-  // Initial hydration + subscription
-  // ---------------------------------------------------------------
   useEffect(() => {
     if (!isSupabaseConfigured || !supabase) {
       setLoading(false);
@@ -117,7 +91,7 @@ export function AuthProvider({ children }) {
       (_event, nextSession) => {
         if (!mounted) return;
         setSession(nextSession ?? null);
-      }
+      },
     );
 
     return () => {
@@ -126,9 +100,6 @@ export function AuthProvider({ children }) {
     };
   }, []);
 
-  // ---------------------------------------------------------------
-  // Profile loader — runs whenever the user id changes
-  // ---------------------------------------------------------------
   const loadProfile = useCallback(async (userId, role, hints = {}) => {
     if (!supabase || !userId) {
       setProfile(null);
@@ -161,12 +132,10 @@ export function AuthProvider({ children }) {
       ) {
         const email = hints.email.trim();
         const displayName = (hints.displayName ?? "").trim();
-        const seedName =
-          displayName || email.split("@")[0] || "Tutor";
-        await supabase.from(TUTOR_PROFILES_TABLE).upsert(
-          { id: userId, name: seedName, email },
-          { onConflict: "id" }
-        );
+        const seedName = displayName || email.split("@")[0] || "Tutor";
+        await supabase
+          .from(TUTOR_PROFILES_TABLE)
+          .upsert({ id: userId, name: seedName, email }, { onConflict: "id" });
         const second = await supabase
           .from(table)
           .select(selectColumns)
@@ -200,13 +169,15 @@ export function AuthProvider({ children }) {
     }
     loadProfile(userId, role, {
       email,
-      displayName: user?.user_metadata?.name ?? ""
+      displayName: user?.user_metadata?.name ?? "",
     });
-  }, [user?.id, user?.email, user?.user_metadata?.role, user?.user_metadata?.name, loadProfile]);
-
-  // ---------------------------------------------------------------
-  // Mutations
-  // ---------------------------------------------------------------
+  }, [
+    user?.id,
+    user?.email,
+    user?.user_metadata?.role,
+    user?.user_metadata?.name,
+    loadProfile,
+  ]);
 
   const signUp = useCallback(async ({ name, email, password, role }) => {
     if (!supabase) return configError();
@@ -214,7 +185,9 @@ export function AuthProvider({ children }) {
     const trimmedName = name?.trim();
     const trimmedEmail = email?.trim().toLowerCase();
     const isStudent = role === "student";
-    const profileTable = isStudent ? STUDENT_ACCOUNTS_TABLE : TUTOR_PROFILES_TABLE;
+    const profileTable = isStudent
+      ? STUDENT_ACCOUNTS_TABLE
+      : TUTOR_PROFILES_TABLE;
     const redirectPath = isStudent ? "/students-login" : "/tutor-login";
 
     const { data, error } = await supabase.auth.signUp({
@@ -223,31 +196,27 @@ export function AuthProvider({ children }) {
       options: {
         data: {
           name: trimmedName,
-          role: isStudent ? "student" : "tutor"
+          role: isStudent ? "student" : "tutor",
         },
         emailRedirectTo:
           typeof window !== "undefined"
             ? `${window.location.origin}${redirectPath}`
-            : undefined
-      }
+            : undefined,
+      },
     });
 
     if (error) return { data: null, error };
 
-    // With a session, RLS allows upsert; without a session (e.g. email
-    // confirmation still enabled in the project), the DB trigger still inserts.
     if (data.user?.id && data.session) {
       const canonicalEmail = (data.user.email ?? trimmedEmail).trim();
       await upsertAccountProfile(
         data.user.id,
         profileTable,
         trimmedName,
-        canonicalEmail
+        canonicalEmail,
       );
     }
 
-    // When Supabase returns a session immediately, refresh local session state
-    // so ProtectedRoute + profile loaders see the user on the next navigation.
     if (data.session) {
       await supabase.auth.getSession();
     }
@@ -260,16 +229,15 @@ export function AuthProvider({ children }) {
 
     const { data, error } = await supabase.auth.signInWithPassword({
       email: email?.trim().toLowerCase(),
-      password
+      password,
     });
 
     if (error) return { data: null, error };
 
-    // Ensure profile row exists in Supabase (trigger + client upsert).
     if (data.user) {
       const profileTable = await resolveProfileTable(
         data.user.id,
-        data.user.user_metadata?.role
+        data.user.user_metadata?.role,
       );
       const isStudent = profileTable === STUDENT_ACCOUNTS_TABLE;
       const defaultName = isStudent ? "Student" : "Tutor";
@@ -281,7 +249,7 @@ export function AuthProvider({ children }) {
         data.user.id,
         profileTable,
         displayName,
-        (data.user.email ?? "").trim()
+        (data.user.email ?? "").trim(),
       );
     }
 
@@ -301,13 +269,16 @@ export function AuthProvider({ children }) {
     if (!user?.id) return null;
     return loadProfile(user.id, user.user_metadata?.role ?? null, {
       email: user.email ?? "",
-      displayName: user.user_metadata?.name ?? ""
+      displayName: user.user_metadata?.name ?? "",
     });
-  }, [user?.id, user?.email, user?.user_metadata?.role, user?.user_metadata?.name, loadProfile]);
+  }, [
+    user?.id,
+    user?.email,
+    user?.user_metadata?.role,
+    user?.user_metadata?.name,
+    loadProfile,
+  ]);
 
-  // ---------------------------------------------------------------
-  // Context value (memoised)
-  // ---------------------------------------------------------------
   const value = useMemo(
     () => ({
       session,
@@ -320,7 +291,7 @@ export function AuthProvider({ children }) {
       signUp,
       signIn,
       signOut,
-      refreshProfile
+      refreshProfile,
     }),
     [
       session,
@@ -331,8 +302,8 @@ export function AuthProvider({ children }) {
       signUp,
       signIn,
       signOut,
-      refreshProfile
-    ]
+      refreshProfile,
+    ],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
@@ -352,7 +323,7 @@ function configError() {
     error: {
       name: "SupabaseNotConfigured",
       message:
-        "Supabase isn't configured yet. Copy .env.example to .env.local and set your Supabase URL + anon key."
-    }
+        "Supabase isn't configured yet. Copy .env.example to .env.local and set your Supabase URL + anon key.",
+    },
   };
 }

@@ -15,14 +15,22 @@ function newId() {
 
 function dbRowsToLocal(rows) {
   if (!rows?.length) {
-    return [{ id: newId(), title: "", description: "", video_url: "", source: "youtube" }];
+    return [
+      {
+        id: newId(),
+        title: "",
+        description: "",
+        video_url: "",
+        source: "youtube",
+      },
+    ];
   }
   return rows.map((r) => ({
     id: r.id || newId(),
     title: r.title ?? "",
     description: r.description ?? "",
     video_url: r.video_url ?? r.videoUrl ?? "",
-    source: r.source === "upload" ? "upload" : "youtube"
+    source: r.source === "upload" ? "upload" : "youtube",
   }));
 }
 
@@ -33,21 +41,17 @@ function localToPayload(local) {
       title: r.title.trim(),
       description: r.description.trim(),
       video_url: r.video_url.trim(),
-      source: r.source === "upload" ? "upload" : "youtube"
+      source: r.source === "upload" ? "upload" : "youtube",
     }))
     .filter((r) => r.title || r.video_url);
 }
 
-/**
- * @param {Array<{ id?: string, title: string, description?: string, video_url: string }>} rowsModel
- * @param {(payload: ReturnType<typeof localToPayload>) => void} onPayloadChange
- */
 export default function TutorDemoVideosEditor({
   rowsModel,
   onPayloadChange,
   disabled,
   resetKey,
-  userId
+  userId,
 }) {
   const [local, setLocal] = useState(() => dbRowsToLocal(rowsModel));
   const [error, setError] = useState("");
@@ -72,7 +76,13 @@ export default function TutorDemoVideosEditor({
   const addRow = () => {
     emit([
       ...local,
-      { id: newId(), title: "", description: "", video_url: "", source: "youtube" }
+      {
+        id: newId(),
+        title: "",
+        description: "",
+        video_url: "",
+        source: "youtube",
+      },
     ]);
   };
 
@@ -81,7 +91,15 @@ export default function TutorDemoVideosEditor({
     emit(
       next.length
         ? next
-        : [{ id: newId(), title: "", description: "", video_url: "", source: "youtube" }]
+        : [
+            {
+              id: newId(),
+              title: "",
+              description: "",
+              video_url: "",
+              source: "youtube",
+            },
+          ],
     );
   };
 
@@ -102,7 +120,10 @@ export default function TutorDemoVideosEditor({
     }
 
     setUploadingRowId(rowId);
-    const { data, error: uploadError } = await uploadDemoVideo({ userId, file });
+    const { data, error: uploadError } = await uploadDemoVideo({
+      userId,
+      file,
+    });
     setUploadingRowId("");
 
     if (uploadError) {
@@ -114,8 +135,8 @@ export default function TutorDemoVideosEditor({
       local.map((r) =>
         r.id === rowId
           ? { ...r, source: "upload", video_url: data.publicUrl }
-          : r
-      )
+          : r,
+      ),
     );
   };
 
@@ -135,7 +156,8 @@ export default function TutorDemoVideosEditor({
               Demo videos
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Add a YouTube link or upload directly to the platform. Up to 8 clips.
+              Add a YouTube link or upload directly to the platform. Up to 8
+              clips.
             </p>
           </div>
         </div>
@@ -205,7 +227,9 @@ export default function TutorDemoVideosEditor({
                       ) : (
                         <UploadCloud size={13} />
                       )}
-                      {uploadingRowId === row.id ? "Uploading..." : "Upload video file"}
+                      {uploadingRowId === row.id
+                        ? "Uploading..."
+                        : "Upload video file"}
                     </button>
                     <p className="truncate rounded-lg bg-slate-100 px-2 py-1 font-mono text-[11px] text-slate-600 dark:bg-slate-900 dark:text-slate-300">
                       {row.video_url || "No file uploaded yet"}
@@ -214,7 +238,9 @@ export default function TutorDemoVideosEditor({
                 ) : (
                   <input
                     value={row.video_url}
-                    onChange={(e) => patchRow(row.id, "video_url", e.target.value)}
+                    onChange={(e) =>
+                      patchRow(row.id, "video_url", e.target.value)
+                    }
                     disabled={disabled}
                     placeholder="https://www.youtube.com/watch?v=…"
                     className={`${inputClass} mt-1 font-mono text-[13px]`}
@@ -225,7 +251,9 @@ export default function TutorDemoVideosEditor({
                 Short description (optional)
                 <textarea
                   value={row.description}
-                  onChange={(e) => patchRow(row.id, "description", e.target.value)}
+                  onChange={(e) =>
+                    patchRow(row.id, "description", e.target.value)
+                  }
                   disabled={disabled}
                   rows={2}
                   maxLength={400}

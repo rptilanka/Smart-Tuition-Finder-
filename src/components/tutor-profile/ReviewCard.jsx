@@ -1,9 +1,6 @@
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 
-/**
- * Reusable student review card.
- */
 export default function ReviewCard({ review }) {
   const initials =
     review.initials ??
@@ -26,7 +23,7 @@ export default function ReviewCard({ review }) {
           className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-sm font-extrabold text-white shadow-[0_6px_16px_rgba(15,23,42,0.2)]"
           style={{
             background:
-              review.accent ?? "linear-gradient(135deg,#0ea5e9,#6366f1)"
+              review.accent ?? "linear-gradient(135deg,#0ea5e9,#6366f1)",
           }}
         >
           {initials}

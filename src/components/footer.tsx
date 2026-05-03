@@ -35,7 +35,10 @@ const Footer = () => {
       <div className="mx-auto max-w-6xl px-6">
         <div className="grid grid-cols-1 gap-x-8 gap-y-10 py-14 sm:grid-cols-2 lg:grid-cols-6">
           <div className="lg:col-span-2">
-            <Link className="text-xl font-semibold tracking-[-0.02em] text-white" to="/">
+            <Link
+              className="text-xl font-semibold tracking-[-0.02em] text-white"
+              to="/"
+            >
               Smart Tuition Finder
             </Link>
             <p className="mt-4 max-w-sm text-sm leading-6 text-white/60">
@@ -70,7 +73,11 @@ const Footer = () => {
                 placeholder="Enter your email"
                 type="email"
               />
-              <Button className="h-10 rounded-full bg-white px-5 text-black hover:bg-white/90" type="submit">
+
+              <Button
+                className="h-10 rounded-full bg-white px-5 text-black hover:bg-white/90"
+                type="submit"
+              >
                 Subscribe
               </Button>
             </form>
@@ -89,22 +96,47 @@ const Footer = () => {
           </span>
 
           <div className="flex items-center gap-2">
-            <Button asChild className="text-white/60 hover:bg-white/10 hover:text-white" size="icon-sm" variant="ghost">
+            <Button
+              asChild
+              className="text-white/60 hover:bg-white/10 hover:text-white"
+              size="icon-sm"
+              variant="ghost"
+            >
               <a aria-label="Twitter" href="#" rel="noreferrer" target="_blank">
                 <TwitterIcon className="h-5 w-5" />
               </a>
             </Button>
-            <Button asChild className="text-white/60 hover:bg-white/10 hover:text-white" size="icon-sm" variant="ghost">
-              <a aria-label="Dribbble" href="#" rel="noreferrer" target="_blank">
+            <Button
+              asChild
+              className="text-white/60 hover:bg-white/10 hover:text-white"
+              size="icon-sm"
+              variant="ghost"
+            >
+              <a
+                aria-label="Dribbble"
+                href="#"
+                rel="noreferrer"
+                target="_blank"
+              >
                 <DribbbleIcon className="h-5 w-5" />
               </a>
             </Button>
-            <Button asChild className="text-white/60 hover:bg-white/10 hover:text-white" size="icon-sm" variant="ghost">
+            <Button
+              asChild
+              className="text-white/60 hover:bg-white/10 hover:text-white"
+              size="icon-sm"
+              variant="ghost"
+            >
               <a aria-label="Twitch" href="#" rel="noreferrer" target="_blank">
                 <TwitchIcon className="h-5 w-5" />
               </a>
             </Button>
-            <Button asChild className="text-white/60 hover:bg-white/10 hover:text-white" size="icon-sm" variant="ghost">
+            <Button
+              asChild
+              className="text-white/60 hover:bg-white/10 hover:text-white"
+              size="icon-sm"
+              variant="ghost"
+            >
               <a aria-label="GitHub" href="#" rel="noreferrer" target="_blank">
                 <GithubIcon className="h-5 w-5" />
               </a>

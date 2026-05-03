@@ -15,7 +15,7 @@ function modelToLocal(rowsModel) {
   return rowsModel.map((r) => ({
     key: newKey(),
     subject: r.subject ?? "",
-    gradesText: Array.isArray(r.grades) ? r.grades.join(", ") : ""
+    gradesText: Array.isArray(r.grades) ? r.grades.join(", ") : "",
   }));
 }
 
@@ -26,21 +26,16 @@ function localToModel(local) {
       grades: r.gradesText
         .split(/[,;|]/)
         .map((g) => g.trim())
-        .filter(Boolean)
+        .filter(Boolean),
     }))
     .filter((r) => r.subject || r.grades.length > 0);
 }
 
-/**
- * @param {Array<{ subject: string, grades: string[] }>} rowsModel
- * @param {(rows: Array<{ subject: string, grades: string[] }>) => void} onModelChange
- * @param {string} resetKey — e.g. `${profile.id}-${profile.updated_at}` to re-sync after load/save
- */
 export default function TutorSubjectsGradesEditor({
   rowsModel,
   onModelChange,
   disabled,
-  resetKey
+  resetKey,
 }) {
   const [local, setLocal] = useState(() => modelToLocal(rowsModel));
 
@@ -79,7 +74,8 @@ export default function TutorSubjectsGradesEditor({
               Subjects & Grades
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Each subject and grade levels (comma-separated, e.g. O/L, A/L, Grade 9).
+              Each subject and grade levels (comma-separated, e.g. O/L, A/L,
+              Grade 9).
             </p>
           </div>
         </div>
@@ -114,7 +110,9 @@ export default function TutorSubjectsGradesEditor({
               Grades / levels
               <input
                 value={row.gradesText}
-                onChange={(e) => updateRow(row.key, "gradesText", e.target.value)}
+                onChange={(e) =>
+                  updateRow(row.key, "gradesText", e.target.value)
+                }
                 disabled={disabled}
                 placeholder="e.g. O/L, A/L, Grade 10"
                 className={`${inputClass} mt-1`}

@@ -8,7 +8,7 @@ import {
   Loader2,
   Lock,
   Mail,
-  UserRound
+  UserRound,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -49,13 +49,10 @@ export default function TutorRegisterPage({ embedded = false }) {
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
       errs.email = "Enter a valid email address.";
     if (!password) errs.password = "Password is required.";
-    else if (password.length < 8)
-      errs.password = "Use at least 8 characters.";
+    else if (password.length < 8) errs.password = "Use at least 8 characters.";
     if (!confirm) errs.confirm = "Please confirm your password.";
-    else if (confirm !== password)
-      errs.confirm = "Passwords don't match.";
-    if (!agreeTerms)
-      errs.terms = "Please accept the Terms and Privacy Policy.";
+    else if (confirm !== password) errs.confirm = "Passwords don't match.";
+    if (!agreeTerms) errs.terms = "Please accept the Terms and Privacy Policy.";
     setFieldErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -70,7 +67,7 @@ export default function TutorRegisterPage({ embedded = false }) {
       name,
       email,
       password,
-      role: "tutor"
+      role: "tutor",
     });
     setSubmitting(false);
 
@@ -86,7 +83,7 @@ export default function TutorRegisterPage({ embedded = false }) {
 
     navigate("/tutor-login", {
       replace: true,
-      state: { justRegistered: true }
+      state: { justRegistered: true },
     });
   };
 
@@ -102,6 +99,7 @@ export default function TutorRegisterPage({ embedded = false }) {
               size={16}
               className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
             />
+
             <Input
               id="tutor-register-name"
               name="name"
@@ -115,7 +113,7 @@ export default function TutorRegisterPage({ embedded = false }) {
               className={cn(
                 "pl-9",
                 fieldErrors.name &&
-                  "border-destructive focus-visible:border-destructive"
+                  "border-destructive focus-visible:border-destructive",
               )}
             />
           </div>
@@ -133,6 +131,7 @@ export default function TutorRegisterPage({ embedded = false }) {
               size={16}
               className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
             />
+
             <Input
               id="tutor-register-email"
               name="email"
@@ -146,7 +145,7 @@ export default function TutorRegisterPage({ embedded = false }) {
               className={cn(
                 "pl-9",
                 fieldErrors.email &&
-                  "border-destructive focus-visible:border-destructive"
+                  "border-destructive focus-visible:border-destructive",
               )}
             />
           </div>
@@ -164,6 +163,7 @@ export default function TutorRegisterPage({ embedded = false }) {
               size={16}
               className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
             />
+
             <Input
               id="tutor-register-password"
               name="password"
@@ -177,9 +177,10 @@ export default function TutorRegisterPage({ embedded = false }) {
               className={cn(
                 "pl-9 pr-10",
                 fieldErrors.password &&
-                  "border-destructive focus-visible:border-destructive"
+                  "border-destructive focus-visible:border-destructive",
               )}
             />
+
             <button
               type="button"
               onClick={() => setShowPassword((v) => !v)}
@@ -213,6 +214,7 @@ export default function TutorRegisterPage({ embedded = false }) {
               size={16}
               className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
             />
+
             <Input
               id="tutor-register-confirm"
               name="confirmPassword"
@@ -226,9 +228,10 @@ export default function TutorRegisterPage({ embedded = false }) {
               className={cn(
                 "pl-9 pr-10",
                 fieldErrors.confirm &&
-                  "border-destructive focus-visible:border-destructive"
+                  "border-destructive focus-visible:border-destructive",
               )}
             />
+
             <button
               type="button"
               onClick={() => setShowConfirm((v) => !v)}
@@ -255,6 +258,7 @@ export default function TutorRegisterPage({ embedded = false }) {
               className="mt-0.5"
               aria-invalid={Boolean(fieldErrors.terms)}
             />
+
             <span>
               I agree to the{" "}
               <Link
@@ -361,7 +365,7 @@ function PasswordMeter({ strength }) {
     "bg-destructive",
     "bg-slate-400",
     "bg-slate-700",
-    "bg-slate-950 dark:bg-white"
+    "bg-slate-950 dark:bg-white",
   ];
 
   return (
@@ -372,7 +376,7 @@ function PasswordMeter({ strength }) {
             key={seg}
             className={cn(
               "h-1.5 flex-1 rounded-full bg-muted transition-colors",
-              seg < strength.score && colors[strength.score - 1]
+              seg < strength.score && colors[strength.score - 1],
             )}
           />
         ))}

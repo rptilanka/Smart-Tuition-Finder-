@@ -8,31 +8,30 @@ import {
   CalendarDays,
   CheckCircle2,
   Clock3,
+  LayoutDashboard,
   MapPin,
   MessageSquareText,
   PlayCircle,
+  Settings,
   Star,
-  Users
+  Users,
 } from "lucide-react";
 
 import { getTutorProfile } from "../data/tutors";
 import {
   demoVideoRowToCardShape,
   demoVideosFromDb,
-  subjectsGradesFromDb
+  subjectsGradesFromDb,
 } from "../lib/tutorProfileNormalize";
 import { getTutorProfileByIdFromSupabase } from "../lib/tutorPublicProfile";
+import { useAuth } from "../context/AuthContext";
 import VideoCard from "../components/tutor-profile/VideoCard";
 import ReviewCard from "../components/tutor-profile/ReviewCard";
 import BookingSidebar from "../components/tutor-profile/BookingSidebar";
 
-// -------------------------------------------------------------------
-// Helpers
-// -------------------------------------------------------------------
-
 const fadeInUp = {
   hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
 };
 
 function splitParagraphs(value) {
@@ -51,15 +50,15 @@ function extractWhatsappNumber(tutor) {
     tutor?.phone,
     tutor?.phone_number,
     tutor?.contact_number,
-    tutor?.mobile
+    tutor?.mobile,
   ];
+
   for (const value of directFields) {
     if (value == null) continue;
     const cleaned = String(value).replace(/\D/g, "");
     if (cleaned.length >= 9) return cleaned;
   }
 
-  // Fallback: parse a number from free-form availability/contact notes.
   const text = String(tutor?.availability_booking ?? "");
   const found = text.match(/(?:\+?\d[\d\s-]{7,}\d)/);
   if (!found) return "";
@@ -127,142 +126,188 @@ function StarRow({ value, size = 14 }) {
   );
 }
 
-// -------------------------------------------------------------------
-// 1. Hero Section
-// -------------------------------------------------------------------
-
-function ProfileHero({ tutor, onBook, onContact }) {
-  const hasVerifiedBlueMark = Boolean(tutor.verifiedBlueMark || Number(tutor.verifiedMarks) > 0);
+function ProfileHero({ tutor, onBook, onContact, isOwnProfile }) {
+  const hasVerifiedBlueMark = Boolean(
+    tutor.verifiedBlueMark || Number(tutor.verifiedMarks) > 0,
+  );
   return (
     <section className="mx-auto max-w-6xl px-6 pt-10">
-
       <div className="overflow-hidden rounded-[2.75rem] bg-white shadow-[0_40px_120px_rgba(15,23,42,0.12)] ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10">
-        <div className="relative h-28 w-full overflow-hidden bg-slate-200 dark:bg-slate-800 md:h-36">
+        {}
+        <div
+          className="relative h-32 w-full overflow-hidden sm:h-36 md:h-40 lg:h-44"
+          style={
+            !tutor.coverImage && tutor.accent
+              ? { background: tutor.accent }
+              : undefined
+          }
+        >
           {tutor.coverImage ? (
             <img
               src={tutor.coverImage}
               alt={`${tutor.name} cover`}
-              className="h-full w-full object-cover"
+              className="absolute inset-0 h-full w-full object-cover object-center"
             />
-          ) : null}
+          ) : (
+            <div
+              className="absolute inset-0 h-full w-full bg-gradient-to-br from-slate-200 via-slate-100 to-slate-200 dark:from-slate-800 dark:via-slate-800 dark:to-slate-900"
+              aria-hidden
+            />
+          )}
+          <div
+            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent dark:from-black/40"
+            aria-hidden
+          />
         </div>
-        <div className="grid grid-cols-1 gap-8 p-8 md:grid-cols-[auto_1fr] md:p-12">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.92 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.45, ease: "easeOut" }}
-            className="relative"
-          >
-            <div className="flex h-28 w-28 items-center justify-center overflow-hidden rounded-[2rem] bg-slate-950 text-3xl font-semibold text-white shadow-sm md:h-36 md:w-36 md:text-5xl dark:bg-white dark:text-slate-950">
-              {tutor.avatar_url ? (
-                <img
-                  src={tutor.avatar_url}
-                  alt={`${tutor.name} avatar`}
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                tutor.initials
-              )}
-            </div>
-          </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-          >
-            {tutor.subject ? (
-              <p className="inline-flex rounded-full bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
-                {tutor.subject}
+        {}
+        <div className="relative px-6 pb-8 pt-0 sm:px-8 sm:pb-10 md:px-12 md:pb-12">
+          <div className="-mt-10 flex w-full flex-row items-start gap-4 sm:-mt-11 sm:gap-5 md:-mt-14 md:grid md:w-full md:grid-cols-[auto_1fr] md:items-start md:gap-x-10 lg:gap-x-12">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+              className="relative z-10 shrink-0"
+            >
+              <div className="flex h-[7.25rem] w-[7.25rem] shrink-0 items-center justify-center overflow-hidden rounded-[2rem] bg-slate-950 text-3xl font-semibold text-white shadow-xl ring-4 ring-white md:h-36 md:w-36 md:text-5xl dark:bg-white dark:text-slate-950 dark:ring-slate-900">
+                {tutor.avatar_url ? (
+                  <img
+                    src={tutor.avatar_url}
+                    alt={`${tutor.name} avatar`}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  tutor.initials
+                )}
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+              className="min-w-0 flex-1 text-left md:min-h-0 md:pt-1 lg:pt-2"
+            >
+              {tutor.subject ? (
+                <p className="inline-flex rounded-full bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                  {tutor.subject}
+                </p>
+              ) : null}
+              <p
+                className={`flex flex-wrap items-center gap-2 text-3xl font-semibold leading-[1.02] tracking-[-0.05em] text-slate-950 sm:text-4xl dark:text-white ${
+                  tutor.subject ? "mt-2" : "mt-0"
+                }`}
+              >
+                <span>{tutor.name}</span>
+                {hasVerifiedBlueMark ? (
+                  <CheckCircle2 className="size-5 shrink-0 text-blue-600" />
+                ) : null}
               </p>
-            ) : null}
-            <p className="flex flex-wrap items-center gap-2 text-4xl font-semibold leading-[1.02] tracking-[-0.05em] text-slate-950 md:text-4xl dark:text-white">
-              <span>{tutor.name}</span>
-              {hasVerifiedBlueMark ? (
-                <CheckCircle2 className="size-5 shrink-0 text-blue-600" />
-              ) : null}
-            </p>
-            <div className="mt-3 flex flex-wrap items-center gap-2">
-              {hasVerifiedBlueMark ? (
-                <p className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">
-                  <CheckCircle2 className="size-3.5" />
-                  Verified
-                </p>
-              ) : null}
-              {tutor.isProfileBoosted ? (
-                <p className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300">
-                  Profile Boost
-                </p>
-              ) : null}
-            </div>
+              <div className="mt-3 flex flex-wrap items-center gap-2">
+                {hasVerifiedBlueMark ? (
+                  <p className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">
+                    <CheckCircle2 className="size-3.5" />
+                    Verified
+                  </p>
+                ) : null}
+                {tutor.isProfileBoosted ? (
+                  <p className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300">
+                    Profile Boost
+                  </p>
+                ) : null}
+              </div>
 
-            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm font-semibold text-slate-500 dark:text-slate-400">
-              <span className="inline-flex items-center gap-1.5">
-                <StarRow value={tutor.rating} size={14} />
-                <span className="text-slate-950 dark:text-white">{tutor.rating?.toFixed(1)}</span>
-                {Number.isFinite(tutor.reviewsCount) ? (
-                  <span>
-                    ({tutor.reviewsCount} reviews)
+              <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm font-semibold text-slate-500 dark:text-slate-400">
+                <span className="inline-flex items-center gap-1.5">
+                  <StarRow value={tutor.rating} size={14} />
+                  <span className="text-slate-950 dark:text-white">
+                    {tutor.rating?.toFixed(1)}
+                  </span>
+                  {Number.isFinite(tutor.reviewsCount) ? (
+                    <span>({tutor.reviewsCount} reviews)</span>
+                  ) : null}
+                </span>
+                {tutor.location ? (
+                  <span className="inline-flex items-center gap-1">
+                    <MapPin size={14} />
+                    {tutor.location}
                   </span>
                 ) : null}
-              </span>
-              {tutor.location ? (
-                <span className="inline-flex items-center gap-1">
-                  <MapPin size={14} />
-                  {tutor.location}
-                </span>
-              ) : null}
-              {Number.isFinite(tutor.yearsExperience) ? (
-                <span className="inline-flex items-center gap-1">
-                  <Clock3 size={14} />
-                  {tutor.yearsExperience}+ years experience
-                </span>
-              ) : null}
-            </div>
+                {Number.isFinite(tutor.yearsExperience) ? (
+                  <span className="inline-flex items-center gap-1">
+                    <Clock3 size={14} />
+                    {tutor.yearsExperience}+ years experience
+                  </span>
+                ) : null}
+              </div>
 
-            <div className="mt-4 flex flex-wrap gap-2">
-              {tutor.subjectsTaught?.map((entry) => (
-                <span
-                  key={entry.subject}
-                  className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-[12px] font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300"
-                >
-                  {entry.subject}
-                </span>
-              ))}
-            </div>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {tutor.subjectsTaught?.map((entry) => (
+                  <span
+                    key={entry.subject}
+                    className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-[12px] font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300"
+                  >
+                    {entry.subject}
+                  </span>
+                ))}
+              </div>
 
-            <div className="mt-5 flex flex-wrap gap-2">
-              <motion.button
-                type="button"
-                onClick={onBook}
-                whileHover={{ scale: 1.04, y: -1 }}
-                whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
-              >
-                <CalendarDays size={15} />
-                Book Session
-              </motion.button>
-              <motion.button
-                type="button"
-                onClick={onContact}
-                whileHover={{ scale: 1.04, y: -1 }}
-                whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-50 dark:border-white/10 dark:bg-slate-900 dark:text-white dark:hover:bg-slate-800"
-              >
-                <MessageSquareText size={15} />
-                Contact Tutor
-              </motion.button>
-            </div>
-          </motion.div>
+              <div className="mt-5 flex w-full flex-wrap gap-2 md:max-w-none">
+                {isOwnProfile ? (
+                  <>
+                    <Link
+                      to="/tutor-profile/edit"
+                      className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+                    >
+                      <Settings size={15} />
+                      Edit profile
+                    </Link>
+                    <Link
+                      to={`/tutor/${tutor.id}`}
+                      className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-50 dark:border-white/10 dark:bg-slate-900 dark:text-white dark:hover:bg-slate-800"
+                    >
+                      Open public URL
+                    </Link>
+                    <Link
+                      to="/tutor-dashboard"
+                      className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-5 py-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-100 dark:border-white/10 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700"
+                    >
+                      <LayoutDashboard size={15} />
+                      Dashboard
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <motion.button
+                      type="button"
+                      onClick={onBook}
+                      whileHover={{ scale: 1.04, y: -1 }}
+                      whileTap={{ scale: 0.97 }}
+                      className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+                    >
+                      <CalendarDays size={15} />
+                      Book Session
+                    </motion.button>
+                    <motion.button
+                      type="button"
+                      onClick={onContact}
+                      whileHover={{ scale: 1.04, y: -1 }}
+                      whileTap={{ scale: 0.97 }}
+                      className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-50 dark:border-white/10 dark:bg-slate-900 dark:text-white dark:hover:bg-slate-800"
+                    >
+                      <MessageSquareText size={15} />
+                      Contact Tutor
+                    </motion.button>
+                  </>
+                )}
+              </div>
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>
   );
 }
-
-// -------------------------------------------------------------------
-// Toast for demo actions (book/contact click)
-// -------------------------------------------------------------------
 
 function Toast({ message }) {
   return (
@@ -281,10 +326,6 @@ function Toast({ message }) {
     </AnimatePresence>
   );
 }
-
-// -------------------------------------------------------------------
-// 7. Availability & Booking
-// -------------------------------------------------------------------
 
 function AvailabilityGrid({ availability, onBook }) {
   const [selected, setSelected] = useState(null);
@@ -342,15 +383,13 @@ function AvailabilityGrid({ availability, onBook }) {
         className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-slate-950 md:w-auto md:px-8"
       >
         <CalendarDays size={16} />
-        {selected ? `Book Now · ${selected.replace("-", " · ")}` : "Select a slot to book"}
+        {selected
+          ? `Book Now · ${selected.replace("-", " · ")}`
+          : "Select a slot to book"}
       </motion.button>
     </div>
   );
 }
-
-// -------------------------------------------------------------------
-// NotFound fallback (when /tutor/:id doesn't resolve)
-// -------------------------------------------------------------------
 
 function TutorNotFound() {
   return (
@@ -362,8 +401,9 @@ function TutorNotFound() {
         We couldn&rsquo;t find that tutor.
       </h1>
       <p className="mx-auto mt-3 max-w-xl text-slate-600 dark:text-slate-300">
-        The tutor you&rsquo;re looking for may have moved or is no longer active on
-        Smart Tuition Finder. Try browsing the featured tutors on the homepage.
+        The tutor you&rsquo;re looking for may have moved or is no longer active
+        on Smart Tuition Finder. Try browsing the featured tutors on the
+        homepage.
       </p>
       <Link
         to="/"
@@ -375,13 +415,14 @@ function TutorNotFound() {
   );
 }
 
-// -------------------------------------------------------------------
-// Page root
-// -------------------------------------------------------------------
-
-export default function TutorProfilePage() {
-  const { id } = useParams();
-  const staticTutor = getTutorProfile(id);
+export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
+  const { id: routeId } = useParams();
+  const { profile: authProfile } = useAuth();
+  const id = tutorIdProp ?? routeId;
+  const staticTutor = id ? getTutorProfile(id) : null;
+  const isOwnProfile = Boolean(
+    authProfile?.id && id && String(authProfile.id) === String(id),
+  );
   const [remoteTutor, setRemoteTutor] = useState(null);
   const [loadingRemoteTutor, setLoadingRemoteTutor] = useState(false);
   const [toast, setToast] = useState("");
@@ -399,6 +440,13 @@ export default function TutorProfilePage() {
 
   useEffect(() => {
     let mounted = true;
+    if (!id) {
+      setRemoteTutor(null);
+      setLoadingRemoteTutor(false);
+      return () => {
+        mounted = false;
+      };
+    }
     if (staticTutor) {
       setRemoteTutor(null);
       setLoadingRemoteTutor(false);
@@ -420,6 +468,10 @@ export default function TutorProfilePage() {
       mounted = false;
     };
   }, [id, staticTutor]);
+
+  if (!id) {
+    return <TutorNotFound />;
+  }
 
   if (loadingRemoteTutor && !tutor) {
     return (
@@ -443,18 +495,20 @@ export default function TutorProfilePage() {
   const subjectsTaught =
     subjectsGradesFromDb(tutor.subjects_grades).length > 0
       ? subjectsGradesFromDb(tutor.subjects_grades)
-      : tutor.subjectsTaught ?? [];
+      : (tutor.subjectsTaught ?? []);
   const demoVideos =
     demoVideosFromDb(tutor.demo_videos).length > 0
       ? demoVideosFromDb(tutor.demo_videos)
           .map((v) => demoVideoRowToCardShape(v))
           .filter(Boolean)
-      : tutor.demoVideos ?? [];
+      : (tutor.demoVideos ?? []);
   const availabilityText =
     typeof tutor.availability_booking === "string"
       ? tutor.availability_booking.trim()
       : "";
-  const availabilityGrid = Array.isArray(tutor.availability) ? tutor.availability : [];
+  const availabilityGrid = Array.isArray(tutor.availability)
+    ? tutor.availability
+    : [];
 
   const scrollToAvailability = () => {
     document
@@ -466,7 +520,7 @@ export default function TutorProfilePage() {
     setToast(
       slotLabel
         ? `Session booked for ${slotLabel.replace("-", " · ")} 🎉`
-        : "Please select a slot below to continue."
+        : "Please select a slot below to continue.",
     );
     if (!slotLabel) scrollToAvailability();
   };
@@ -477,8 +531,14 @@ export default function TutorProfilePage() {
       setToast("WhatsApp number is not available for this tutor.");
       return;
     }
-    const intro = encodeURIComponent(`Hi ${tutor.name}, I found your profile on Smart Tuition Finder.`);
-    window.open(`https://wa.me/${whatsappNumber}?text=${intro}`, "_blank", "noopener,noreferrer");
+    const intro = encodeURIComponent(
+      `Hi ${tutor.name}, I found your profile on Smart Tuition Finder.`,
+    );
+    window.open(
+      `https://wa.me/${whatsappNumber}?text=${intro}`,
+      "_blank",
+      "noopener,noreferrer",
+    );
   };
 
   return (
@@ -487,6 +547,7 @@ export default function TutorProfilePage() {
         tutor={tutor}
         onBook={scrollToAvailability}
         onContact={handleContact}
+        isOwnProfile={isOwnProfile}
       />
 
       <div className="mx-auto mt-8 max-w-6xl px-6">
@@ -620,6 +681,7 @@ export default function TutorProfilePage() {
               tutor={tutor}
               onBook={scrollToAvailability}
               onContact={handleContact}
+              isOwnProfile={isOwnProfile}
             />
           </aside>
         </div>

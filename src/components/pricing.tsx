@@ -33,6 +33,7 @@ const plans = [
       { title: "Choice of 2 filters", tooltip: tooltipContent.filters },
       { title: "2 retouch credits", tooltip: tooltipContent.credits },
     ],
+
     buttonText: "Get 20 portraits in 5 hours",
   },
   {
@@ -48,6 +49,7 @@ const plans = [
       { title: "Choice of 5 filters", tooltip: tooltipContent.filters },
       { title: "5 retouch credits", tooltip: tooltipContent.credits },
     ],
+
     buttonText: "Get 50 portraits in 3 hours",
     isPopular: true,
   },
@@ -63,6 +65,7 @@ const plans = [
       { title: "Choice of 10 filters", tooltip: tooltipContent.filters },
       { title: "10 retouch credits", tooltip: tooltipContent.credits },
     ],
+
     buttonText: "Get 100 portraits in 1 hour",
   },
 ];
