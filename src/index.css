@@ -71,10 +71,20 @@ body {
 @layer base {
   html {
     scroll-behavior: smooth;
+    font-family:
+      "Poppins",
+      ui-sans-serif,
+      system-ui,
+      sans-serif,
+      "Apple Color Emoji",
+      "Segoe UI Emoji",
+      "Segoe UI Symbol",
+      "Noto Color Emoji";
   }
 
   body {
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    font-family: inherit;
+    font-feature-settings: normal;
   }
 }
 

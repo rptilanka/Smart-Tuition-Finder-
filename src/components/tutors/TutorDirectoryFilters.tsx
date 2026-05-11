@@ -62,8 +62,9 @@ function FilterToggleGroup({
       onValueChange={(next) => {
         if (next) onChange(next);
       }}
-      variant="outline"
+      variant="default"
       size="sm"
+      spacing={2}
       className="flex w-full max-w-full flex-wrap justify-start gap-2"
     >
       {options.map((opt) => (
@@ -71,7 +72,10 @@ function FilterToggleGroup({
           key={opt.id}
           value={opt.id}
           className={cn(
-            "h-auto min-h-8 shrink-0 rounded-full px-3 py-1.5 text-[11px] font-semibold tracking-tight data-[state=on]:border-slate-950 data-[state=on]:bg-slate-950 data-[state=on]:text-white data-[state=on]:shadow-sm dark:data-[state=on]:border-white dark:data-[state=on]:bg-white dark:data-[state=on]:text-slate-950",
+            "h-auto min-h-8 shrink-0 !rounded-full border-0 px-3 py-1.5 text-[11px] font-semibold tracking-tight shadow-none ring-0",
+            "bg-muted/50 text-foreground hover:bg-muted/80",
+            "data-[state=on]:border-transparent data-[state=on]:bg-slate-950 data-[state=on]:text-white data-[state=on]:shadow-sm",
+            "dark:data-[state=on]:bg-white dark:data-[state=on]:text-slate-950",
           )}
         >
           {opt.label}

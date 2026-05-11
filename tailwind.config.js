@@ -1,8 +1,13 @@
+import defaultTheme from "tailwindcss/defaultTheme";
+
 export default {
   darkMode: "class",
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Poppins", ...defaultTheme.fontFamily.sans],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

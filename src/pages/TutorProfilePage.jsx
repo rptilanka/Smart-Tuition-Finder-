@@ -8,12 +8,13 @@ import {
   CalendarDays,
   CheckCircle2,
   Clock3,
-  LayoutDashboard,
+  Facebook,
+  Instagram,
   MapPin,
   MessageSquareText,
   PlayCircle,
-  Settings,
   Star,
+  Twitter,
   Users,
 } from "lucide-react";
 
@@ -101,6 +102,19 @@ function ProfileSection({ id, title, icon: Icon, actions, children }) {
   );
 }
 
+function WhatsAppIcon({ className }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className}
+      fill="currentColor"
+      aria-hidden
+    >
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+    </svg>
+  );
+}
+
 function StarRow({ value, size = 14 }) {
   const rounded = Math.round((value ?? 0) * 2) / 2;
   return (
@@ -130,6 +144,27 @@ function ProfileHero({ tutor, onBook, onContact, isOwnProfile }) {
   const hasVerifiedBlueMark = Boolean(
     tutor.verifiedBlueMark || Number(tutor.verifiedMarks) > 0,
   );
+
+  const profileUrl =
+    typeof window !== "undefined"
+      ? new URL(`/tutor/${tutor.id}`, window.location.origin).href
+      : "";
+  const shareText = `Check out ${tutor.name} on Smart Tuition Finder`;
+  const facebookShareHref = profileUrl
+    ? `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(profileUrl)}`
+    : "#";
+  const twitterShareHref = profileUrl
+    ? `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(profileUrl)}`
+    : "#";
+  const instagramHref =
+    import.meta.env.VITE_SOCIAL_INSTAGRAM_URL ?? "https://www.instagram.com/";
+  const whatsappShareHref = profileUrl
+    ? `https://api.whatsapp.com/send?text=${encodeURIComponent(`${shareText} ${profileUrl}`)}`
+    : "#";
+
+  const plainSocialClass =
+    "inline-flex shrink-0 text-foreground/80 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
+
   return (
     <section className="mx-auto max-w-6xl px-6 pt-10">
       <div className="overflow-hidden rounded-[2.75rem] bg-white shadow-[0_40px_120px_rgba(15,23,42,0.12)] ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10">
@@ -161,8 +196,8 @@ function ProfileHero({ tutor, onBook, onContact, isOwnProfile }) {
         </div>
 
         {}
-        <div className="relative px-6 pb-8 pt-0 sm:px-8 sm:pb-10 md:px-12 md:pb-12">
-          <div className="-mt-10 flex w-full flex-row items-start gap-4 sm:-mt-11 sm:gap-5 md:-mt-14 md:grid md:w-full md:grid-cols-[auto_1fr] md:items-start md:gap-x-10 lg:gap-x-12">
+        <div className="relative px-6 pb-8 pt-5 sm:px-8 sm:pb-10 sm:pt-6 md:px-12 md:pb-12 md:pt-8 lg:pt-10">
+          <div className="-mt-9 flex w-full flex-row items-start gap-4 sm:-mt-10 sm:gap-5 md:-mt-12 md:grid md:w-full md:grid-cols-[auto_1fr] md:items-start md:gap-x-10 lg:-mt-14 lg:gap-x-12">
             <motion.div
               initial={{ opacity: 0, scale: 0.92 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -186,7 +221,7 @@ function ProfileHero({ tutor, onBook, onContact, isOwnProfile }) {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-              className="min-w-0 flex-1 text-left md:min-h-0 md:pt-1 lg:pt-2"
+              className="flex min-h-0 min-w-0 flex-1 flex-col pt-4 text-left sm:pt-5 md:min-h-[min(16rem,28vh)] md:pt-7 lg:min-h-[min(17rem,30vh)] lg:pt-9"
             >
               {tutor.subject ? (
                 <p className="inline-flex rounded-full bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
@@ -252,55 +287,69 @@ function ProfileHero({ tutor, onBook, onContact, isOwnProfile }) {
                 ))}
               </div>
 
-              <div className="mt-5 flex w-full flex-wrap gap-2 md:max-w-none">
-                {isOwnProfile ? (
-                  <>
-                    <Link
-                      to="/tutor-profile/edit"
-                      className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
-                    >
-                      <Settings size={15} />
-                      Edit profile
-                    </Link>
-                    <Link
-                      to={`/tutor/${tutor.id}`}
-                      className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-50 dark:border-white/10 dark:bg-slate-900 dark:text-white dark:hover:bg-slate-800"
-                    >
-                      Open public URL
-                    </Link>
-                    <Link
-                      to="/tutor-dashboard"
-                      className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-5 py-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-100 dark:border-white/10 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700"
-                    >
-                      <LayoutDashboard size={15} />
-                      Dashboard
-                    </Link>
-                  </>
-                ) : (
-                  <>
-                    <motion.button
-                      type="button"
-                      onClick={onBook}
-                      whileHover={{ scale: 1.04, y: -1 }}
-                      whileTap={{ scale: 0.97 }}
-                      className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
-                    >
-                      <CalendarDays size={15} />
-                      Book Session
-                    </motion.button>
-                    <motion.button
-                      type="button"
-                      onClick={onContact}
-                      whileHover={{ scale: 1.04, y: -1 }}
-                      whileTap={{ scale: 0.97 }}
-                      className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-50 dark:border-white/10 dark:bg-slate-900 dark:text-white dark:hover:bg-slate-800"
-                    >
-                      <MessageSquareText size={15} />
-                      Contact Tutor
-                    </motion.button>
-                  </>
-                )}
-              </div>
+              {isOwnProfile ? (
+                <div className="mt-auto flex w-full flex-wrap items-end justify-end gap-5 pt-10 md:gap-6 md:pt-14 lg:pt-16">
+                  <a
+                    href={twitterShareHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={plainSocialClass}
+                    aria-label="Share profile on X (Twitter)"
+                  >
+                    <Twitter className="size-7" strokeWidth={1.5} />
+                  </a>
+                  <a
+                    href={instagramHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={plainSocialClass}
+                    aria-label="Open Instagram"
+                  >
+                    <Instagram className="size-7" strokeWidth={1.5} />
+                  </a>
+                  <a
+                    href={facebookShareHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={plainSocialClass}
+                    aria-label="Share profile on Facebook"
+                  >
+                    <Facebook className="size-7" strokeWidth={1.5} />
+                  </a>
+                  <a
+                    href={whatsappShareHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={plainSocialClass}
+                    aria-label="Share profile on WhatsApp"
+                  >
+                    <WhatsAppIcon className="size-7" />
+                  </a>
+                </div>
+              ) : (
+                <div className="mt-5 flex w-full flex-wrap gap-2 md:max-w-none">
+                  <motion.button
+                    type="button"
+                    onClick={onBook}
+                    whileHover={{ scale: 1.04, y: -1 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+                  >
+                    <CalendarDays size={15} />
+                    Book Session
+                  </motion.button>
+                  <motion.button
+                    type="button"
+                    onClick={onContact}
+                    whileHover={{ scale: 1.04, y: -1 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-50 dark:border-white/10 dark:bg-slate-900 dark:text-white dark:hover:bg-slate-800"
+                  >
+                    <MessageSquareText size={15} />
+                    Contact Tutor
+                  </motion.button>
+                </div>
+              )}
             </motion.div>
           </div>
         </div>
