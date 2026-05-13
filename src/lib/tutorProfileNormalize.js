@@ -4,6 +4,7 @@ const MAX_AVAILABILITY = 4000;
 const MAX_PROFILE_SUBJECT = 120;
 const MAX_PROFILE_LOCATION = 120;
 const MAX_WHATSAPP_NUMBER = 32;
+const MAX_SOCIAL_URL = 500;
 const MAX_SUBJECT_ROWS = 24;
 const MAX_VIDEO_ROWS = 8;
 const MAX_SUBJECT_LEN = 120;
@@ -15,6 +16,21 @@ function clampStr(v, max) {
   if (v == null) return "";
   const s = String(v);
   return s.length > max ? s.slice(0, max) : s;
+}
+
+export function normalizeSocialHref(raw) {
+  const trimmed = clampStr(raw ?? "", MAX_SOCIAL_URL).trim();
+  if (!trimmed) return "";
+  const withProto = /^https?:\/\//i.test(trimmed)
+    ? trimmed
+    : `https://${trimmed.replace(/^\/+/g, "")}`;
+  try {
+    const u = new URL(withProto);
+    if (u.protocol !== "http:" && u.protocol !== "https:") return "";
+    return u.href.slice(0, MAX_SOCIAL_URL);
+  } catch {
+    return "";
+  }
 }
 
 function parseYouTubeId(raw) {
@@ -208,6 +224,18 @@ export function sanitizeTutorProfilePatch(patch) {
   if (patch.reviews_count !== undefined) {
     const n = Number(patch.reviews_count);
     out.reviews_count = Number.isFinite(n) && n >= 0 ? Math.trunc(n) : null;
+  }
+
+  for (const key of [
+    "social_facebook_url",
+    "social_twitter_url",
+    "social_instagram_url",
+    "social_whatsapp_url",
+  ]) {
+    if (patch[key] !== undefined) {
+      const u = normalizeSocialHref(patch[key]);
+      out[key] = u || null;
+    }
   }
 
   return out;

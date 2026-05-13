@@ -177,6 +177,17 @@ async function removeObjectByPublicUrl(url, bucket) {
   } catch {}
 }
 
+/**
+ * Props for <img> when loading Supabase Storage public object URLs.
+ * Without this, some browsers send a cross-origin Referer and the image
+ * request can fail (403) on strict storage/CDN setups.
+ */
+export function supabaseStorageImageProps(url) {
+  if (!url || typeof url !== "string") return {};
+  if (!/\/storage\/v1\/object\//i.test(url)) return {};
+  return { referrerPolicy: "no-referrer" };
+}
+
 export async function removeAvatarByUrl(url) {
   return removeObjectByPublicUrl(url, AVATARS_BUCKET);
 }

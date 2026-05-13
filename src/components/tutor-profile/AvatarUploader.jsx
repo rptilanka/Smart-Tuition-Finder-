@@ -4,6 +4,7 @@ import { Camera, Loader2, Trash2, UploadCloud } from "lucide-react";
 
 import {
   removeAvatarByUrl,
+  supabaseStorageImageProps,
   uploadAvatar,
   validateAvatarFile,
 } from "../../lib/storage";
@@ -118,6 +119,7 @@ export default function AvatarUploader({
             <img
               src={previewUrl}
               alt={name ? `${name} avatar` : "Tutor avatar"}
+              {...supabaseStorageImageProps(previewUrl)}
               className="h-full w-full object-cover"
             />
           ) : (

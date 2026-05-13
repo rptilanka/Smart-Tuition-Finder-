@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 
 import { useAuth } from "../context/AuthContext";
+import { supabaseStorageImageProps } from "../lib/storage";
 
 const upcomingSessions = [
   {
@@ -107,6 +108,7 @@ export default function TutorDashboardPage() {
                     src={profile.avatar_url}
                     alt={`${displayName} avatar`}
                     className="h-full w-full object-cover"
+                    {...supabaseStorageImageProps(profile.avatar_url)}
                   />
                 ) : (
                   initials

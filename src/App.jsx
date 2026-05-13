@@ -47,6 +47,7 @@ import PublicOnlyRoute from "./components/auth/PublicOnlyRoute";
 import { useAuth } from "./context/AuthContext";
 import { fetchTutorDirectoryFromSupabase } from "./lib/tutorDirectory";
 import { isSupabaseConfigured } from "./lib/supabase";
+import { supabaseStorageImageProps } from "./lib/storage";
 
 function getStartedPath(user) {
   if (!user) return "/signup";
@@ -688,6 +689,7 @@ function FeaturedTutors({ tutors }) {
                       alt={`${tutor.name} avatar`}
                       className="h-full w-full object-cover"
                       loading="lazy"
+                      {...supabaseStorageImageProps(tutor.avatar_url)}
                     />
                   ) : (
                     tutor.initials
@@ -1275,6 +1277,7 @@ function AppleHomePage() {
                                 alt={`${tutor.name} avatar`}
                                 className="h-full w-full object-cover"
                                 loading="lazy"
+                                {...supabaseStorageImageProps(tutor.avatar_url)}
                               />
                             ) : (
                               tutor.initials

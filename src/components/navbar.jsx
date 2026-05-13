@@ -7,6 +7,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useAuth } from "../context/AuthContext";
+import { supabaseStorageImageProps } from "../lib/storage";
 import { NavMenu } from "./nav-menu.jsx";
 
 function initialsFor(name) {
@@ -72,6 +73,7 @@ const Navbar = () => {
                       src={avatarUrl}
                       alt=""
                       className="h-full w-full object-cover"
+                      {...supabaseStorageImageProps(avatarUrl)}
                     />
                   ) : (
                     initialsFor(displayName)

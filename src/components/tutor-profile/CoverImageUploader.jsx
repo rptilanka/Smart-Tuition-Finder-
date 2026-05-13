@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 
 import {
   removeCoverImageByUrl,
+  supabaseStorageImageProps,
   uploadCoverImage,
   validateAvatarFile,
 } from "../../lib/storage";
@@ -169,6 +170,7 @@ export default function CoverImageUploader({
             src={previewUrl}
             alt={name ? `${name} cover` : "Tutor cover"}
             className="h-40 w-full object-cover sm:h-48"
+            {...supabaseStorageImageProps(previewUrl)}
           />
         ) : (
           <div className="flex h-40 w-full items-center justify-center bg-slate-200 text-sm font-medium text-slate-600 sm:h-48 dark:bg-slate-800 dark:text-slate-300">

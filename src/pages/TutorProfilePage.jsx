@@ -22,6 +22,7 @@ import { getTutorProfile } from "../data/tutors";
 import {
   demoVideoRowToCardShape,
   demoVideosFromDb,
+  normalizeSocialHref,
   subjectsGradesFromDb,
 } from "../lib/tutorProfileNormalize";
 import { getTutorProfileByIdFromSupabase } from "../lib/tutorPublicProfile";
@@ -150,20 +151,38 @@ function ProfileHero({ tutor, onBook, onContact, isOwnProfile }) {
       ? new URL(`/tutor/${tutor.id}`, window.location.origin).href
       : "";
   const shareText = `Check out ${tutor.name} on Smart Tuition Finder`;
-  const facebookShareHref = profileUrl
+  const fallbackFacebookHref = profileUrl
     ? `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(profileUrl)}`
-    : "#";
-  const twitterShareHref = profileUrl
+    : "";
+  const fallbackTwitterHref = profileUrl
     ? `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(profileUrl)}`
-    : "#";
-  const instagramHref =
+    : "";
+  const fallbackInstagramHref =
     import.meta.env.VITE_SOCIAL_INSTAGRAM_URL ?? "https://www.instagram.com/";
-  const whatsappShareHref = profileUrl
+  const fallbackWhatsappHref = profileUrl
     ? `https://api.whatsapp.com/send?text=${encodeURIComponent(`${shareText} ${profileUrl}`)}`
-    : "#";
+    : "";
 
-  const plainSocialClass =
-    "inline-flex shrink-0 text-foreground/80 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
+  const fbCustom = normalizeSocialHref(tutor.social_facebook_url);
+  const twCustom = normalizeSocialHref(tutor.social_twitter_url);
+  const igCustom = normalizeSocialHref(tutor.social_instagram_url);
+  const waCustom = normalizeSocialHref(tutor.social_whatsapp_url);
+
+  const facebookHref =
+    fbCustom || (isOwnProfile ? fallbackFacebookHref : "") || "";
+  const twitterHref =
+    twCustom || (isOwnProfile ? fallbackTwitterHref : "") || "";
+  const instagramHref =
+    igCustom || (isOwnProfile ? fallbackInstagramHref : "") || "";
+  const whatsappHref =
+    waCustom || (isOwnProfile ? fallbackWhatsappHref : "") || "";
+
+  const showSocialRow =
+    isOwnProfile ||
+    Boolean(fbCustom || twCustom || igCustom || waCustom);
+
+  const socialLinkBase =
+    "inline-flex shrink-0 rounded-sm p-0.5 transition-opacity hover:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
 
   return (
     <section className="mx-auto max-w-6xl px-6 pt-10">
@@ -287,46 +306,55 @@ function ProfileHero({ tutor, onBook, onContact, isOwnProfile }) {
                 ))}
               </div>
 
-              {isOwnProfile ? (
+              {showSocialRow ? (
                 <div className="mt-auto flex w-full flex-wrap items-end justify-end gap-5 pt-10 md:gap-6 md:pt-14 lg:pt-16">
-                  <a
-                    href={twitterShareHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={plainSocialClass}
-                    aria-label="Share profile on X (Twitter)"
-                  >
-                    <Twitter className="size-7" strokeWidth={1.5} />
-                  </a>
-                  <a
-                    href={instagramHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={plainSocialClass}
-                    aria-label="Open Instagram"
-                  >
-                    <Instagram className="size-7" strokeWidth={1.5} />
-                  </a>
-                  <a
-                    href={facebookShareHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={plainSocialClass}
-                    aria-label="Share profile on Facebook"
-                  >
-                    <Facebook className="size-7" strokeWidth={1.5} />
-                  </a>
-                  <a
-                    href={whatsappShareHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={plainSocialClass}
-                    aria-label="Share profile on WhatsApp"
-                  >
-                    <WhatsAppIcon className="size-7" />
-                  </a>
+                  {twitterHref ? (
+                    <a
+                      href={twitterHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`${socialLinkBase} text-[#1D9BF0]`}
+                      aria-label="X (Twitter)"
+                    >
+                      <Twitter className="size-7" strokeWidth={1.5} />
+                    </a>
+                  ) : null}
+                  {instagramHref ? (
+                    <a
+                      href={instagramHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`${socialLinkBase} text-[#E4405F]`}
+                      aria-label="Instagram"
+                    >
+                      <Instagram className="size-7" strokeWidth={1.5} />
+                    </a>
+                  ) : null}
+                  {facebookHref ? (
+                    <a
+                      href={facebookHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`${socialLinkBase} text-[#1877F2]`}
+                      aria-label="Facebook"
+                    >
+                      <Facebook className="size-7" strokeWidth={1.5} />
+                    </a>
+                  ) : null}
+                  {whatsappHref ? (
+                    <a
+                      href={whatsappHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`${socialLinkBase} text-[#25D366]`}
+                      aria-label="WhatsApp"
+                    >
+                      <WhatsAppIcon className="size-7" />
+                    </a>
+                  ) : null}
                 </div>
-              ) : (
+              ) : null}
+              {!isOwnProfile ? (
                 <div className="mt-5 flex w-full flex-wrap gap-2 md:max-w-none">
                   <motion.button
                     type="button"
@@ -349,7 +377,7 @@ function ProfileHero({ tutor, onBook, onContact, isOwnProfile }) {
                     Contact Tutor
                   </motion.button>
                 </div>
-              )}
+              ) : null}
             </motion.div>
           </div>
         </div>

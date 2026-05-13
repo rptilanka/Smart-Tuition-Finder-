@@ -39,6 +39,10 @@ export function mapTutorRowToProfileModel(row) {
     demo_videos: row.demo_videos ?? [],
     availability_booking: row.availability_booking ?? "",
     whatsapp_number: row.whatsapp_number ?? "",
+    social_facebook_url: row.social_facebook_url ?? "",
+    social_twitter_url: row.social_twitter_url ?? "",
+    social_instagram_url: row.social_instagram_url ?? "",
+    social_whatsapp_url: row.social_whatsapp_url ?? "",
     reviews: [],
     availability: [],
   };

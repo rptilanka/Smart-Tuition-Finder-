@@ -17,6 +17,7 @@ import {
 } from "../components/tutors/TutorDirectoryFilters";
 import { fetchTutorDirectoryFromSupabase } from "../lib/tutorDirectory";
 import { isSupabaseConfigured } from "../lib/supabase";
+import { supabaseStorageImageProps } from "../lib/storage";
 import { cn } from "../lib/utils";
 
 const SUBJECT_FILTERS = [
@@ -308,6 +309,7 @@ function TutorCard({ tutor }) {
               alt={`${tutor.name} avatar`}
               className="h-full w-full object-cover"
               loading="lazy"
+              {...supabaseStorageImageProps(tutor.avatar_url)}
             />
           ) : (
             tutor.initials

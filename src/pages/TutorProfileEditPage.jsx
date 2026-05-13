@@ -8,6 +8,7 @@ import {
   Mail,
   MapPin,
   Phone,
+  Share2,
   Star,
   ShieldCheck,
   Sparkles,
@@ -50,6 +51,18 @@ export default function TutorProfileEditPage() {
   const [whatsappNumber, setWhatsappNumber] = useState(
     profile?.whatsapp_number ?? "",
   );
+  const [socialFacebookUrl, setSocialFacebookUrl] = useState(
+    profile?.social_facebook_url ?? "",
+  );
+  const [socialTwitterUrl, setSocialTwitterUrl] = useState(
+    profile?.social_twitter_url ?? "",
+  );
+  const [socialInstagramUrl, setSocialInstagramUrl] = useState(
+    profile?.social_instagram_url ?? "",
+  );
+  const [socialWhatsappUrl, setSocialWhatsappUrl] = useState(
+    profile?.social_whatsapp_url ?? "",
+  );
   const [profileSubject, setProfileSubject] = useState(
     profile?.profile_subject ?? "",
   );
@@ -87,6 +100,10 @@ export default function TutorProfileEditPage() {
       setQualificationsExperience(profile.qualifications_experience ?? "");
       setAvailabilityBooking(profile.availability_booking ?? "");
       setWhatsappNumber(profile.whatsapp_number ?? "");
+      setSocialFacebookUrl(profile.social_facebook_url ?? "");
+      setSocialTwitterUrl(profile.social_twitter_url ?? "");
+      setSocialInstagramUrl(profile.social_instagram_url ?? "");
+      setSocialWhatsappUrl(profile.social_whatsapp_url ?? "");
       setProfileSubject(profile.profile_subject ?? "");
       setProfileLocation(profile.profile_location ?? "");
       setYearsExperience(
@@ -114,6 +131,10 @@ export default function TutorProfileEditPage() {
     setQualificationsExperience("");
     setAvailabilityBooking("");
     setWhatsappNumber("");
+    setSocialFacebookUrl("");
+    setSocialTwitterUrl("");
+    setSocialInstagramUrl("");
+    setSocialWhatsappUrl("");
     setProfileSubject("");
     setProfileLocation("");
     setYearsExperience("");
@@ -144,6 +165,10 @@ export default function TutorProfileEditPage() {
       demo_videos: normalizeDemoVideos(demoVideoRows),
       availability_booking: availabilityBooking,
       whatsapp_number: whatsappNumber,
+      social_facebook_url: socialFacebookUrl,
+      social_twitter_url: socialTwitterUrl,
+      social_instagram_url: socialInstagramUrl,
+      social_whatsapp_url: socialWhatsappUrl,
       profile_subject: profileSubject,
       profile_location: profileLocation,
       years_experience: yearsExperience === "" ? null : Number(yearsExperience),
@@ -181,6 +206,10 @@ export default function TutorProfileEditPage() {
     demoVideoRows,
     availabilityBooking,
     whatsappNumber,
+    socialFacebookUrl,
+    socialTwitterUrl,
+    socialInstagramUrl,
+    socialWhatsappUrl,
     profileSubject,
     profileLocation,
     yearsExperience,
@@ -229,6 +258,22 @@ export default function TutorProfileEditPage() {
   const handleWhatsappNumberChange = (event) => {
     const value = event.target.value;
     setWhatsappNumber(value);
+    markDraftChanged();
+  };
+  const handleSocialFacebookChange = (event) => {
+    setSocialFacebookUrl(event.target.value);
+    markDraftChanged();
+  };
+  const handleSocialTwitterChange = (event) => {
+    setSocialTwitterUrl(event.target.value);
+    markDraftChanged();
+  };
+  const handleSocialInstagramChange = (event) => {
+    setSocialInstagramUrl(event.target.value);
+    markDraftChanged();
+  };
+  const handleSocialWhatsappChange = (event) => {
+    setSocialWhatsappUrl(event.target.value);
     markDraftChanged();
   };
   const handleLocationChange = (event) => {
@@ -527,6 +572,94 @@ export default function TutorProfileEditPage() {
                     className="pl-9"
                   />
                 </Field>
+              </div>
+
+              <div className="mt-6 rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-slate-800/40">
+                <div className="mb-3 flex items-center gap-2">
+                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white text-slate-950 shadow-sm dark:bg-slate-900 dark:text-white">
+                    <Share2 size={15} />
+                  </span>
+                  <div>
+                    <h3 className="text-sm font-semibold text-slate-950 dark:text-white">
+                      Social links
+                    </h3>
+                    <p className="text-[11px] text-muted-foreground">
+                      Full URLs (https://…). Shown on your public profile when
+                      set. Leave blank to use default share actions on your own
+                      view only.
+                    </p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                  <div className="space-y-1.5">
+                    <Label
+                      htmlFor="social-facebook"
+                      className="text-xs font-medium"
+                    >
+                      Facebook
+                    </Label>
+                    <Input
+                      id="social-facebook"
+                      value={socialFacebookUrl}
+                      onChange={handleSocialFacebookChange}
+                      placeholder="https://facebook.com/…"
+                      maxLength={500}
+                      disabled={disabled}
+                      autoComplete="url"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label
+                      htmlFor="social-twitter"
+                      className="text-xs font-medium"
+                    >
+                      X (Twitter)
+                    </Label>
+                    <Input
+                      id="social-twitter"
+                      value={socialTwitterUrl}
+                      onChange={handleSocialTwitterChange}
+                      placeholder="https://twitter.com/… or https://x.com/…"
+                      maxLength={500}
+                      disabled={disabled}
+                      autoComplete="url"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label
+                      htmlFor="social-instagram"
+                      className="text-xs font-medium"
+                    >
+                      Instagram
+                    </Label>
+                    <Input
+                      id="social-instagram"
+                      value={socialInstagramUrl}
+                      onChange={handleSocialInstagramChange}
+                      placeholder="https://instagram.com/…"
+                      maxLength={500}
+                      disabled={disabled}
+                      autoComplete="url"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label
+                      htmlFor="social-whatsapp"
+                      className="text-xs font-medium"
+                    >
+                      WhatsApp link
+                    </Label>
+                    <Input
+                      id="social-whatsapp"
+                      value={socialWhatsappUrl}
+                      onChange={handleSocialWhatsappChange}
+                      placeholder="https://wa.me/9477… or chat link"
+                      maxLength={500}
+                      disabled={disabled}
+                      autoComplete="url"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           )}

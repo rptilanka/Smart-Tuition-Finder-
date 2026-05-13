@@ -2,6 +2,8 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, X } from "lucide-react";
 
+import { supabaseStorageImageProps } from "../../lib/storage";
+
 export default function VideoCard({ video }) {
   const [open, setOpen] = useState(false);
   const embedUrl = toEmbedUrl(video.videoUrl);
@@ -22,6 +24,7 @@ export default function VideoCard({ video }) {
             alt={video.title}
             loading="lazy"
             className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.05] group-hover:brightness-110"
+            {...supabaseStorageImageProps(video.thumbnail)}
           />
 
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/75 via-slate-900/20 to-transparent" />
