@@ -40,11 +40,11 @@ export default function StudentLiveJoinPage() {
   if (!isStudent) return <Navigate to="/tutor-dashboard" replace />;
 
   return (
-    <section className="min-h-screen bg-[#f5f5f7] px-6 py-8 dark:bg-neutral-950">
+    <section className="min-h-screen bg-[#f5f5f7] dark:bg-neutral-950 px-6 py-8 dark:bg-neutral-950">
       <div className="mx-auto max-w-6xl space-y-4">
         <Link
           to="/student-dashboard"
-          className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 dark:border-white/10 dark:bg-neutral-900 dark:text-slate-200"
+          className="inline-flex items-center gap-1 rounded-full glass-btn border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 dark:border-white/10 dark:bg-neutral-900 dark:text-slate-200"
         >
           <ArrowLeft size={13} />
           Back to dashboard
@@ -69,7 +69,7 @@ export default function StudentLiveJoinPage() {
                 value={passcode}
                 onChange={(event) => setPasscode(event.target.value)}
                 placeholder="Enter passcode"
-                className="mt-2 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900 dark:border-white/10 dark:bg-neutral-950 dark:text-white"
+                className="mt-2 h-10 w-full rounded-xl glass-btn border border-slate-200 bg-white px-3 text-sm text-slate-900 dark:border-white/10 dark:bg-neutral-950 dark:text-white"
               />
             </div>
             <LiveRoom

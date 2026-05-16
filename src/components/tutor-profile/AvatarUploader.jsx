@@ -160,7 +160,7 @@ export default function AvatarUploader({
             type="button"
             onClick={handlePick}
             disabled={uploading}
-            className="inline-flex items-center gap-2 rounded-full bg-neutral-950 px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+            className="inline-flex items-center gap-2 rounded-full glass-btn bg-neutral-950 px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
           >
             {uploading ? (
               <Loader2 size={13} className="animate-spin" />
@@ -179,7 +179,7 @@ export default function AvatarUploader({
               type="button"
               onClick={handleRemove}
               disabled={removing || uploading}
-              className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:bg-neutral-950 dark:text-slate-200 dark:hover:bg-neutral-800"
+              className="inline-flex items-center gap-2 rounded-full glass-btn border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:bg-neutral-950 dark:text-slate-200 dark:hover:bg-neutral-800"
             >
               {removing ? (
                 <Loader2 size={13} className="animate-spin" />
@@ -192,7 +192,7 @@ export default function AvatarUploader({
         </div>
 
         {error ? (
-          <p className="mt-2 max-w-md rounded-lg border border-rose-200/60 bg-rose-50 px-2.5 py-1.5 text-[11px] font-semibold leading-relaxed text-rose-600 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-300">
+          <p className="mt-2 max-w-md rounded-lg glass-btn border border-rose-200/60 bg-rose-50 px-2.5 py-1.5 text-[11px] font-semibold leading-relaxed text-rose-600 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-300">
             {error}
           </p>
         ) : null}

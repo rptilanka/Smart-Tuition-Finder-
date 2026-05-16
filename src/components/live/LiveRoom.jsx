@@ -317,7 +317,7 @@ export default function LiveRoom({
 
   if (error) {
     return (
-      <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400">
+      <div className="rounded-xl glass-btn border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400">
         {error}
       </div>
     );
@@ -419,7 +419,7 @@ export default function LiveRoom({
             <div className="flex items-center">
               {role === "tutor" && (
                 <button type="button" onClick={onEnd}
-                  className="flex flex-col items-center gap-0.5 rounded-xl bg-red-600 px-5 py-2 text-[11px] font-semibold text-white transition hover:bg-red-500"
+                  className="flex flex-col items-center gap-0.5 rounded-xl glass-btn bg-red-600 px-5 py-2 text-[11px] font-semibold text-white transition hover:bg-red-500"
                 >
                   <Square size={18} />
                   <span>End</span>
@@ -477,7 +477,7 @@ export default function LiveRoom({
                     <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-500">Waiting</p>
                     <ul className="space-y-1">
                       {waitingRequests.map((req) => (
-                        <li key={req.id} className="flex items-center justify-between gap-2 rounded-lg bg-white/5 px-3 py-2">
+                        <li key={req.id} className="flex items-center justify-between gap-2 rounded-lg glass-btn bg-white/5 px-3 py-2">
                           <span className="text-xs text-slate-300">{req.user_id.slice(0, 8)}…</span>
                           <div className="flex gap-1">
                             <button type="button"
@@ -499,11 +499,11 @@ export default function LiveRoom({
                   <div className="flex flex-wrap gap-2">
                     <button type="button"
                       onClick={async () => { const u = await setMeetingLock({ meetingId, tutorId: userId, locked: !meeting?.is_locked }); onMeetingUpdated?.(u); }}
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 px-2.5 py-1.5 text-[11px] font-semibold text-slate-300 hover:bg-white/10"
+                      className="inline-flex items-center gap-1.5 rounded-lg glass-btn border border-white/10 px-2.5 py-1.5 text-[11px] font-semibold text-slate-300 hover:bg-white/10"
                     ><Lock size={11} />{meeting?.is_locked ? "Unlock" : "Lock room"}</button>
                     <button type="button"
                       onClick={() => muteAllParticipants({ meetingId, actorId: userId }).catch(() => {})}
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 px-2.5 py-1.5 text-[11px] font-semibold text-slate-300 hover:bg-white/10"
+                      className="inline-flex items-center gap-1.5 rounded-lg glass-btn border border-white/10 px-2.5 py-1.5 text-[11px] font-semibold text-slate-300 hover:bg-white/10"
                     ><MicOff size={11} /> Mute all</button>
                   </div>
                 )}
@@ -512,7 +512,7 @@ export default function LiveRoom({
                   <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-500">In the room</p>
                   <ul className="space-y-1">
                     {participants.map((p) => (
-                      <li key={p.user_id} className="flex items-center justify-between gap-2 rounded-lg bg-white/5 px-3 py-2">
+                      <li key={p.user_id} className="flex items-center justify-between gap-2 rounded-lg glass-btn bg-white/5 px-3 py-2">
                         <div className="flex items-center gap-2">
                           <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-bold text-white">
                             {p.user_id[0]?.toUpperCase()}
@@ -640,7 +640,7 @@ function ZoomChatPanel({ messages, currentUserId, onSend }) {
       >
         <input value={text} onChange={(e) => setText(e.target.value)}
           placeholder="Send a message…"
-          className="h-9 flex-1 rounded-lg border border-white/10 bg-white/5 px-3 text-xs text-white placeholder-slate-500 outline-none focus:ring-1 focus:ring-white/20"
+          className="h-9 flex-1 rounded-lg glass-btn border border-white/10 bg-white/5 px-3 text-xs text-white placeholder-slate-500 outline-none focus:ring-1 focus:ring-white/20"
         />
         <button type="submit"
           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-600 text-white hover:bg-blue-500"

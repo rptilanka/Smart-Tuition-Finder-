@@ -19,39 +19,38 @@ import { cn } from "@/lib/utils";
 import AuthLayout from "../components/auth/AuthLayout";
 import SupabaseSetupNotice from "../components/auth/SupabaseSetupNotice";
 import { useAuth } from "../context/AuthContext";
+import { useLanguage } from "../context/LanguageContext";
 
-const tutorLoginAside = (
-  <>
-    <h3 className="max-w-sm text-3xl font-semibold leading-[1.08] tracking-[-0.04em] text-foreground">
-      Teach what you love.
-      <br />
-      Grow your student base.
-    </h3>
-    <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
-      Join hundreds of Sri Lankan tutors already using Smart Tuition Finder to
-      fill their calendars and get discovered by motivated students.
-    </p>
-    <ul className="mt-7 space-y-2.5 text-sm font-medium text-foreground/90">
-      {[
-        "Verified profile with demo videos",
-        "Smart matching with nearby students",
-        "Built-in session scheduling",
-      ].map((item) => (
-        <li key={item} className="flex items-center gap-2">
-          <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center bg-background/95 text-foreground shadow-sm backdrop-blur-sm">
-            <CheckCircle2 size={13} />
-          </span>
-          {item}
-        </li>
-      ))}
-    </ul>
-  </>
-);
+function TutorLoginAside({ t }) {
+  return (
+    <>
+      <h3 className="max-w-sm text-3xl font-semibold leading-[1.08] tracking-[-0.04em] text-foreground">
+        {t.tutorAsideHeading1}
+        <br />
+        {t.tutorAsideHeading2}
+      </h3>
+      <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
+        {t.tutorAsideDesc}
+      </p>
+      <ul className="mt-7 space-y-2.5 text-sm font-medium text-foreground/90">
+        {t.tutorAsideItems.map((item) => (
+          <li key={item} className="flex items-center gap-2">
+            <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center bg-background/95 text-foreground shadow-sm backdrop-blur-sm">
+              <CheckCircle2 size={13} />
+            </span>
+            {item}
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+}
 
 export default function TutorLoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { signIn, isConfigured } = useAuth();
+  const { t } = useLanguage();
 
   const redirectTo = location.state?.from ?? "/tutor-dashboard";
 
@@ -64,10 +63,10 @@ export default function TutorLoginPage() {
 
   const validate = () => {
     const errs = {};
-    if (!email) errs.email = "Email is required.";
+    if (!email) errs.email = t.emailRequired;
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-      errs.email = "Enter a valid email address.";
-    if (!password) errs.password = "Password is required.";
+      errs.email = t.emailInvalid;
+    if (!password) errs.password = t.passwordRequired;
     setFieldErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -82,7 +81,7 @@ export default function TutorLoginPage() {
     setSubmitting(false);
 
     if (error) {
-      setFormError(prettifyAuthError(error));
+      setFormError(prettifyAuthError(error, t));
       return;
     }
 
@@ -92,21 +91,21 @@ export default function TutorLoginPage() {
   return (
     <AuthLayout
       fullPage
-      aside={tutorLoginAside}
-      title="Welcome back"
-      subtitle="Sign in to your tutor dashboard to manage sessions, students, and your profile."
+      aside={<TutorLoginAside t={t} />}
+      title={t.tutorLoginTitle}
+      subtitle={t.tutorLoginSubtitle}
     >
       {!isConfigured ? <SupabaseSetupNotice /> : null}
 
       {location.state?.justRegistered ? (
-        <p className="mb-4 rounded-xl border border-emerald-300/60 bg-emerald-50/90 px-3 py-2 text-center text-xs font-semibold text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-200">
-          Account created. Sign in with your email and password below.
+        <p className="mb-4 rounded-xl glass-btn border border-emerald-300/60 bg-emerald-50/90 px-3 py-2 text-center text-xs font-semibold text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-200">
+          {t.accountCreated}
         </p>
       ) : null}
 
       <form className="space-y-4" onSubmit={handleSubmit} noValidate>
         <div className="space-y-1.5">
-          <Label htmlFor="tutor-login-email">Email address</Label>
+          <Label htmlFor="tutor-login-email">{t.emailAddress}</Label>
           <div className="relative">
             <Mail
               size={16}
@@ -118,7 +117,7 @@ export default function TutorLoginPage() {
               name="email"
               type="email"
               autoComplete="email"
-              placeholder="you@example.com"
+              placeholder={t.emailPlaceholder}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={submitting}
@@ -138,7 +137,7 @@ export default function TutorLoginPage() {
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="tutor-login-password">Password</Label>
+          <Label htmlFor="tutor-login-password">{t.password}</Label>
           <div className="relative">
             <Lock
               size={16}
@@ -150,7 +149,7 @@ export default function TutorLoginPage() {
               name="password"
               type={showPassword ? "text" : "password"}
               autoComplete="current-password"
-              placeholder="Enter your password"
+              placeholder={t.passwordPlaceholder}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={submitting}
@@ -166,7 +165,7 @@ export default function TutorLoginPage() {
               type="button"
               onClick={() => setShowPassword((v) => !v)}
               className="absolute right-2 top-1/2 inline-flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-md text-muted-foreground transition hover:bg-muted hover:text-foreground"
-              aria-label={showPassword ? "Hide password" : "Show password"}
+              aria-label={showPassword ? t.hidePassword : t.showPassword}
               tabIndex={-1}
             >
               {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
@@ -189,17 +188,17 @@ export default function TutorLoginPage() {
         <Button
           type="submit"
           size="lg"
-          className="w-full rounded-full bg-neutral-950 text-white hover:bg-neutral-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+          className="w-full rounded-full bg-neutral-950 text-white hover:bg-neutral-800 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
           disabled={submitting || !isConfigured}
         >
           {submitting ? (
             <>
               <Loader2 className="animate-spin" />
-              Signing you in...
+              {t.signingIn}
             </>
           ) : (
             <>
-              Continue with Email
+              {t.continueWithEmail}
               <ArrowRight />
             </>
           )}
@@ -211,26 +210,26 @@ export default function TutorLoginPage() {
           type="button"
           className="block w-full text-muted-foreground underline underline-offset-2 transition hover:text-foreground"
         >
-          Forgot your password?
+          {t.forgotPassword}
         </button>
 
         <p className="text-muted-foreground">
-          Don&apos;t have an account?{" "}
+          {t.dontHaveAccount}{" "}
           <Link
             to="/signup?role=tutor"
             className="font-semibold text-slate-950 hover:underline dark:text-white"
           >
-            Create a tutor account
+            {t.createTutorAccount}
           </Link>
         </p>
 
         <p className="text-muted-foreground">
-          Looking for a tutor as a student?{" "}
+          {t.lookingForTutor}{" "}
           <Link
             to="/students-login"
             className="font-semibold text-foreground hover:underline"
           >
-            Student sign in
+            {t.studentSignIn}
           </Link>
         </p>
       </div>
@@ -238,11 +237,11 @@ export default function TutorLoginPage() {
   );
 }
 
-function prettifyAuthError(error) {
-  const message = error?.message ?? "Something went wrong. Please try again.";
+function prettifyAuthError(error, t) {
+  const message = error?.message ?? t.somethingWentWrong;
   if (/invalid login credentials|email not confirmed/i.test(message))
-    return "Invalid email or password.";
+    return t.invalidCredentials;
   if (/rate limit/i.test(message))
-    return "Too many attempts. Please wait a moment and try again.";
+    return t.tooManyAttempts;
   return message;
 }

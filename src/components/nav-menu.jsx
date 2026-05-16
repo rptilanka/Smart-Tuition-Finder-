@@ -7,16 +7,19 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
-
-const links = [
-  { href: "/", label: "Home" },
-  { href: "/#features", label: "Features" },
-  { href: "/tutors", label: "Tutors" },
-  { href: "/#reviews", label: "Reviews" },
-  { href: "/#join", label: "Join" },
-];
+import { useLanguage } from "../context/LanguageContext";
 
 export const NavMenu = ({ className, orientation, ...props }) => {
+  const { t } = useLanguage();
+
+  const links = [
+    { href: "/", label: t.navHome },
+    { href: "/#features", label: t.navFeatures },
+    { href: "/tutors", label: t.navTutors },
+    { href: "/#reviews", label: t.navReviews },
+    { href: "/#join", label: t.navJoin },
+  ];
+
   return (
     <NavigationMenu className={className} orientation={orientation} {...props}>
       <NavigationMenuList

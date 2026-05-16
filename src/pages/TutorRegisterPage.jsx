@@ -294,7 +294,7 @@ export default function TutorRegisterPage({ embedded = false }) {
         <Button
           type="submit"
           size="lg"
-          className="w-full rounded-full bg-neutral-950 text-white hover:bg-neutral-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+          className="w-full rounded-full bg-neutral-950 text-white hover:bg-neutral-800 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
           disabled={submitting || !isConfigured}
         >
           {submitting ? (
@@ -365,7 +365,7 @@ function PasswordMeter({ strength }) {
     "bg-destructive",
     "bg-slate-400",
     "bg-slate-700",
-    "bg-slate-950 dark:bg-white",
+    "bg-neutral-950 dark:bg-neutral-700",
   ];
 
   return (

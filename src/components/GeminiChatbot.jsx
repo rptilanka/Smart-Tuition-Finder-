@@ -220,7 +220,7 @@ export default function GeminiChatbot() {
         whileHover={{ scale: 1.06, y: -2 }}
         whileTap={{ scale: 0.96 }}
         onClick={() => setIsOpen((prev) => !prev)}
-        className="fixed bottom-6 right-6 z-[75] inline-flex items-center gap-2 rounded-full border border-white/15 bg-black px-5 py-3 font-semibold text-white shadow-[0_16px_34px_rgba(0,0,0,0.45)]"
+        className="fixed bottom-6 right-6 z-[75] inline-flex items-center gap-2 rounded-full glass-btn border border-white/15 bg-black px-5 py-3 font-semibold text-white shadow-[0_16px_34px_rgba(0,0,0,0.45)]"
       >
         <MessageCircle size={18} />
         Chatbot
@@ -306,7 +306,7 @@ export default function GeminiChatbot() {
                   value={input}
                   onChange={(event) => setInput(event.target.value)}
                   placeholder="Type your question…"
-                  className="w-full rounded-xl border border-white/15 bg-zinc-900 px-3 py-2 text-sm text-white placeholder:text-white/45 outline-none transition focus:border-white/45"
+                  className="w-full rounded-xl glass-btn border border-white/15 bg-zinc-900 px-3 py-2 text-sm text-white placeholder:text-white/45 outline-none transition focus:border-white/45"
                 />
 
                 <button

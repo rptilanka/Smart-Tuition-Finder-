@@ -89,13 +89,13 @@ const Pricing = () => {
       >
         <TabsList className="h-11 rounded-full">
           <TabsTrigger
-            className="rounded-full px-4 data-[state=active]:shadow-none"
+            className="rounded-full glass-btn px-4 data-[state=active]:shadow-none"
             value="monthly"
           >
             Monthly
           </TabsTrigger>
           <TabsTrigger
-            className="rounded-full px-4 data-[state=active]:shadow-none"
+            className="rounded-full glass-btn px-4 data-[state=active]:shadow-none"
             value="yearly"
           >
             Yearly (Save {YEARLY_DISCOUNT}%)

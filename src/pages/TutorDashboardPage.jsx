@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 
 import { useAuth } from "../context/AuthContext";
+import { useLanguage } from "../context/LanguageContext";
 import { canTutorCreateMeeting } from "../lib/liveAccess";
 import {
   buildSecureJoinLink,
@@ -70,6 +71,7 @@ const activity = [
 export default function TutorDashboardPage() {
   const navigate = useNavigate();
   const { user, profile, profileLoading, signOut } = useAuth();
+  const { t } = useLanguage();
   const [signingOut, setSigningOut] = useState(false);
   const [liveCapability, setLiveCapability] = useState({ allowed: false, reason: "", loading: true });
   const [stats, setStats] = useState({ activeStudents: 0, sessionsThisWeek: 0 });
@@ -116,14 +118,14 @@ export default function TutorDashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f7f7f8] px-4 py-8 dark:bg-neutral-950">
+    <div className="min-h-screen bg-aurora px-4 py-8">
       <div className="mx-auto max-w-5xl space-y-5">
 
         {/* Header */}
-        <div className="rounded-2xl bg-white p-6 ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
+        <div className="glass-card rounded-2xl p-6">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-neutral-900 text-sm font-semibold text-white dark:bg-white dark:text-slate-900">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-neutral-900 text-sm font-semibold text-white dark:bg-neutral-800 dark:text-white">
                 {profile?.avatar_url ? (
                   <img
                     src={profile.avatar_url}
@@ -136,9 +138,9 @@ export default function TutorDashboardPage() {
                 )}
               </div>
               <div>
-                <p className="text-xs font-medium text-slate-400 dark:text-slate-500">Tutor dashboard</p>
+                <p className="text-xs font-medium text-slate-400 dark:text-slate-500">{t.tutorDashboardLabel}</p>
                 <h1 className="text-xl font-semibold text-slate-900 dark:text-white">
-                  {profileLoading ? "Loading…" : `Welcome back, ${firstName(displayName)}`}
+                  {profileLoading ? t.loading : `${t.welcomeBack}, ${firstName(displayName)}`}
                 </h1>
               </div>
             </div>
@@ -148,16 +150,16 @@ export default function TutorDashboardPage() {
                 to="/tutor-profile/edit"
                 className="btn-secondary"
               >
-                <Settings size={13} /> Edit profile
+                <Settings size={13} /> {t.editProfile}
               </Link>
               <Link
                 to={profile?.id ? `/tutor/${profile.id}` : "/tutor-profile"}
                 className="btn-secondary"
               >
-                <UserRound size={13} /> Public profile
+                <UserRound size={13} /> {t.publicProfile}
               </Link>
               <Link to="/tutor-pro" className="btn-secondary">
-                <Crown size={13} /> Pro plan
+                <Crown size={13} /> {t.proPlan}
               </Link>
               <button
                 type="button"
@@ -166,7 +168,7 @@ export default function TutorDashboardPage() {
                 className="btn-secondary"
               >
                 <LogOut size={13} />
-                {signingOut ? "Signing out…" : "Sign out"}
+                {signingOut ? t.signingOut : t.signOutBtn}
               </button>
             </div>
           </div>
@@ -174,9 +176,9 @@ export default function TutorDashboardPage() {
 
         {/* Stats */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <StatCard icon={Users} label="Active students" value={String(stats.activeStudents)} sub="paying subscribers" />
-          <StatCard icon={CalendarDays} label="Sessions this week" value={String(stats.sessionsThisWeek)} sub="live meetings" />
-          <StatCard icon={Star} label="Average rating" value={ratingStats.average != null ? ratingStats.average.toFixed(1) : "—"} sub={`${ratingStats.count} review${ratingStats.count !== 1 ? "s" : ""}`} />
+          <StatCard icon={Users} label={t.activeStudents} value={String(stats.activeStudents)} sub={t.payingSubscribers} />
+          <StatCard icon={CalendarDays} label={t.sessionsThisWeek} value={String(stats.sessionsThisWeek)} sub={t.liveMeetingsSub} />
+          <StatCard icon={Star} label={t.averageRating} value={ratingStats.average != null ? ratingStats.average.toFixed(1) : "—"} sub={`${ratingStats.count} ${ratingStats.count !== 1 ? t.reviews : t.review}`} />
         </div>
 
         {/* Live Classes */}
@@ -191,11 +193,11 @@ export default function TutorDashboardPage() {
 
           {/* Sidebar */}
           <div className="space-y-4">
-            <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
-              <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-400">Profile</h2>
-              <ProfileRow icon={UserRound} label="Name" value={displayName} />
-              <ProfileRow icon={Mail} label="Email" value={profile?.email ?? user?.email ?? "—"} />
-              <ProfileRow icon={BookOpen} label="Role" value="Verified tutor" />
+            <div className="glass-card rounded-2xl p-5">
+              <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-400">{t.profileSection}</h2>
+              <ProfileRow icon={UserRound} label={t.nameLabel} value={displayName} />
+              <ProfileRow icon={Mail} label={t.emailLabel} value={profile?.email ?? user?.email ?? "—"} />
+              <ProfileRow icon={BookOpen} label={t.roleLabel} value={t.verifiedTutorRole} />
               <AnimatePresence>
                 {!profile && !profileLoading ? (
                   <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -205,16 +207,16 @@ export default function TutorDashboardPage() {
                 ) : null}
               </AnimatePresence>
             </div>
-            <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
-              <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">Quick links</h2>
+            <div className="glass-card rounded-2xl p-5">
+              <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">{t.quickLinks}</h2>
               <Link to="/live/host" className="flex items-center gap-2 py-2 text-xs text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">
-                <CalendarDays size={12} /> Manage meetings
+                <CalendarDays size={12} /> {t.manageMeetings}
               </Link>
               <Link to="/tutor-pro" className="flex items-center gap-2 py-2 text-xs text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">
-                <Crown size={12} /> Upgrade to Pro
+                <Crown size={12} /> {t.upgradeToPro}
               </Link>
               <Link to={profile?.id ? `/tutor/${profile.id}` : "/tutor-profile"} className="flex items-center gap-2 py-2 text-xs text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">
-                <UserRound size={12} /> View public profile
+                <UserRound size={12} /> {t.viewPublicProfile}
               </Link>
             </div>
           </div>
@@ -227,7 +229,7 @@ export default function TutorDashboardPage() {
 /* ─── Stat card ─────────────────────────────────────────────────────────── */
 function StatCard({ icon: Icon, label, value, sub }) {
   return (
-    <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
+    <div className="glass-card rounded-2xl p-5">
       <div className="flex items-center gap-2 text-slate-400">
         <Icon size={14} />
         <p className="text-xs font-medium">{label}</p>
@@ -254,6 +256,7 @@ function ProfileRow({ icon: Icon, label, value }) {
 
 /* ─── Live classes ───────────────────────────────────────────────────────── */
 function LiveClassesSection({ userId, navigate }) {
+  const { t } = useLanguage();
   const [meetings, setMeetings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
@@ -304,39 +307,39 @@ function LiveClassesSection({ userId, navigate }) {
     `${window.location.origin}${buildSecureJoinLink(meeting)}`;
 
   return (
-    <div className="rounded-2xl bg-white ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
+    <div className="glass-card rounded-2xl">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4 dark:border-white/10">
         <div className="flex items-center gap-2">
           <Video size={15} className="text-slate-400" />
-          <h2 className="text-sm font-semibold text-slate-800 dark:text-white">Live Classes</h2>
+          <h2 className="text-sm font-semibold text-slate-800 dark:text-white">{t.liveClasses}</h2>
         </div>
         <button
           type="button"
           onClick={handleNewMeeting}
           disabled={creating}
-          className="inline-flex items-center gap-1.5 rounded-lg bg-neutral-900 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-slate-700 disabled:opacity-50 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
+          className="inline-flex items-center gap-1.5 rounded-lg glass-btn bg-neutral-900 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-slate-700 disabled:opacity-50 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
         >
           <Plus size={13} />
-          {creating ? "Creating…" : "New meeting"}
+          {creating ? t.creating : t.newMeeting}
         </button>
       </div>
 
       {/* Body */}
       <div className="p-5">
         {error && (
-          <p className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-xs text-red-600 dark:bg-red-500/10 dark:text-red-400">
+          <p className="mb-4 rounded-lg glass-btn bg-red-50 px-3 py-2 text-xs text-red-600 dark:bg-red-500/10 dark:text-red-400">
             {error}
           </p>
         )}
 
         {loading ? (
-          <p className="text-xs text-slate-400">Loading…</p>
+          <p className="text-xs text-slate-400">{t.loading}</p>
         ) : meetings.length === 0 ? (
           <div className="rounded-xl border border-dashed border-slate-200 py-10 text-center dark:border-white/10">
             <Video size={22} className="mx-auto mb-2 text-slate-300 dark:text-slate-600" />
-            <p className="text-sm font-medium text-slate-500 dark:text-slate-400">No meetings yet</p>
-            <p className="mt-0.5 text-xs text-slate-400">Click "New meeting" to get started</p>
+            <p className="text-sm font-medium text-slate-500 dark:text-slate-400">{t.noMeetingsYet}</p>
+            <p className="mt-0.5 text-xs text-slate-400">{t.noMeetingsDesc}</p>
           </div>
         ) : (
           <ul className="divide-y divide-slate-100 dark:divide-white/10">
@@ -367,16 +370,16 @@ function LiveClassesSection({ userId, navigate }) {
                       {meeting.status !== "ended" && meeting.status !== "cancelled" && (
                         <Link
                           to={`/live/meeting/${meeting.id}`}
-                          className="inline-flex items-center gap-1 rounded-lg bg-neutral-900 px-2.5 py-1.5 text-[11px] font-semibold text-white hover:bg-slate-700 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
+                          className="inline-flex items-center gap-1 rounded-lg glass-btn bg-neutral-900 px-2.5 py-1.5 text-[11px] font-semibold text-white hover:bg-slate-700 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
                         >
-                          <Video size={11} /> Join room
+                          <Video size={11} /> {t.joinRoom}
                         </Link>
                       )}
                     </div>
                   </div>
 
                   {/* Share link row */}
-                  <div className="mt-2.5 flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 dark:border-white/10 dark:bg-neutral-800/50">
+                  <div className="mt-2.5 flex items-center gap-2 rounded-lg glass-btn border border-slate-200 bg-slate-50 px-3 py-2 dark:border-white/10 dark:bg-neutral-800/50">
                     <p className="min-w-0 flex-1 truncate font-mono text-[11px] text-slate-500 dark:text-slate-400">
                       {link}
                     </p>
@@ -445,13 +448,13 @@ function PaidStudentsSection({ userId }) {
     Math.max(0, Math.ceil((new Date(endAt).getTime() - Date.now()) / 86400000));
 
   return (
-    <div className="rounded-2xl bg-white ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
+    <div className="glass-card rounded-2xl">
       <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4 dark:border-white/10">
         <div className="flex items-center gap-2">
           <Wallet size={15} className="text-slate-400" />
           <h2 className="text-sm font-semibold text-slate-800 dark:text-white">Paid Students</h2>
         </div>
-        <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-semibold text-slate-500 dark:bg-neutral-800 dark:text-slate-400">
+        <span className="rounded-full glass-btn bg-slate-100 px-2.5 py-0.5 text-[11px] font-semibold text-slate-500 dark:bg-neutral-800 dark:text-slate-400">
           {loading ? "…" : `${subscribers.length} active`}
         </span>
       </div>
@@ -468,7 +471,7 @@ function PaidStudentsSection({ userId }) {
         ) : (
           <>
             {!latestMeeting && (
-              <p className="mb-4 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-700 dark:bg-amber-500/10 dark:text-amber-300">
+              <p className="mb-4 rounded-lg glass-btn bg-amber-50 px-3 py-2 text-xs text-amber-700 dark:bg-amber-500/10 dark:text-amber-300">
                 Create a meeting above to get a shareable link for students.
               </p>
             )}
@@ -496,7 +499,7 @@ function PaidStudentsSection({ userId }) {
                       type="button"
                       onClick={() => handleCopyForStudent(sub.student_id)}
                       disabled={!latestMeeting}
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[11px] font-semibold text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/10 dark:bg-neutral-950 dark:text-slate-300 dark:hover:bg-neutral-800"
+                      className="inline-flex items-center gap-1.5 rounded-lg glass-btn border border-slate-200 bg-white px-2.5 py-1.5 text-[11px] font-semibold text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/10 dark:bg-neutral-950 dark:text-slate-300 dark:hover:bg-neutral-800"
                     >
                       {copiedKey === sub.student_id ? (
                         <><Check size={11} className="text-green-500" /> Copied</>
@@ -519,7 +522,7 @@ function PaidStudentsSection({ userId }) {
 function StatusBadge({ status }) {
   if (status === "live") {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full bg-neutral-900 px-2 py-0.5 text-[10px] font-semibold text-white dark:bg-white dark:text-slate-900">
+      <span className="inline-flex items-center gap-1 rounded-full glass-btn bg-neutral-900 px-2 py-0.5 text-[10px] font-semibold text-white dark:bg-neutral-800 dark:text-white">
         <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-400" />
         Live
       </span>
@@ -527,13 +530,13 @@ function StatusBadge({ status }) {
   }
   if (status === "scheduled") {
     return (
-      <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-500 dark:bg-neutral-800 dark:text-slate-400">
+      <span className="rounded-full glass-btn bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-500 dark:bg-neutral-800 dark:text-slate-400">
         Scheduled
       </span>
     );
   }
   return (
-    <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-400 dark:bg-neutral-800">
+    <span className="rounded-full glass-btn bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-400 dark:bg-neutral-800">
       {status}
     </span>
   );
@@ -541,6 +544,7 @@ function StatusBadge({ status }) {
 
 /* ─── Messages section ───────────────────────────────────────────────────── */
 function MessagesSection({ userId, role }) {
+  const { t } = useLanguage();
   const [conversations, setConversations] = useState([]);
   const [active, setActive] = useState(null); // otherId
   const [thread, setThread] = useState([]);
@@ -581,24 +585,24 @@ function MessagesSection({ userId, role }) {
   };
 
   return (
-    <div className="rounded-2xl bg-white ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
+    <div className="glass-card rounded-2xl">
       <div className="flex items-center gap-2 border-b border-slate-100 px-5 py-4 dark:border-white/10">
         <MessageSquareText size={15} className="text-slate-400" />
-        <h2 className="text-sm font-semibold text-slate-800 dark:text-white">Messages</h2>
+        <h2 className="text-sm font-semibold text-slate-800 dark:text-white">{t.messages}</h2>
         {conversations.filter(c => c.messages.some(m => m.to_user_id === userId && !m.read_at)).length > 0 && (
-          <span className="rounded-full bg-neutral-900 px-2 py-0.5 text-[10px] font-bold text-white dark:bg-white dark:text-slate-900">
+          <span className="rounded-full glass-btn bg-neutral-900 px-2 py-0.5 text-[10px] font-bold text-white dark:bg-neutral-800 dark:text-white">
             {conversations.filter(c => c.messages.some(m => m.to_user_id === userId && !m.read_at)).length} new
           </span>
         )}
       </div>
 
       {loading ? (
-        <p className="px-5 py-4 text-xs text-slate-400">Loading…</p>
+        <p className="px-5 py-4 text-xs text-slate-400">{t.loading}</p>
       ) : conversations.length === 0 ? (
         <div className="px-5 py-10 text-center">
           <MessageSquareText size={22} className="mx-auto mb-2 text-slate-300 dark:text-slate-600" />
-          <p className="text-sm text-slate-400">No messages yet</p>
-          <p className="mt-0.5 text-xs text-slate-400">Students will message you from your profile page</p>
+          <p className="text-sm text-slate-400">{t.noMessagesYet}</p>
+          <p className="mt-0.5 text-xs text-slate-400">{t.messageTutorHint}</p>
         </div>
       ) : (
         <div className="grid divide-x divide-slate-100 dark:divide-white/10 sm:grid-cols-[200px_1fr]">
@@ -615,7 +619,7 @@ function MessagesSection({ userId, role }) {
                     className={`w-full px-4 py-3 text-left transition hover:bg-slate-50 dark:hover:bg-neutral-800 ${active === conv.otherId ? "bg-slate-50 dark:bg-neutral-800" : ""}`}
                   >
                     <div className="flex items-center gap-2">
-                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-slate-200 text-[10px] font-bold text-slate-600 dark:bg-slate-700 dark:text-slate-300">
+                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-slate-200 text-[10px] font-bold text-slate-600 dark:bg-neutral-700 dark:text-slate-300">
                         {conv.otherId[0]?.toUpperCase()}
                       </div>
                       <div className="min-w-0">
@@ -640,7 +644,7 @@ function MessagesSection({ userId, role }) {
                     const mine = msg.from_user_id === userId;
                     return (
                       <li key={msg.id} className={`flex ${mine ? "justify-end" : "justify-start"}`}>
-                        <div className={`max-w-[80%] rounded-xl px-3 py-2 text-xs ${mine ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900" : "bg-slate-100 text-slate-800 dark:bg-neutral-800 dark:text-slate-200"}`}>
+                        <div className={`max-w-[80%] rounded-xl px-3 py-2 text-xs ${mine ? "bg-slate-900 text-white dark:bg-neutral-800 dark:text-white" : "bg-slate-100 text-slate-800 dark:bg-neutral-800 dark:text-slate-200"}`}>
                           {msg.body}
                         </div>
                       </li>
@@ -654,10 +658,10 @@ function MessagesSection({ userId, role }) {
                     onChange={(e) => setReply(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleSend()}
                     placeholder="Reply…"
-                    className="h-8 flex-1 rounded-lg border border-slate-200 bg-white px-3 text-xs outline-none focus:ring-1 focus:ring-slate-300 dark:border-white/10 dark:bg-neutral-800 dark:text-white"
+                    className="h-8 flex-1 rounded-lg glass-btn border border-slate-200 bg-white px-3 text-xs outline-none focus:ring-1 focus:ring-slate-300 dark:border-white/10 dark:bg-neutral-800 dark:text-white"
                   />
                   <button type="button" onClick={handleSend} disabled={sending || !reply.trim()}
-                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-neutral-900 text-white disabled:opacity-40 dark:bg-white dark:text-slate-900">
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-neutral-900 text-white disabled:opacity-40 dark:bg-neutral-800 dark:text-white">
                     <Send size={12} />
                   </button>
                 </div>

@@ -8,8 +8,15 @@ import {
 } from "@/components/ui/popover";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "./theme-provider";
+import { useLanguage } from "../context/LanguageContext";
 import { supabaseStorageImageProps } from "../lib/storage";
 import { NavMenu } from "./nav-menu.jsx";
+
+const LANGS = [
+  { code: "en", label: "EN" },
+  { code: "si", label: "SI" },
+  { code: "ta", label: "TA" },
+];
 
 function initialsFor(name) {
   if (!name) return "?";
@@ -26,6 +33,7 @@ function initialsFor(name) {
 const Navbar = () => {
   const { user, profile, isAuthenticated, loading, signOut } = useAuth();
   const { theme, setTheme } = useTheme();
+  const { lang, setLang, t } = useLanguage();
   const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
   const toggleTheme = () => setTheme(isDark ? "light" : "dark");
   const displayName =
@@ -43,7 +51,7 @@ const Navbar = () => {
   return (
     <div className="fixed top-4 left-0 right-0 z-[999] flex justify-center px-5 pointer-events-none">
       <nav
-        className="pointer-events-auto flex h-[4.5rem] w-full max-w-screen-xl items-center justify-between rounded-full px-8 md:px-10"
+        className="pointer-events-auto flex h-[4.5rem] w-full max-w-screen-xl items-center justify-between rounded-full glass-btn px-8 md:px-10"
         style={isDark ? {
           background: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
           backdropFilter: 'blur(40px) saturate(180%)',
@@ -75,14 +83,14 @@ const Navbar = () => {
           <div className="flex items-center gap-2">
             {loading ? (
               <div
-                className="h-9 w-24 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700"
+                className="h-9 w-24 animate-pulse rounded-full bg-slate-200 dark:bg-neutral-700"
                 aria-hidden
               />
             ) : isAuthenticated ? (
               <div className="flex items-center gap-1.5">
                 <Link
                   to={user?.user_metadata?.role === "tutor" ? "/tutor-dashboard" : "/student-dashboard"}
-                  className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-neutral-950 text-[11px] font-semibold text-white transition hover:opacity-80 dark:bg-white dark:text-neutral-950"
+                  className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-neutral-950 text-[11px] font-semibold text-white transition hover:opacity-80 dark:bg-neutral-800 dark:text-white"
                   title={displayName}
                 >
                   {avatarUrl ? (
@@ -99,8 +107,8 @@ const Navbar = () => {
                 <button
                   type="button"
                   onClick={handleSignOut}
-                  title="Sign out"
-                  aria-label="Sign out"
+                  title={t.signOut}
+                  aria-label={t.signOut}
                   className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition hover:text-red-500"
                   style={isDark ? {
                     background: 'rgba(255,255,255,0.07)',
@@ -114,7 +122,7 @@ const Navbar = () => {
             ) : (
               <Button
                 asChild
-                className="h-9 rounded-full px-4 text-sm font-semibold text-slate-900 transition dark:text-white"
+                className="h-9 rounded-full glass-btn px-4 text-sm font-semibold text-slate-900 transition dark:text-white"
                 style={isDark ? {
                   background: 'rgba(255,255,255,0.08)',
                 } : {
@@ -123,7 +131,7 @@ const Navbar = () => {
                 }}
               >
                 <Link to="/signup">
-                  Sign up <ArrowUpRight />
+                  {t.signUp} <ArrowUpRight />
                 </Link>
               </Button>
             )}
@@ -132,8 +140,8 @@ const Navbar = () => {
           <button
             type="button"
             onClick={toggleTheme}
-            title="Toggle theme"
-            aria-label="Toggle theme"
+            title={t.toggleTheme}
+            aria-label={t.toggleTheme}
             className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition"
             style={isDark ? {
               background: 'rgba(255,255,255,0.07)',
