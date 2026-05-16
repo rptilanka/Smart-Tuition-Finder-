@@ -273,7 +273,11 @@ const translations = {
     allTutorsHeadline: "Find your tutor",
     allTutorsDesc: "Browse verified tutors across Sri Lanka.",
     searchPlaceholder: "Search by name, subject…",
+    clearSearch: "Clear search",
     allSubjects: "All Subjects",
+    subjectBiology: "Biology",
+    subjectICT: "ICT",
+    subjectBusiness: "Business",
     anyPrice: "Any price",
     anyRating: "Any rating",
     highestRated: "Highest rated",
@@ -281,7 +285,94 @@ const translations = {
     priceHighToLow: "Price: high to low",
     nameAZ: "Name (A → Z)",
     noTutorsFound: "No tutors found matching your filters.",
+    tutorsMatchFilters_one: "{count} tutor matches your filters",
+    tutorsMatchFilters_many: "{count} tutors match your filters",
+    tutorsEmptyHint:
+      "Try widening the price range, lowering the rating threshold, or switching to a different subject.",
+    resetFilters: "Reset filters",
     viewProfile: "View profile",
+    generalSubject: "General",
+    featuredBadge: "Featured",
+    verifiedBadge: "Verified",
+    newTutor: "New tutor",
+    fromLabel: "From",
+    rateOnProfile: "Rate on profile",
+    perHourShort: "/hr",
+
+    // ── Tutor profile page ───────────────────────────────────────────────────
+    noDetailsAddedYet: "No details added yet.",
+    loadingTutorProfile: "Loading tutor profile...",
+    profileBoostBadge: "Profile Boost",
+    yearsExperienceShort: "{count}+ years experience",
+    bookSession: "Book Session",
+    messageButton: "Message",
+    whatsappButton: "WhatsApp",
+    processingEllipsis: "Processing…",
+    subscribeLiveClasses: "Subscribe for live classes",
+    saved: "Saved",
+    saveTutor: "Save tutor",
+
+    unavailable: "Unavailable",
+    bookNowWithSelection: "Book Now · {slot}",
+    selectSlotToBook: "Select a slot to book",
+
+    thanksForReview: "Thanks for your review!",
+    leaveReview: "Leave a review",
+    reviewPlaceholder: "Share your experience (optional)…",
+    submittingEllipsis: "Submitting…",
+    submitReview: "Submit review",
+
+    messageTutorTitle: "Message {name}",
+    messageTutorPlaceholder:
+      "Hi {name}, I saw your profile on Smart Tuition Finder…",
+    cancel: "Cancel",
+    sendingEllipsis: "Sending…",
+    sendMessage: "Send message",
+
+    tutorNotFoundTag: "404 · Tutor not found",
+    tutorNotFoundHeadline: "We couldn't find that tutor.",
+    tutorNotFoundDesc:
+      "The tutor you're looking for may have moved or is no longer active on Smart Tuition Finder. Try browsing the featured tutors on the homepage.",
+    backToHomepage: "Back to homepage",
+
+    signInStudentToSaveTutorsToast: "Sign in as a student to save tutors.",
+    removedFromSavedToast: "Removed from saved tutors.",
+    tutorSavedToast: "Tutor saved to your list!",
+    couldNotUpdateSavedToast: "Could not update saved status.",
+    sessionBookedForToast: "Session booked for {slot} 🎉",
+    selectSlotBelowToast: "Please select a slot below to continue.",
+    whatsAppNumberNotAvailableToast:
+      "WhatsApp number is not available for this tutor.",
+    signInStudentToSubscribeToast:
+      "Please sign in as a student to subscribe.",
+    paymentReceivedToast:
+      "Payment received. Subscription activates after secure verification.",
+    subscriptionCancelledToast: "Subscription payment cancelled.",
+    paymentFailedToast: "Payment failed: {error}",
+    couldNotStartSubscriptionToast: "Could not start subscription checkout.",
+    signInStudentToMessageTutorToast:
+      "Sign in as a student to message this tutor.",
+    messageSentToast: "Message sent!",
+
+    shareTutorProfileText: "Check out {name} on Smart Tuition Finder",
+    whatsAppIntroMessage:
+      "Hi {name}, I found your profile on Smart Tuition Finder.",
+
+    profileAboutTitle: "About the tutor",
+    profileAboutEmpty: "This tutor has not added an About section yet.",
+    qualificationsTitle: "Qualifications & Experience",
+    qualificationsEmpty: "No qualifications or experience details added yet.",
+    subjectsGradesTitle: "Subjects & Grades",
+    subjectsGradesEmpty: "No subjects or grade levels added yet.",
+    subjectGeneric: "Subject",
+    demoVideosTitle: "Demo videos",
+    videosCount: "{count} videos",
+    demoVideosEmpty: "No demo videos added yet.",
+    studentReviewsTitle: "Student reviews",
+    noReviewsYet: "No reviews yet. Be the first to leave one!",
+    anonymous: "Anonymous",
+    availabilityBookingTitle: "Availability & Booking",
+    availabilityNotAddedEmpty: "Availability details have not been added yet.",
 
     // ── Form validation & auth ─────────────────────────────────────────────────
     fullNamePlaceholder: "e.g. Priya Wickramasinghe",
@@ -769,7 +860,11 @@ const translations = {
     allTutorsHeadline: "ඔබේ ගුරුවරයා සොයන්න",
     allTutorsDesc: "ශ්‍රී ලංකාව පුරා සත්‍යාපිත ගුරුවරුන් ගවේෂණය කරන්න.",
     searchPlaceholder: "නම, විෂය අනුව සොයන්න…",
+    clearSearch: "සෙවුම ඉවත් කරන්න",
     allSubjects: "සියලු විෂයයන්",
+    subjectBiology: "ජෛව විද්‍යාව",
+    subjectICT: "ICT",
+    subjectBusiness: "ව්‍යාපාර",
     anyPrice: "ඕනෑම මිලක්",
     anyRating: "ඕනෑම ශ්‍රේණිගත කිරීමක්",
     highestRated: "ඉහළම ශ්‍රේණිගත",
@@ -777,7 +872,93 @@ const translations = {
     priceHighToLow: "මිල: වැඩිෙ සිට අඩුෙ",
     nameAZ: "නම (A → Z)",
     noTutorsFound: "ඔබේ පෙරහන් සඳහා ගුරුවරුන් හමු නොවිය.",
+    tutorsMatchFilters_one: "{count} ගුරුවරයෙකු ඔබේ පෙරහන්ට ගැළපේ",
+    tutorsMatchFilters_many: "{count} ගුරුවරුන් ඔබේ පෙරහන්ට ගැළපේ",
+    tutorsEmptyHint:
+      "මිල පරාසය පුළුල් කරන්න, ශ්‍රේණිගත කිරීම අඩු කරන්න, හෝ වෙනත් විෂයයක් තෝරන්න.",
+    resetFilters: "පෙරහන් නැවත සකසන්න",
     viewProfile: "ප්‍රොෆයිලය බලන්න",
+    generalSubject: "සාමාන්‍ය",
+    featuredBadge: "ප්‍රමුඛ",
+    verifiedBadge: "සත්‍යාපිත",
+    newTutor: "නව ගුරුවරයා",
+    fromLabel: "සිට",
+    rateOnProfile: "මිල ප්‍රොෆයිලයේ",
+    perHourShort: "/පැ",
+
+    // ── Tutor profile page ───────────────────────────────────────────────────
+    noDetailsAddedYet: "විස්තර තවම එක් කර නැත.",
+    loadingTutorProfile: "ගුරු ප්‍රොෆයිලය පූරණය වෙමින්...",
+    profileBoostBadge: "ප්‍රොෆයිල බූස්ට්",
+    yearsExperienceShort: "{count}+ අවුරුදු අත්දැකීම",
+    bookSession: "සැසිය වෙන්කරගන්න",
+    messageButton: "පණිවිඩය",
+    whatsappButton: "WhatsApp",
+    processingEllipsis: "සකස් කරමින්…",
+    subscribeLiveClasses: "සජීවී පන්ති සඳහා subscribe කරන්න",
+    saved: "සුරැකි",
+    saveTutor: "ගුරුවරයා සුරකින්න",
+
+    unavailable: "ලබාගත නොහැක",
+    bookNowWithSelection: "දැන් වෙන්කරගන්න · {slot}",
+    selectSlotToBook: "වෙන්කරගැනීමට slot එකක් තෝරන්න",
+
+    thanksForReview: "ඔබගේ සමාලෝචනයට ස්තුතියි!",
+    leaveReview: "සමාලෝචනයක් දමන්න",
+    reviewPlaceholder: "ඔබගේ අත්දැකීම බෙදාගන්න (විකල්ප)…",
+    submittingEllipsis: "සමర్పණය කරමින්…",
+    submitReview: "සමාලෝචනය යවන්න",
+
+    messageTutorTitle: "{name} ට පණිවිඩයක්",
+    messageTutorPlaceholder:
+      "හෙයි {name}, මම ඔබගේ ප්‍රොෆයිලය Smart Tuition Finder තුළ දැක්කා…",
+    cancel: "අහෝසි කරන්න",
+    sendingEllipsis: "යවමින්…",
+    sendMessage: "පණිවිඩය යවන්න",
+
+    tutorNotFoundTag: "404 · ගුරුවරයා හමු නොවිය",
+    tutorNotFoundHeadline: "එම ගුරුවරයා සොයාගත නොහැක.",
+    tutorNotFoundDesc:
+      "ඔබ සොයන ගුරුවරයා ස්ථානය මාරු කර ඇති හෝ Smart Tuition Finder හි සක්‍රීය නොවිය හැක. මුල් පිටුවේ featured ගුරුවරුන් බලන්න.",
+    backToHomepage: "මුල් පිටුවට ආපසු",
+
+    signInStudentToSaveTutorsToast: "ගුරුවරුන් සුරැකීමට සිසු ලෙස sign in වන්න.",
+    removedFromSavedToast: "සුරැකි ලැයිස්තුවෙන් ඉවත් කළා.",
+    tutorSavedToast: "ගුරුවරයා ඔබගේ ලැයිස්තුවට සුරැකිණි!",
+    couldNotUpdateSavedToast: "සුරැකි තත්වය යාවත්කාලීන කළ නොහැක.",
+    sessionBookedForToast: "{slot} සඳහා සැසිය වෙන්කරගත්තා 🎉",
+    selectSlotBelowToast: "කරුණාකර පහතින් slot එකක් තෝරන්න.",
+    whatsAppNumberNotAvailableToast:
+      "මෙම ගුරුවරයා සඳහා WhatsApp අංකය නොමැත.",
+    signInStudentToSubscribeToast: "subscribe කිරීමට සිසු ලෙස sign in වන්න.",
+    paymentReceivedToast:
+      "ගෙවීම ලැබුණා. ආරක්ෂිත තහවුරුවෙන් පසු subscription සක්‍රීය වේ.",
+    subscriptionCancelledToast: "Subscription ගෙවීම අවලංගු කළා.",
+    paymentFailedToast: "ගෙවීම අසාර්ථකයි: {error}",
+    couldNotStartSubscriptionToast: "Subscription checkout ආරම්භ කළ නොහැක.",
+    signInStudentToMessageTutorToast:
+      "මෙම ගුරුවරයාට පණිවිඩ කිරීමට සිසු ලෙස sign in වන්න.",
+    messageSentToast: "පණිවිඩය යවා ඇත!",
+
+    shareTutorProfileText: "Smart Tuition Finder හි {name} බලන්න",
+    whatsAppIntroMessage:
+      "හෙයි {name}, මම ඔබගේ ප්‍රොෆයිලය Smart Tuition Finder තුළින් හමු වුණා.",
+
+    profileAboutTitle: "ගුරුවරයා ගැන",
+    profileAboutEmpty: "මෙම ගුරුවරයා ගැන කොටස තවම එක් කර නැත.",
+    qualificationsTitle: "සුදුසුකම් සහ අත්දැකීම්",
+    qualificationsEmpty: "සුදුසුකම් හෝ අත්දැකීම් විස්තර තවම එක් කර නැත.",
+    subjectsGradesTitle: "විෂයයන් සහ ශ්‍රේණි",
+    subjectsGradesEmpty: "විෂයයන් හෝ ශ්‍රේණි තවම එක් කර නැත.",
+    subjectGeneric: "විෂයය",
+    demoVideosTitle: "Demo වීඩියෝ",
+    videosCount: "{count} වීඩියෝ",
+    demoVideosEmpty: "Demo වීඩියෝ තවම එකතු කර නැත.",
+    studentReviewsTitle: "සිසු සමාලෝචන",
+    noReviewsYet: "සමාලෝචන නැත. පළමුවෙන්ම එකක් දමන්න!",
+    anonymous: "නම නොදන්නා",
+    availabilityBookingTitle: "ලබාගත හැකි වේලාවන් සහ වෙන්කරගැනීම",
+    availabilityNotAddedEmpty: "ලබාගත හැකි වේලාවන් තවම එක් කර නැත.",
 
     // ── Form validation & auth ─────────────────────────────────────────────────
     fullNamePlaceholder: "උදා: Priya Wickramasinghe",
@@ -1266,7 +1447,11 @@ const translations = {
     allTutorsHeadline: "உங்கள் ஆசிரியரை கண்டுபிடியுங்கள்",
     allTutorsDesc: "இலங்கை முழுவதும் சரிபார்க்கப்பட்ட ஆசிரியர்களை உலாவுங்கள்.",
     searchPlaceholder: "பெயர், பாடம் அனுசரித்து தேடுங்கள்…",
+    clearSearch: "தேடலை அழிக்கவும்",
     allSubjects: "அனைத்து பாடங்கள்",
+    subjectBiology: "உயிரியல்",
+    subjectICT: "ICT",
+    subjectBusiness: "வணிகம்",
     anyPrice: "எந்த விலையும்",
     anyRating: "எந்த மதிப்பீடும்",
     highestRated: "அதிக மதிப்பீடு",
@@ -1274,7 +1459,102 @@ const translations = {
     priceHighToLow: "விலை: அதிகத்திலிருந்து குறைவு",
     nameAZ: "பெயர் (A → Z)",
     noTutorsFound: "உங்கள் வடிகட்டிகளுக்கு ஆசிரியர்கள் கிடைக்கவில்லை.",
+    tutorsMatchFilters_one: "{count} ஆசிரியர் உங்கள் வடிகட்டிகளுக்கு பொருந்துகிறார்",
+    tutorsMatchFilters_many: "{count} ஆசிரியர்கள் உங்கள் வடிகட்டிகளுக்கு பொருந்துகின்றனர்",
+    tutorsEmptyHint:
+      "விலை வரம்பை விரிவாக்கவும், மதிப்பீட்டு வரம்பை குறைக்கவும், அல்லது வேறு பாடத்துக்கு மாற்றவும்.",
+    resetFilters: "வடிகட்டிகளை மீட்டமை",
     viewProfile: "சுயவிவரம் பார்க்கவும்",
+    generalSubject: "பொது",
+    featuredBadge: "சிறப்பு",
+    verifiedBadge: "சரிபார்க்கப்பட்டது",
+    newTutor: "புதிய ஆசிரியர்",
+    fromLabel: "முதல்",
+    rateOnProfile: "விலை சுயவிவரத்தில்",
+    perHourShort: "/மணி",
+
+    // ── Tutor profile page ───────────────────────────────────────────────────
+    noDetailsAddedYet: "விவரங்கள் இன்னும் சேர்க்கப்படவில்லை.",
+    loadingTutorProfile: "ஆசிரியர் சுயவிவரம் ஏற்றப்படுகிறது...",
+    profileBoostBadge: "சுயவிவர ஊக்கம்",
+    yearsExperienceShort: "{count}+ ஆண்டுகள் அனுபவம்",
+    bookSession: "அமர்வு முன்பதிவு",
+    messageButton: "செய்தி",
+    whatsappButton: "WhatsApp",
+    processingEllipsis: "செயலாக்குகிறது…",
+    subscribeLiveClasses: "நேரடி வகுப்புகளுக்கு subscribe செய்யவும்",
+    saved: "சேமிக்கப்பட்டது",
+    saveTutor: "ஆசிரியரை சேமிக்கவும்",
+
+    unavailable: "கிடைக்கவில்லை",
+    bookNowWithSelection: "இப்போது முன்பதிவு · {slot}",
+    selectSlotToBook: "முன்பதிவுக்கு ஒரு நேரத்தைத் தேர்ந்தெடுக்கவும்",
+
+    thanksForReview: "உங்கள் மதிப்புரைக்கு நன்றி!",
+    leaveReview: "மதிப்புரை எழுதுங்கள்",
+    reviewPlaceholder: "உங்கள் அனுபவத்தை பகிருங்கள் (விருப்பம்)…",
+    submittingEllipsis: "சமர்ப்பிக்கிறது…",
+    submitReview: "மதிப்புரையை சமர்ப்பிக்கவும்",
+
+    messageTutorTitle: "{name}க்கு செய்தி",
+    messageTutorPlaceholder:
+      "வணக்கம் {name}, உங்கள் சுயவிவரத்தை Smart Tuition Finder இல் பார்த்தேன்…",
+    cancel: "ரத்து",
+    sendingEllipsis: "அனுப்புகிறது…",
+    sendMessage: "செய்தியை அனுப்பவும்",
+
+    tutorNotFoundTag: "404 · ஆசிரியர் கிடைக்கவில்லை",
+    tutorNotFoundHeadline: "அந்த ஆசிரியரை கண்டுபிடிக்க முடியவில்லை.",
+    tutorNotFoundDesc:
+      "நீங்கள் தேடும் ஆசிரியர் இடம் மாற்றியிருக்கலாம் அல்லது Smart Tuition Finder இல் இனி செயல்படாமல் இருக்கலாம். முகப்பில் உள்ள featured ஆசிரியர்களை உலாவுங்கள்.",
+    backToHomepage: "முகப்புக்கு திரும்பவும்",
+
+    signInStudentToSaveTutorsToast:
+      "ஆசிரியர்களை சேமிக்க மாணவராக உள்நுழையவும்.",
+    removedFromSavedToast: "சேமித்த பட்டியலிலிருந்து நீக்கப்பட்டது.",
+    tutorSavedToast: "ஆசிரியர் உங்கள் பட்டியலில் சேமிக்கப்பட்டார்!",
+    couldNotUpdateSavedToast:
+      "சேமித்த நிலையை புதுப்பிக்க முடியவில்லை.",
+    sessionBookedForToast: "{slot}க்கு அமர்வு முன்பதிவு செய்யப்பட்டது 🎉",
+    selectSlotBelowToast:
+      "தொடர கீழே ஒரு நேரத்தைத் தேர்ந்தெடுக்கவும்.",
+    whatsAppNumberNotAvailableToast:
+      "இந்த ஆசிரியருக்கு WhatsApp எண் கிடைக்கவில்லை.",
+    signInStudentToSubscribeToast:
+      "subscribe செய்ய மாணவராக உள்நுழையவும்.",
+    paymentReceivedToast:
+      "கட்டணம் பெறப்பட்டது. பாதுகாப்பான சரிபார்ப்புக்கு பிறகு subscription செயல்படும்.",
+    subscriptionCancelledToast: "Subscription கட்டணம் ரத்து செய்யப்பட்டது.",
+    paymentFailedToast: "கட்டணம் தோல்வியடைந்தது: {error}",
+    couldNotStartSubscriptionToast:
+      "Subscription checkout தொடங்க முடியவில்லை.",
+    signInStudentToMessageTutorToast:
+      "இந்த ஆசிரியருக்கு செய்தி அனுப்ப மாணவராக உள்நுழையவும்.",
+    messageSentToast: "செய்தி அனுப்பப்பட்டது!",
+
+    shareTutorProfileText: "Smart Tuition Finder இல் {name}யை பாருங்கள்",
+    whatsAppIntroMessage:
+      "வணக்கம் {name}, உங்கள் சுயவிவரத்தை Smart Tuition Finder இல் கண்டேன்.",
+
+    profileAboutTitle: "ஆசிரியர் பற்றி",
+    profileAboutEmpty:
+      "இந்த ஆசிரியர் 'பற்றி' பகுதியை இன்னும் சேர்க்கவில்லை.",
+    qualificationsTitle: "தகுதிகள் & அனுபவம்",
+    qualificationsEmpty:
+      "தகுதி அல்லது அனுபவ விவரங்கள் இன்னும் சேர்க்கப்படவில்லை.",
+    subjectsGradesTitle: "பாடங்கள் & தரங்கள்",
+    subjectsGradesEmpty: "பாடங்கள் அல்லது தரங்கள் இன்னும் சேர்க்கப்படவில்லை.",
+    subjectGeneric: "பாடம்",
+    demoVideosTitle: "டெமோ வீடியோக்கள்",
+    videosCount: "{count} வீடியோக்கள்",
+    demoVideosEmpty: "டெமோ வீடியோக்கள் இன்னும் சேர்க்கப்படவில்லை.",
+    studentReviewsTitle: "மாணவர் மதிப்புரைகள்",
+    noReviewsYet:
+      "இன்னும் மதிப்புரைகள் இல்லை. முதலில் நீங்கள் ஒன்று எழுதுங்கள்!",
+    anonymous: "அநாமதேயம்",
+    availabilityBookingTitle: "கிடைக்கும் நேரங்கள் & முன்பதிவு",
+    availabilityNotAddedEmpty:
+      "கிடைக்கும் நேர விவரங்கள் இன்னும் சேர்க்கப்படவில்லை.",
 
     // ── Form validation & auth ─────────────────────────────────────────────────
     fullNamePlaceholder: "உ.கா: Priya Wickramasinghe",

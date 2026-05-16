@@ -37,6 +37,7 @@ import { sendMessage } from "../lib/messages";
 import VideoCard from "../components/tutor-profile/VideoCard";
 import ReviewCard from "../components/tutor-profile/ReviewCard";
 import BookingSidebar from "../components/tutor-profile/BookingSidebar";
+import { useLanguage } from "../context/LanguageContext";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 24 },
@@ -50,6 +51,12 @@ function splitParagraphs(value) {
     .split(/\n{2,}/)
     .map((v) => v.trim())
     .filter(Boolean);
+}
+
+function formatTemplate(template, params) {
+  return String(template ?? "").replace(/\{(\w+)\}/g, (_, key) =>
+    params?.[key] == null ? "" : String(params[key]),
+  );
 }
 
 function extractWhatsappNumber(tutor) {
@@ -74,10 +81,12 @@ function extractWhatsappNumber(tutor) {
   return found[0].replace(/\D/g, "");
 }
 
-function EmptySectionText({ text = "No details added yet." }) {
+function EmptySectionText({ text }) {
+  const { t } = useLanguage();
+  const value = text ?? t.noDetailsAddedYet;
   return (
     <p className="rounded-xl glass-btn border border-dashed border-slate-300/80 bg-slate-100/60 px-3 py-2 text-sm text-slate-500 dark:border-slate-600/80 dark:bg-neutral-800/40 dark:text-slate-300">
-      {text}
+      {value}
     </p>
   );
 }
@@ -150,6 +159,7 @@ function StarRow({ value, size = 14 }) {
 
 function ProfileHero({
   tutor,
+  t,
   onBook,
   onContact,
   onSubscribe,
@@ -169,7 +179,7 @@ function ProfileHero({
     typeof window !== "undefined"
       ? new URL(`/tutor/${tutor.id}`, window.location.origin).href
       : "";
-  const shareText = `Check out ${tutor.name} on Smart Tuition Finder`;
+  const shareText = formatTemplate(t.shareTutorProfileText, { name: tutor.name });
   const fallbackFacebookHref = profileUrl
     ? `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(profileUrl)}`
     : "";
@@ -280,12 +290,12 @@ function ProfileHero({
                 {hasVerifiedBlueMark ? (
                   <p className="inline-flex items-center gap-1 rounded-full glass-btn bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">
                     <CheckCircle2 className="size-3.5" />
-                    Verified
+                    {t.verifiedBadge}
                   </p>
                 ) : null}
                 {tutor.isProfileBoosted ? (
                   <p className="inline-flex items-center gap-1 rounded-full glass-btn bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300">
-                    Profile Boost
+                    {t.profileBoostBadge}
                   </p>
                 ) : null}
               </div>
@@ -297,7 +307,10 @@ function ProfileHero({
                     {tutor.rating?.toFixed(1)}
                   </span>
                   {Number.isFinite(tutor.reviewsCount) ? (
-                    <span>({tutor.reviewsCount} reviews)</span>
+                    <span>
+                      ({tutor.reviewsCount}{" "}
+                      {tutor.reviewsCount === 1 ? t.review : t.reviews})
+                    </span>
                   ) : null}
                 </span>
                 {tutor.location ? (
@@ -309,7 +322,9 @@ function ProfileHero({
                 {Number.isFinite(tutor.yearsExperience) ? (
                   <span className="inline-flex items-center gap-1">
                     <Clock3 size={14} />
-                    {tutor.yearsExperience}+ years experience
+                    {formatTemplate(t.yearsExperienceShort, {
+                      count: tutor.yearsExperience,
+                    })}
                   </span>
                 ) : null}
               </div>
@@ -377,15 +392,15 @@ function ProfileHero({
                 <div className="mt-5 flex w-full flex-wrap gap-2 md:max-w-none">
                   <motion.button type="button" onClick={onBook} whileHover={{ scale: 1.04, y: -1 }} whileTap={{ scale: 0.97 }}
                     className="inline-flex items-center gap-2 rounded-full glass-btn bg-neutral-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-neutral-800 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700">
-                    <CalendarDays size={15} /> Book Session
+                    <CalendarDays size={15} /> {t.bookSession}
                   </motion.button>
                   <motion.button type="button" onClick={onMessage} whileHover={{ scale: 1.04, y: -1 }} whileTap={{ scale: 0.97 }}
                     className="inline-flex items-center gap-2 rounded-full glass-btn border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-50 dark:border-white/10 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
-                    <MessageSquareText size={15} /> Message
+                    <MessageSquareText size={15} /> {t.messageButton}
                   </motion.button>
                   <motion.button type="button" onClick={onContact} whileHover={{ scale: 1.04, y: -1 }} whileTap={{ scale: 0.97 }}
                     className="inline-flex items-center gap-2 rounded-full glass-btn border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-50 dark:border-white/10 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
-                    <MessageSquareText size={15} /> WhatsApp
+                    <MessageSquareText size={15} /> {t.whatsappButton}
                   </motion.button>
                   {isStudentViewer && (
                     <>
@@ -394,13 +409,15 @@ function ProfileHero({
                         whileTap={isSubscriptionPending ? undefined : { scale: 0.97 }}
                         className="inline-flex items-center gap-2 rounded-full glass-btn bg-neutral-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-neutral-800 dark:text-white">
                         <CalendarDays size={15} />
-                        {isSubscriptionPending ? "Processing…" : "Subscribe for live classes"}
+                        {isSubscriptionPending
+                          ? t.processingEllipsis
+                          : t.subscribeLiveClasses}
                       </motion.button>
                       <motion.button type="button" onClick={onSave} disabled={savePending}
                         whileHover={{ scale: 1.04, y: -1 }} whileTap={{ scale: 0.97 }}
                         className={`inline-flex items-center gap-2 rounded-full border px-5 py-3 text-sm font-semibold transition disabled:opacity-60 ${isSaved ? "border-slate-300 bg-slate-100 text-slate-700" : "border-slate-300 bg-white text-slate-950 hover:bg-slate-50 dark:border-white/10 dark:bg-neutral-900 dark:text-white"}`}>
                         <Heart size={15} className={isSaved ? "fill-current text-red-500" : ""} />
-                        {isSaved ? "Saved" : "Save tutor"}
+                        {isSaved ? t.saved : t.saveTutor}
                       </motion.button>
                     </>
                   )}
@@ -432,7 +449,7 @@ function Toast({ message }) {
   );
 }
 
-function AvailabilityGrid({ availability, onBook }) {
+function AvailabilityGrid({ availability, onBook, t }) {
   const [selected, setSelected] = useState(null);
 
   return (
@@ -470,7 +487,7 @@ function AvailabilityGrid({ availability, onBook }) {
                   })
                 ) : (
                   <span className="inline-flex rounded-lg glass-btn bg-slate-200/50 px-2 py-1 text-[11px] font-semibold text-slate-400 dark:bg-neutral-800/60 dark:text-slate-500">
-                    Unavailable
+                    {t.unavailable}
                   </span>
                 )}
               </div>
@@ -489,15 +506,17 @@ function AvailabilityGrid({ availability, onBook }) {
       >
         <CalendarDays size={16} />
         {selected
-          ? `Book Now · ${selected.replace("-", " · ")}`
-          : "Select a slot to book"}
+          ? formatTemplate(t.bookNowWithSelection, {
+              slot: selected.replace("-", " · "),
+            })
+          : t.selectSlotToBook}
       </motion.button>
     </div>
   );
 }
 
 /* ─── Review form ────────────────────────────────────────────────────────── */
-function ReviewForm({ tutorId, userId, userName, onSubmitted }) {
+function ReviewForm({ tutorId, userId, userName, onSubmitted, t }) {
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const [body, setBody] = useState("");
@@ -519,14 +538,16 @@ function ReviewForm({ tutorId, userId, userName, onSubmitted }) {
   if (done) {
     return (
       <div className="mt-5 rounded-xl glass-btn border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600 dark:border-white/10 dark:bg-neutral-800 dark:text-slate-300">
-        Thanks for your review!
+        {t.thanksForReview}
       </div>
     );
   }
 
   return (
     <form onSubmit={handleSubmit} className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-white/10 dark:bg-neutral-800">
-      <p className="mb-3 text-sm font-semibold text-slate-800 dark:text-white">Leave a review</p>
+      <p className="mb-3 text-sm font-semibold text-slate-800 dark:text-white">
+        {t.leaveReview}
+      </p>
       <div className="mb-3 flex gap-1">
         {[1, 2, 3, 4, 5].map((star) => (
           <button key={star} type="button"
@@ -538,18 +559,19 @@ function ReviewForm({ tutorId, userId, userName, onSubmitted }) {
         ))}
       </div>
       <textarea value={body} onChange={(e) => setBody(e.target.value)} rows={3}
-        placeholder="Share your experience (optional)…"
+        placeholder={t.reviewPlaceholder}
         className="w-full rounded-xl glass-btn border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 outline-none focus:ring-1 focus:ring-slate-300 dark:border-white/10 dark:bg-neutral-900 dark:text-white" />
       <button type="submit" disabled={!rating || submitting}
         className="mt-3 inline-flex items-center gap-2 rounded-lg glass-btn bg-neutral-900 px-4 py-2 text-xs font-semibold text-white disabled:opacity-50 dark:bg-neutral-800 dark:text-white">
-        <Send size={12} /> {submitting ? "Submitting…" : "Submit review"}
+        <Send size={12} />
+        {submitting ? t.submittingEllipsis : t.submitReview}
       </button>
     </form>
   );
 }
 
 /* ─── Message modal ──────────────────────────────────────────────────────── */
-function MessageModal({ tutorId, tutorName, userId, onClose, onSent }) {
+function MessageModal({ tutorId, tutorName, userId, onClose, onSent, t }) {
   const [body, setBody] = useState("");
   const [sending, setSending] = useState(false);
 
@@ -567,22 +589,25 @@ function MessageModal({ tutorId, tutorName, userId, onClose, onSent }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm" onClick={onClose}>
       <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl dark:bg-neutral-900" onClick={(e) => e.stopPropagation()}>
         <div className="mb-4 flex items-center justify-between">
-          <p className="text-sm font-semibold text-slate-800 dark:text-white">Message {tutorName}</p>
+          <p className="text-sm font-semibold text-slate-800 dark:text-white">
+            {formatTemplate(t.messageTutorTitle, { name: tutorName })}
+          </p>
           <button type="button" onClick={onClose} className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 dark:hover:bg-neutral-800">
             <X size={15} />
           </button>
         </div>
         <form onSubmit={handleSend}>
           <textarea value={body} onChange={(e) => setBody(e.target.value)} rows={4} autoFocus
-            placeholder={`Hi ${tutorName}, I saw your profile on Smart Tuition Finder…`}
+            placeholder={formatTemplate(t.messageTutorPlaceholder, { name: tutorName })}
             className="w-full rounded-xl glass-btn border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-800 outline-none focus:ring-1 focus:ring-slate-300 dark:border-white/10 dark:bg-neutral-800 dark:text-white" />
           <div className="mt-3 flex justify-end gap-2">
             <button type="button" onClick={onClose} className="rounded-lg glass-btn border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50 dark:border-white/10 dark:text-slate-300">
-              Cancel
+              {t.cancel}
             </button>
             <button type="submit" disabled={!body.trim() || sending}
               className="inline-flex items-center gap-1.5 rounded-lg glass-btn bg-neutral-900 px-4 py-2 text-xs font-semibold text-white disabled:opacity-50 dark:bg-neutral-800 dark:text-white">
-              <Send size={11} /> {sending ? "Sending…" : "Send message"}
+              <Send size={11} />
+              {sending ? t.sendingEllipsis : t.sendMessage}
             </button>
           </div>
         </form>
@@ -592,24 +617,23 @@ function MessageModal({ tutorId, tutorName, userId, onClose, onSent }) {
 }
 
 function TutorNotFound() {
+  const { t } = useLanguage();
   return (
     <div className="mx-auto max-w-3xl px-4 py-24 text-center">
       <p className="text-sm font-semibold uppercase tracking-[0.2em] text-rose-500">
-        404 · Tutor not found
+        {t.tutorNotFoundTag}
       </p>
       <h1 className="mt-2 text-3xl font-extrabold text-slate-900 dark:text-white">
-        We couldn&rsquo;t find that tutor.
+        {t.tutorNotFoundHeadline}
       </h1>
       <p className="mx-auto mt-3 max-w-xl text-slate-600 dark:text-slate-300">
-        The tutor you&rsquo;re looking for may have moved or is no longer active
-        on Smart Tuition Finder. Try browsing the featured tutors on the
-        homepage.
+        {t.tutorNotFoundDesc}
       </p>
       <Link
         to="/"
         className="mt-6 inline-flex items-center gap-1.5 rounded-full glass-btn bg-neutral-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-neutral-800 dark:bg-neutral-800 dark:text-white"
       >
-        <ArrowLeft size={14} /> Back to homepage
+        <ArrowLeft size={14} /> {t.backToHomepage}
       </Link>
     </div>
   );
@@ -618,6 +642,7 @@ function TutorNotFound() {
 export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
   const { id: routeId } = useParams();
   const { profile: authProfile, user } = useAuth();
+  const { t } = useLanguage();
   const id = tutorIdProp ?? routeId;
   const staticTutor = id ? getTutorProfile(id) : null;
   const isOwnProfile = Boolean(
@@ -692,7 +717,7 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-24 text-center">
         <p className="text-sm text-slate-600 dark:text-slate-300">
-          Loading tutor profile...
+          {t.loadingTutorProfile}
         </p>
       </div>
     );
@@ -733,7 +758,7 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
 
   const handleToggleSave = async () => {
     if (!user?.id || !isStudentViewer) {
-      setToast("Sign in as a student to save tutors.");
+      setToast(t.signInStudentToSaveTutorsToast);
       return;
     }
     setSavePending(true);
@@ -741,21 +766,25 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
       if (isSaved) {
         await unsaveTutor(user.id, id);
         setIsSaved(false);
-        setToast("Removed from saved tutors.");
+        setToast(t.removedFromSavedToast);
       } else {
         await saveTutor(user.id, id);
         setIsSaved(true);
-        setToast("Tutor saved to your list!");
+        setToast(t.tutorSavedToast);
       }
-    } catch { setToast("Could not update saved status."); }
+    } catch {
+      setToast(t.couldNotUpdateSavedToast);
+    }
     setSavePending(false);
   };
 
   const handleBook = (slotLabel) => {
     setToast(
       slotLabel
-        ? `Session booked for ${slotLabel.replace("-", " · ")} 🎉`
-        : "Please select a slot below to continue.",
+        ? formatTemplate(t.sessionBookedForToast, {
+            slot: slotLabel.replace("-", " · "),
+          })
+        : t.selectSlotBelowToast,
     );
     if (!slotLabel) scrollToAvailability();
   };
@@ -763,11 +792,11 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
   const handleContact = () => {
     const whatsappNumber = extractWhatsappNumber(tutor);
     if (!whatsappNumber) {
-      setToast("WhatsApp number is not available for this tutor.");
+      setToast(t.whatsAppNumberNotAvailableToast);
       return;
     }
     const intro = encodeURIComponent(
-      `Hi ${tutor.name}, I found your profile on Smart Tuition Finder.`,
+      formatTemplate(t.whatsAppIntroMessage, { name: tutor.name }),
     );
     window.open(
       `https://wa.me/${whatsappNumber}?text=${intro}`,
@@ -778,7 +807,7 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
 
   const handleSubscribeLive = async () => {
     if (!user?.id || !isStudentViewer) {
-      setToast("Please sign in as a student to subscribe.");
+      setToast(t.signInStudentToSubscribeToast);
       return;
     }
     setSubscriptionPending(true);
@@ -790,20 +819,24 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
         tutorId: tutor.id,
         tutorName: tutor.name,
         onCompleted: () => {
-          setToast("Payment received. Subscription activates after secure verification.");
+          setToast(t.paymentReceivedToast);
           setSubscriptionPending(false);
         },
         onDismissed: () => {
-          setToast("Subscription payment cancelled.");
+          setToast(t.subscriptionCancelledToast);
           setSubscriptionPending(false);
         },
         onError: (paymentError) => {
-          setToast(`Payment failed: ${String(paymentError || "Unknown error")}`);
+          setToast(
+            formatTemplate(t.paymentFailedToast, {
+              error: String(paymentError || "Unknown error"),
+            }),
+          );
           setSubscriptionPending(false);
         },
       });
     } catch (error) {
-      setToast(error.message || "Could not start subscription checkout.");
+      setToast(error.message || t.couldNotStartSubscriptionToast);
       setSubscriptionPending(false);
     }
   };
@@ -812,12 +845,16 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
     <div className="min-h-screen bg-[#f5f5f7] dark:bg-neutral-950 pb-20 dark:bg-neutral-950">
       <ProfileHero
         tutor={tutor}
+        t={t}
         onBook={scrollToAvailability}
         onContact={handleContact}
         onSubscribe={handleSubscribeLive}
         onSave={handleToggleSave}
         onMessage={() => {
-          if (!user?.id || !isStudentViewer) { setToast("Sign in as a student to message this tutor."); return; }
+          if (!user?.id || !isStudentViewer) {
+            setToast(t.signInStudentToMessageTutorToast);
+            return;
+          }
           setShowMessageModal(true);
         }}
         isOwnProfile={isOwnProfile}
@@ -830,7 +867,11 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
       <div className="mx-auto mt-8 max-w-6xl px-6">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
           <div className="space-y-6">
-            <ProfileSection id="about" title="About the tutor" icon={Users}>
+            <ProfileSection
+              id="about"
+              title={t.profileAboutTitle}
+              icon={Users}
+            >
               {bioParagraphs.length > 0 ? (
                 <div className="space-y-3 text-[15px] leading-relaxed text-slate-700 dark:text-slate-200">
                   {bioParagraphs.map((paragraph, i) => (
@@ -838,13 +879,13 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
                   ))}
                 </div>
               ) : (
-                <EmptySectionText text="This tutor has not added an About section yet." />
+                <EmptySectionText text={t.profileAboutEmpty} />
               )}
             </ProfileSection>
 
             <ProfileSection
               id="qualifications"
-              title="Qualifications & Experience"
+              title={t.qualificationsTitle}
               icon={Award}
             >
               {qualificationsText ? (
@@ -852,13 +893,13 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
                   {qualificationsText}
                 </div>
               ) : (
-                <EmptySectionText text="No qualifications or experience details added yet." />
+                <EmptySectionText text={t.qualificationsEmpty} />
               )}
             </ProfileSection>
 
             <ProfileSection
               id="subjects"
-              title="Subjects & Grades"
+              title={t.subjectsGradesTitle}
               icon={BookOpen}
             >
               {subjectsTaught.length > 0 ? (
@@ -869,7 +910,7 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
                       className="rounded-2xl bg-slate-50 p-4 dark:bg-neutral-800"
                     >
                       <p className="text-sm font-bold text-slate-900 dark:text-white">
-                        {entry.subject || "Subject"}
+                        {entry.subject || t.subjectGeneric}
                       </p>
                       <div className="mt-2 flex flex-wrap gap-1.5">
                         {(entry.grades ?? []).map((g) => (
@@ -885,17 +926,17 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
                   ))}
                 </div>
               ) : (
-                <EmptySectionText text="No subjects or grade levels added yet." />
+                <EmptySectionText text={t.subjectsGradesEmpty} />
               )}
             </ProfileSection>
 
             <ProfileSection
               id="videos"
-              title="Demo videos"
+              title={t.demoVideosTitle}
               icon={PlayCircle}
               actions={
                 <span className="rounded-full glass-btn bg-slate-100 px-3 py-1 text-[11px] font-semibold text-slate-600 dark:bg-neutral-800 dark:text-slate-300">
-                  {demoVideos.length} videos
+                  {formatTemplate(t.videosCount, { count: demoVideos.length })}
                 </span>
               }
             >
@@ -906,20 +947,23 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
                   ))}
                 </div>
               ) : (
-                <EmptySectionText text="No demo videos added yet." />
+                <EmptySectionText text={t.demoVideosEmpty} />
               )}
             </ProfileSection>
 
             <ProfileSection
               id="reviews"
-              title="Student reviews"
+              title={t.studentReviewsTitle}
               icon={Star}
               actions={
                 <div className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
                   <StarRow value={tutor.rating} />
                   <span>{tutor.rating?.toFixed(1)}</span>
                   {Number.isFinite(tutor.reviewsCount) ? (
-                    <span className="text-slate-500 dark:text-slate-400">· {tutor.reviewsCount} reviews</span>
+                    <span className="text-slate-500 dark:text-slate-400">
+                      · {tutor.reviewsCount}{" "}
+                      {tutor.reviewsCount === 1 ? t.review : t.reviews}
+                    </span>
                   ) : null}
                 </div>
               }
@@ -927,7 +971,14 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
               {liveReviews.length > 0 ? (
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   {liveReviews.map((review) => (
-                    <ReviewCard key={review.id} review={{ ...review, author: review.reviewer_name || "Anonymous", text: review.body }} />
+                    <ReviewCard
+                      key={review.id}
+                      review={{
+                        ...review,
+                        author: review.reviewer_name || t.anonymous,
+                        text: review.body,
+                      }}
+                    />
                   ))}
                 </div>
               ) : (tutor.reviews?.length > 0 ? (
@@ -935,17 +986,25 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
                   {tutor.reviews.map((review) => <ReviewCard key={review.id} review={review} />)}
                 </div>
               ) : (
-                <EmptySectionText text="No reviews yet. Be the first to leave one!" />
+                <EmptySectionText text={t.noReviewsYet} />
               ))}
 
               {isStudentViewer && (
-                <ReviewForm tutorId={id} userId={user?.id} userName={user?.user_metadata?.name || user?.email?.split("@")[0]} onSubmitted={() => getTutorReviews(id).then(setLiveReviews).catch(() => {})} />
+                <ReviewForm
+                  tutorId={id}
+                  userId={user?.id}
+                  userName={user?.user_metadata?.name || user?.email?.split("@")[0]}
+                  onSubmitted={() =>
+                    getTutorReviews(id).then(setLiveReviews).catch(() => {})
+                  }
+                  t={t}
+                />
               )}
             </ProfileSection>
 
             <ProfileSection
               id="availability"
-              title="Availability & Booking"
+              title={t.availabilityBookingTitle}
               icon={CalendarDays}
             >
               {availabilityText ? (
@@ -956,9 +1015,10 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
                 <AvailabilityGrid
                   availability={availabilityGrid}
                   onBook={handleBook}
+                  t={t}
                 />
               ) : (
-                <EmptySectionText text="Availability details have not been added yet." />
+                <EmptySectionText text={t.availabilityNotAddedEmpty} />
               )}
             </ProfileSection>
           </div>
@@ -980,7 +1040,11 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
           tutorName={tutor.name}
           userId={user?.id}
           onClose={() => setShowMessageModal(false)}
-          onSent={(msg) => { setShowMessageModal(false); setToast("Message sent!"); }}
+          onSent={(msg) => {
+            setShowMessageModal(false);
+            setToast(t.messageSentToast);
+          }}
+          t={t}
         />
       )}
 

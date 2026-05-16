@@ -26,15 +26,15 @@ export default function AllTutorsPage() {
 
   const SUBJECT_FILTERS = [
     { id: "all", label: t.allSubjects },
-    { id: "Mathematics", label: "Maths" },
+    { id: "Mathematics", label: t.subjectMaths },
     { id: "Science", label: t.subjectScience },
-    { id: "Biology", label: "Biology" },
+    { id: "Biology", label: t.subjectBiology },
     { id: "Physics", label: t.subjectPhysics },
-    { id: "ICT", label: "ICT" },
+    { id: "ICT", label: t.subjectICT },
     { id: "English", label: t.subjectEnglish },
     { id: "History", label: t.subjectHistory },
     { id: "Art", label: t.subjectArt },
-    { id: "Business", label: "Business" },
+    { id: "Business", label: t.subjectBusiness },
     { id: "Top-Rated", label: t.highestRated },
   ];
 
@@ -217,7 +217,7 @@ export default function AllTutorsPage() {
               <button
                 type="button"
                 onClick={() => setQuery("")}
-                aria-label="Clear search"
+                aria-label={t.clearSearch}
                 className="inline-flex h-9 w-9 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 dark:hover:bg-neutral-800"
               >
                 <X size={14} />
@@ -249,11 +249,14 @@ export default function AllTutorsPage() {
           >
             <div className="mb-4 flex items-center justify-between gap-3">
               <p className="text-sm font-semibold text-slate-600 dark:text-slate-300">
-                <span className="text-slate-900 dark:text-white">
-                  {filtered.length}
-                </span>{" "}
-                tutor{filtered.length === 1 ? "" : "s"} match
-                {filtered.length === 1 ? "es" : ""} your filters
+                {(() => {
+                  const count = filtered.length;
+                  const template =
+                    count === 1
+                      ? t.tutorsMatchFilters_one
+                      : t.tutorsMatchFilters_many;
+                  return template.replace("{count}", String(count));
+                })()}
               </p>
             </div>
 
@@ -286,7 +289,9 @@ function TutorCard({ tutor }) {
     tutor.verifiedBlueMark || Number(tutor.verifiedMarks) > 0,
   );
   const reviewsLabel =
-    tutor.reviewsCount != null ? `${tutor.reviewsCount} reviews` : "New tutor";
+    tutor.reviewsCount != null
+      ? `${tutor.reviewsCount} ${tutor.reviewsCount === 1 ? t.review : t.reviews}`
+      : t.newTutor;
 
   return (
     <Link
@@ -295,11 +300,11 @@ function TutorCard({ tutor }) {
     >
       <div className="mb-4 flex items-center justify-between gap-2">
         <span className="inline-flex min-w-0 max-w-full items-center rounded-full glass-btn bg-slate-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.08em] text-slate-700 dark:bg-neutral-800 dark:text-slate-200">
-          {primarySubject || "General"}
+          {primarySubject || t.generalSubject}
         </span>
         {tutor.isProfileBoosted ? (
           <span className="inline-flex items-center rounded-full glass-btn bg-emerald-100 px-2.5 py-1 text-[10px] font-bold text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300">
-            Featured
+            {t.featuredBadge}
           </span>
         ) : null}
       </div>
@@ -334,7 +339,7 @@ function TutorCard({ tutor }) {
             {hasVerifiedBlueMark ? (
               <p className="inline-flex items-center gap-1 rounded-full glass-btn bg-blue-50 px-2 py-0.5 text-[10px] font-bold text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">
                 <BadgeCheck size={10} />
-                Verified
+                {t.verifiedBadge}
               </p>
             ) : null}
           </div>
@@ -372,7 +377,7 @@ function TutorCard({ tutor }) {
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0 flex-1">
             <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
-              From
+              {t.fromLabel}
             </p>
             {tutor.hourlyRate != null ? (
               <p className="mt-0.5 flex flex-wrap items-baseline gap-x-1.5 gap-y-0">
@@ -383,12 +388,12 @@ function TutorCard({ tutor }) {
                   {tutor.hourlyRate.toLocaleString()}
                 </span>
                 <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
-                  /hr
+                  {t.perHourShort}
                 </span>
               </p>
             ) : (
               <p className="mt-0.5 text-xs font-bold text-slate-500 dark:text-slate-400">
-                Rate on profile
+                {t.rateOnProfile}
               </p>
             )}
           </div>
@@ -413,15 +418,14 @@ function EmptyState({ onReset }) {
         {t.noTutorsFound}
       </h3>
       <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-        Try widening the price range, lowering the rating threshold, or
-        switching to a different subject.
+        {t.tutorsEmptyHint}
       </p>
       <button
         type="button"
         onClick={onReset}
         className="mt-5 inline-flex items-center gap-2 rounded-full glass-btn bg-neutral-950 px-5 py-2.5 text-xs font-semibold text-white transition hover:bg-neutral-800 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
       >
-        Reset filters
+        {t.resetFilters}
       </button>
     </div>
   );
