@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 
 import { useAuth } from "../context/AuthContext";
+import { useLanguage } from "../context/LanguageContext";
 import {
   buildSecureJoinLink,
   listMeetingsForStudent,
@@ -29,6 +30,7 @@ import { getStudentStats } from "../lib/tutorStats";
 export default function StudentDashboardPage() {
   const navigate = useNavigate();
   const { user, profile, profileLoading, signOut } = useAuth();
+  const { t } = useLanguage();
   const [signingOut, setSigningOut] = useState(false);
   const [liveMeetings, setLiveMeetings] = useState([]);
   const [subscriptions, setSubscriptions] = useState([]);
@@ -91,33 +93,33 @@ export default function StudentDashboardPage() {
   const invites = subscriptions.filter((s) => s.metadata?.join_link);
 
   return (
-    <div className="min-h-screen bg-[#f7f7f8] px-4 py-8 dark:bg-neutral-950">
+    <div className="min-h-screen bg-aurora px-4 py-8">
       <div className="mx-auto max-w-5xl space-y-5">
 
         {/* Header */}
-        <div className="rounded-2xl bg-white p-6 ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
+        <div className="glass-card rounded-2xl p-6">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-neutral-900 text-sm font-semibold text-white dark:bg-white dark:text-slate-900">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-neutral-900 text-sm font-semibold text-white dark:bg-neutral-800 dark:text-white">
                 {initials}
               </div>
               <div>
-                <p className="text-xs font-medium text-slate-400 dark:text-slate-500">Student dashboard</p>
+                <p className="text-xs font-medium text-slate-400 dark:text-slate-500">{t.studentDashboardLabel}</p>
                 <h1 className="text-xl font-semibold text-slate-900 dark:text-white">
-                  {profileLoading ? "Loading…" : `Welcome back, ${firstName(displayName)}`}
+                  {profileLoading ? t.loading : `${t.welcomeBack}, ${firstName(displayName)}`}
                 </h1>
               </div>
             </div>
             <div className="flex flex-wrap items-center gap-2">
               <Link to="/student-profile" className="btn-secondary">
-                <Settings size={13} /> Edit profile
+                <Settings size={13} /> {t.editProfile}
               </Link>
               <Link to="/tutors" className="btn-secondary">
-                <UserRound size={13} /> Find tutors
+                <UserRound size={13} /> {t.findTutors}
               </Link>
               <button type="button" onClick={handleSignOut} disabled={signingOut} className="btn-secondary">
                 <LogOut size={13} />
-                {signingOut ? "Signing out…" : "Sign out"}
+                {signingOut ? t.signingOut : t.signOutBtn}
               </button>
             </div>
           </div>
@@ -125,9 +127,9 @@ export default function StudentDashboardPage() {
 
         {/* Stats */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <StatCard icon={CalendarDays} label="Live meetings" value={String(liveMeetings.length)} sub={liveLoading ? "Loading…" : "from subscribed tutors"} />
-          <StatCard icon={Heart} label="Saved tutors" value={String(stats.savedCount)} sub="on your list" />
-          <StatCard icon={Video} label="Active subscriptions" value={String(stats.subscriptionCount)} sub="tutor channels" />
+          <StatCard icon={CalendarDays} label={t.liveMeetingsLabel} value={String(liveMeetings.length)} sub={liveLoading ? t.loading : t.fromSubscribedTutors} />
+          <StatCard icon={Heart} label={t.savedTutorsLabel} value={String(stats.savedCount)} sub={t.onYourList} />
+          <StatCard icon={Video} label={t.activeSubscriptions} value={String(stats.subscriptionCount)} sub={t.tutorChannels} />
         </div>
 
         {/* Tutor invites — shown only when the notify server has attached a join link */}
@@ -140,28 +142,26 @@ export default function StudentDashboardPage() {
         )}
 
         {/* Live class access */}
-        <div className="rounded-2xl bg-white ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
+        <div className="glass-card rounded-2xl">
           <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4 dark:border-white/10">
             <div className="flex items-center gap-2">
               <Video size={15} className="text-slate-400" />
-              <h2 className="text-sm font-semibold text-slate-800 dark:text-white">Live Classes</h2>
+              <h2 className="text-sm font-semibold text-slate-800 dark:text-white">{t.liveClasses}</h2>
             </div>
-            <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-semibold text-slate-500 dark:bg-neutral-800 dark:text-slate-400">
+            <span className="rounded-full glass-btn bg-slate-100 px-2.5 py-0.5 text-[11px] font-semibold text-slate-500 dark:bg-neutral-800 dark:text-slate-400">
               {subscriptions.length} tutor{subscriptions.length !== 1 ? "s" : ""}
             </span>
           </div>
 
           <div className="p-5">
             {liveLoading ? (
-              <p className="text-xs text-slate-400">Loading…</p>
+              <p className="text-xs text-slate-400">{t.loading}</p>
             ) : liveMeetings.length === 0 ? (
               <div className="rounded-xl border border-dashed border-slate-200 py-10 text-center dark:border-white/10">
                 <Video size={22} className="mx-auto mb-2 text-slate-300 dark:text-slate-600" />
-                <p className="text-sm font-medium text-slate-500 dark:text-slate-400">No live meetings yet</p>
+                <p className="text-sm font-medium text-slate-500 dark:text-slate-400">{t.noLiveMeetingsYet}</p>
                 <p className="mt-0.5 text-xs text-slate-400">
-                  {subscriptions.length === 0
-                    ? "Subscribe to a tutor to join their live classes"
-                    : "Your tutor hasn't started a meeting yet"}
+                  {subscriptions.length === 0 ? t.noLiveDesc1 : t.noLiveDesc2}
                 </p>
               </div>
             ) : (
@@ -172,9 +172,9 @@ export default function StudentDashboardPage() {
                       <div className="flex items-center gap-2">
                         <p className="text-sm font-medium text-slate-900 dark:text-white">{meeting.title}</p>
                         {meeting.status === "live" && (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-neutral-900 px-2 py-0.5 text-[10px] font-semibold text-white dark:bg-white dark:text-slate-900">
+                          <span className="inline-flex items-center gap-1 rounded-full glass-btn bg-neutral-900 px-2 py-0.5 text-[10px] font-semibold text-white dark:bg-neutral-800 dark:text-white">
                             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-400" />
-                            Live
+                            {t.live}
                           </span>
                         )}
                       </div>
@@ -184,9 +184,9 @@ export default function StudentDashboardPage() {
                     </div>
                     <Link
                       to={buildSecureJoinLink(meeting)}
-                      className="inline-flex items-center gap-1.5 rounded-lg bg-neutral-900 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-slate-700 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
+                      className="inline-flex items-center gap-1.5 rounded-lg glass-btn bg-neutral-900 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-slate-700 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
                     >
-                      <Video size={12} /> Join
+                      <Video size={12} /> {t.join}
                     </Link>
                   </li>
                 ))}
@@ -203,11 +203,11 @@ export default function StudentDashboardPage() {
           {/* Sidebar */}
           <div className="space-y-4">
             {/* Profile */}
-            <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
-              <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-400">Profile</h2>
-              <ProfileRow icon={UserRound} label="Name" value={displayName} />
-              <ProfileRow icon={Mail} label="Email" value={profile?.email ?? user?.email ?? "—"} />
-              <ProfileRow icon={GraduationCap} label="Account" value="Student" />
+            <div className="glass-card rounded-2xl p-5">
+              <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-400">{t.profileSection}</h2>
+              <ProfileRow icon={UserRound} label={t.nameLabel} value={displayName} />
+              <ProfileRow icon={Mail} label={t.emailLabel} value={profile?.email ?? user?.email ?? "—"} />
+              <ProfileRow icon={GraduationCap} label={t.accountLabel} value={t.studentRole} />
               <AnimatePresence>
                 {!profile && !profileLoading && (
                   <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -219,16 +219,16 @@ export default function StudentDashboardPage() {
             </div>
 
             {/* Saved tutors */}
-            <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
+            <div className="glass-card rounded-2xl p-5">
               <div className="mb-3 flex items-center justify-between">
                 <h2 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-slate-400">
-                  <Heart size={11} /> Saved tutors
+                  <Heart size={11} /> {t.savedTutorsTitle}
                 </h2>
-                <Link to="/tutors" className="text-[11px] text-slate-400 hover:text-slate-700 dark:hover:text-white">Browse</Link>
+                <Link to="/tutors" className="text-[11px] text-slate-400 hover:text-slate-700 dark:hover:text-white">{t.browse}</Link>
               </div>
               {savedTutors.length === 0 ? (
                 <p className="text-xs text-slate-400">
-                  No saved tutors yet — tap the heart on any tutor profile to save them.
+                  {t.noSavedTutors}
                 </p>
               ) : (
                 <ul className="space-y-1">
@@ -239,7 +239,7 @@ export default function StudentDashboardPage() {
                     const subject = Array.isArray(s.subjects) && s.subjects.length > 0 ? s.subjects[0] : null;
                     return (
                       <li key={s.tutor_id}>
-                        <Link to={href} className="flex items-center gap-2 rounded-lg hover:bg-slate-50 dark:hover:bg-neutral-800 px-1 py-1.5 -mx-1 transition">
+                        <Link to={href} className="flex items-center gap-2 rounded-lg glass-btn hover:bg-slate-50 dark:hover:bg-neutral-800 px-1 py-1.5 -mx-1 transition">
                           <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-slate-100 text-[10px] font-bold text-slate-500 dark:bg-neutral-800 dark:text-slate-400">
                             {initials || "T"}
                           </div>
@@ -260,12 +260,12 @@ export default function StudentDashboardPage() {
 
 
 {/* Tips */}
-            <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
+            <div className="glass-card rounded-2xl p-5">
               <h2 className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-slate-400">
-                <BookOpen size={11} /> Tips
+                <BookOpen size={11} /> {t.tips}
               </h2>
               <p className="text-xs leading-relaxed text-slate-500 dark:text-slate-400">
-                Use filters on the tutor directory to match subject, level, and location. Favourite tutors you like so you can find them quickly.
+                {t.tipsDesc}
               </p>
             </div>
           </div>
@@ -277,13 +277,14 @@ export default function StudentDashboardPage() {
 
 /* ─── Invite banner ──────────────────────────────────────────────────────── */
 function InviteBanner({ sub }) {
+  const { t } = useLanguage();
   const joinPath = sub.metadata?.join_link ?? "";
   const title = sub.metadata?.meeting_title ?? "Live Class";
   const status = sub.metadata?.meeting_status ?? "scheduled";
   const sentAt = sub.metadata?.invite_sent_at;
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white px-5 py-4 dark:border-white/10 dark:bg-neutral-900">
+    <div className="glass-card flex flex-wrap items-center justify-between gap-3 rounded-2xl px-5 py-4">
       <div className="flex items-center gap-3">
         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500 dark:bg-neutral-800">
           <Video size={14} />
@@ -291,27 +292,27 @@ function InviteBanner({ sub }) {
         <div>
           <div className="flex items-center gap-2">
             <p className="text-sm font-semibold text-slate-900 dark:text-white">
-              Your tutor invited you to: {title}
+              {t.tutorInvitedYou}: {title}
             </p>
             {status === "live" && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-neutral-900 px-2 py-0.5 text-[10px] font-semibold text-white dark:bg-white dark:text-slate-900">
+              <span className="inline-flex items-center gap-1 rounded-full glass-btn bg-neutral-900 px-2 py-0.5 text-[10px] font-semibold text-white dark:bg-neutral-800 dark:text-white">
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-400" />
-                Live now
+                {t.liveNow}
               </span>
             )}
           </div>
           {sentAt && (
             <p className="text-[11px] text-slate-400">
-              Invite received {new Date(sentAt).toLocaleString()}
+              {t.inviteReceived} {new Date(sentAt).toLocaleString()}
             </p>
           )}
         </div>
       </div>
       <Link
         to={joinPath}
-        className="inline-flex items-center gap-1.5 rounded-lg bg-neutral-900 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-slate-700 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
+        className="inline-flex items-center gap-1.5 rounded-lg glass-btn bg-neutral-900 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-slate-700 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
       >
-        <Video size={12} /> Join class
+        <Video size={12} /> {t.joinClass}
       </Link>
     </div>
   );
@@ -319,6 +320,7 @@ function InviteBanner({ sub }) {
 
 /* ─── Student messages ───────────────────────────────────────────────────── */
 function StudentMessagesSection({ userId }) {
+  const { t } = useLanguage();
   const [conversations, setConversations] = useState([]);
   const [active, setActive] = useState(null);
   const [thread, setThread] = useState([]);
@@ -352,19 +354,19 @@ function StudentMessagesSection({ userId }) {
   };
 
   return (
-    <div className="rounded-2xl bg-white ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
+    <div className="glass-card rounded-2xl">
       <div className="flex items-center gap-2 border-b border-slate-100 px-5 py-4 dark:border-white/10">
         <MessageSquareText size={15} className="text-slate-400" />
-        <h2 className="text-sm font-semibold text-slate-800 dark:text-white">Messages</h2>
+        <h2 className="text-sm font-semibold text-slate-800 dark:text-white">{t.messages}</h2>
       </div>
 
       {loading ? (
-        <p className="px-5 py-4 text-xs text-slate-400">Loading…</p>
+        <p className="px-5 py-4 text-xs text-slate-400">{t.loading}</p>
       ) : conversations.length === 0 ? (
         <div className="px-5 py-10 text-center">
           <MessageSquareText size={22} className="mx-auto mb-2 text-slate-300 dark:text-slate-600" />
-          <p className="text-sm text-slate-400">No messages yet</p>
-          <p className="mt-0.5 text-xs text-slate-400">Message a tutor from their profile page</p>
+          <p className="text-sm text-slate-400">{t.noMessagesYet}</p>
+          <p className="mt-0.5 text-xs text-slate-400">{t.messageTutorHint}</p>
         </div>
       ) : (
         <div className="grid divide-x divide-slate-100 dark:divide-white/10 sm:grid-cols-[200px_1fr]">
@@ -377,7 +379,7 @@ function StudentMessagesSection({ userId }) {
                   <button type="button" onClick={() => setActive(conv.otherId)}
                     className={`w-full px-4 py-3 text-left transition hover:bg-slate-50 dark:hover:bg-neutral-800 ${active === conv.otherId ? "bg-slate-50 dark:bg-neutral-800" : ""}`}>
                     <div className="flex items-center gap-2">
-                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-slate-200 text-[10px] font-bold text-slate-600 dark:bg-slate-700 dark:text-slate-300">
+                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-slate-200 text-[10px] font-bold text-slate-600 dark:bg-neutral-700 dark:text-slate-300">
                         T
                       </div>
                       <div className="min-w-0">
@@ -400,7 +402,7 @@ function StudentMessagesSection({ userId }) {
                     const mine = msg.from_user_id === userId;
                     return (
                       <li key={msg.id} className={`flex ${mine ? "justify-end" : "justify-start"}`}>
-                        <div className={`max-w-[80%] rounded-xl px-3 py-2 text-xs ${mine ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900" : "bg-slate-100 text-slate-800 dark:bg-neutral-800 dark:text-slate-200"}`}>
+                        <div className={`max-w-[80%] rounded-xl px-3 py-2 text-xs ${mine ? "bg-slate-900 text-white dark:bg-neutral-800 dark:text-white" : "bg-slate-100 text-slate-800 dark:bg-neutral-800 dark:text-slate-200"}`}>
                           {msg.body}
                         </div>
                       </li>
@@ -412,9 +414,9 @@ function StudentMessagesSection({ userId }) {
                   <input value={reply} onChange={(e) => setReply(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleSend()}
                     placeholder="Reply…"
-                    className="h-8 flex-1 rounded-lg border border-slate-200 bg-white px-3 text-xs outline-none focus:ring-1 focus:ring-slate-300 dark:border-white/10 dark:bg-neutral-800 dark:text-white" />
+                    className="h-8 flex-1 rounded-lg glass-btn border border-slate-200 bg-white px-3 text-xs outline-none focus:ring-1 focus:ring-slate-300 dark:border-white/10 dark:bg-neutral-800 dark:text-white" />
                   <button type="button" onClick={handleSend} disabled={sending || !reply.trim()}
-                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-neutral-900 text-white disabled:opacity-40 dark:bg-white dark:text-slate-900">
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-neutral-900 text-white disabled:opacity-40 dark:bg-neutral-800 dark:text-white">
                     <Send size={12} />
                   </button>
                 </div>
@@ -432,7 +434,7 @@ function StudentMessagesSection({ userId }) {
 /* ─── Stat card ─────────────────────────────────────────────────────────── */
 function StatCard({ icon: Icon, label, value, sub }) {
   return (
-    <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
+    <div className="glass-card rounded-2xl p-5">
       <div className="flex items-center gap-2 text-slate-400">
         <Icon size={14} />
         <p className="text-xs font-medium">{label}</p>

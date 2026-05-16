@@ -31,6 +31,8 @@ import ShaderBackground from "./components/ShaderBackground";
 import FAQ from "./components/faq.jsx";
 import Footer from "./components/footer";
 import Navbar from "./components/navbar.jsx";
+import LanguageSwitcher from "./components/LanguageSwitcher.jsx";
+import { useLanguage } from "./context/LanguageContext";
 import TutorProfilePage from "./pages/TutorProfilePage";
 import TutorLoginPage from "./pages/TutorLoginPage";
 import TutorDashboardPage from "./pages/TutorDashboardPage";
@@ -93,44 +95,14 @@ const testimonials = [
   },
 ];
 
-const popularSubjects = [
-  {
-    id: "maths",
-    label: "Maths",
-    icon: Calculator,
-    blurb: "Algebra, calculus, statistics & competition prep.",
-  },
-  {
-    id: "science",
-    label: "Science",
-    icon: FlaskConical,
-    blurb: "Biology, chemistry & lab-ready experiments.",
-  },
-  {
-    id: "history",
-    label: "History",
-    icon: Landmark,
-    blurb: "Sri Lanka, world history & critical analysis.",
-  },
-  {
-    id: "art",
-    label: "Art",
-    icon: Palette,
-    blurb: "Drawing, painting, design & portfolio building.",
-  },
-  {
-    id: "english",
-    label: "English",
-    icon: Languages,
-    blurb: "Grammar, literature, IELTS & spoken fluency.",
-  },
-  {
-    id: "physics",
-    label: "Physics",
-    icon: Atom,
-    blurb: "Mechanics, electromagnetism & A/L mastery.",
-  },
-];
+const subjectIcons = {
+  maths: Calculator,
+  science: FlaskConical,
+  history: Landmark,
+  art: Palette,
+  english: Languages,
+  physics: Atom,
+};
 
 function isVerifiedTutor(tutor) {
   return Boolean(tutor?.verifiedBlueMark || Number(tutor?.verifiedMarks) > 0);
@@ -145,54 +117,8 @@ function formatTutorLocation(location) {
   return location.split(",")[0].trim();
 }
 
-const highlights = [
-  {
-    title: "Verified Tutor Profiles",
-    description:
-      "View qualifications, experience, and teaching style in one place.",
-    icon: ShieldCheck,
-  },
-  {
-    title: "Smart Local Search",
-    description: "Find tutors by city and nearby area for faster onboarding.",
-    icon: MapPin,
-  },
-  {
-    title: "Fast Communication",
-    description:
-      "Send direct inquiries and get responses without platform friction.",
-    icon: MessageSquareText,
-  },
-];
-
-const heroStats = [
-  { value: "170+", label: "verified tutors" },
-  { value: "56K", label: "student inquiries" },
-  { value: "4.9/5", label: "average rating" },
-];
-
-const learningLevels = ["School", "A/L", "University", "Professional Skills"];
-
-const platformSteps = [
-  {
-    title: "Tell us the goal",
-    description:
-      "Choose the subject, level, city, and learning style that fit you.",
-    icon: Sparkles,
-  },
-  {
-    title: "Compare trusted tutors",
-    description:
-      "Review verified profiles, ratings, locations, and specialties in minutes.",
-    icon: CheckCircle2,
-  },
-  {
-    title: "Start with confidence",
-    description:
-      "Connect quickly and keep momentum with the right learning support.",
-    icon: Clock3,
-  },
-];
+const highlightIcons = [ShieldCheck, MapPin, MessageSquareText];
+const platformStepIcons = [Sparkles, CheckCircle2, Clock3];
 
 function useDarkMode() {
   const [isDark, setIsDark] = useState(
@@ -269,7 +195,7 @@ function TestimonialSlider() {
 
   return (
     <section id="reviews" className="mx-auto mt-24 max-w-5xl px-6 scroll-mt-24">
-      <div className="rounded-[2.5rem] bg-white p-8 text-center shadow-[0_30px_90px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/70 md:p-12 dark:bg-neutral-900 dark:ring-white/10">
+      <div className="glass-card rounded-[2.5rem] p-8 text-center md:p-12">
         <AnimatePresence mode="wait">
           <motion.div
             key={index}
@@ -298,6 +224,7 @@ function TestimonialSlider() {
 
 function JoinUsModal({ isOpen, onClose, animationData, successAnimationData }) {
   const { signUp, isConfigured } = useAuth();
+  const { t } = useLanguage();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -434,16 +361,16 @@ function JoinUsModal({ isOpen, onClose, animationData, successAnimationData }) {
             </div>
 
             <h3 className="text-center text-2xl font-bold text-slate-900 dark:text-white">
-              Join Us
+              {t.joinUs}
             </h3>
             <p className="mb-5 mt-1 text-center text-sm text-slate-600 dark:text-slate-300">
-              Create your Smart Tuition Finder account
+              {t.createAccountPrompt}
             </p>
 
             {!isSuccess ? (
               <form onSubmit={onSubmit} className="space-y-3" noValidate>
                 {errors.form ? (
-                  <p className="rounded-xl border border-rose-300/60 bg-rose-50/90 px-3 py-2 text-xs font-semibold text-rose-600 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-300">
+                  <p className="rounded-xl glass-btn border border-rose-300/60 bg-rose-50/90 px-3 py-2 text-xs font-semibold text-rose-600 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-300">
                     {errors.form}
                   </p>
                 ) : null}
@@ -451,7 +378,7 @@ function JoinUsModal({ isOpen, onClose, animationData, successAnimationData }) {
                   <input
                     value={fullName}
                     onChange={(event) => setFullName(event.target.value)}
-                    placeholder="Full Name"
+                    placeholder={t.fullName}
                     className="filter-input"
                   />
 
@@ -466,7 +393,7 @@ function JoinUsModal({ isOpen, onClose, animationData, successAnimationData }) {
                   <input
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
-                    placeholder="Email Address"
+                    placeholder={t.emailAddress}
                     className="filter-input"
                   />
 
@@ -503,10 +430,10 @@ function JoinUsModal({ isOpen, onClose, animationData, successAnimationData }) {
 
                 <div>
                   <p className="mb-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
-                    I am joining as
+                    {t.iAmJoiningAs}
                   </p>
                   <div className="grid grid-cols-2 gap-2">
-                    {["Student", "Tutor"].map((item) => {
+                    {[t.student, t.tutor].map((item) => {
                       const active = role === item;
                       return (
                         <button
@@ -515,7 +442,7 @@ function JoinUsModal({ isOpen, onClose, animationData, successAnimationData }) {
                           onClick={() => setRole(item)}
                           className={`rounded-xl border px-3 py-2 text-sm font-semibold transition ${
                             active
-                              ? "border-slate-950 bg-neutral-950 text-white dark:border-white dark:bg-white dark:text-slate-950"
+                              ? "border-slate-950 bg-neutral-950 text-white dark:border-white dark:bg-neutral-800 dark:text-white"
                               : "border-slate-300/70 bg-white/60 text-slate-700 dark:border-slate-600 dark:bg-neutral-800/60 dark:text-slate-200"
                           }`}
                         >
@@ -531,15 +458,15 @@ function JoinUsModal({ isOpen, onClose, animationData, successAnimationData }) {
                   whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
                   disabled={isSubmitting}
                   type="submit"
-                  className="mt-1 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-950 px-4 py-3 font-semibold text-white disabled:opacity-75 dark:bg-white dark:text-slate-950"
+                  className="mt-1 inline-flex w-full items-center justify-center gap-2 rounded-xl glass-btn bg-neutral-950 px-4 py-3 font-semibold text-white disabled:opacity-75 dark:bg-neutral-800 dark:text-white"
                 >
                   {isSubmitting ? (
                     <>
                       <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/35 border-t-white" />
-                      Signing Up...
+                      {t.signingUp}
                     </>
                   ) : (
-                    "Sign Up"
+                    t.signUpBtn
                   )}
                 </motion.button>
               </form>
@@ -563,10 +490,10 @@ function JoinUsModal({ isOpen, onClose, animationData, successAnimationData }) {
                   )}
                 </div>
                 <p className="mt-3 text-lg font-semibold text-slate-900 dark:text-white">
-                  Registration Successful!
+                  {t.registrationSuccessful}
                 </p>
                 <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-                  Welcome to Smart Tuition Finder.
+                  {t.welcomeToStf}
                 </p>
               </motion.div>
             )}
@@ -578,6 +505,16 @@ function JoinUsModal({ isOpen, onClose, animationData, successAnimationData }) {
 }
 
 function PopularSubjects() {
+  const { t } = useLanguage();
+  const subjects = [
+    { id: "maths", label: t.subjectMaths, icon: subjectIcons.maths, blurb: t.subjectMathsBlurb },
+    { id: "science", label: t.subjectScience, icon: subjectIcons.science, blurb: t.subjectScienceBlurb },
+    { id: "history", label: t.subjectHistory, icon: subjectIcons.history, blurb: t.subjectHistoryBlurb },
+    { id: "art", label: t.subjectArt, icon: subjectIcons.art, blurb: t.subjectArtBlurb },
+    { id: "english", label: t.subjectEnglish, icon: subjectIcons.english, blurb: t.subjectEnglishBlurb },
+    { id: "physics", label: t.subjectPhysics, icon: subjectIcons.physics, blurb: t.subjectPhysicsBlurb },
+  ];
+
   return (
     <section
       id="subjects"
@@ -591,19 +528,18 @@ function PopularSubjects() {
         className="mx-auto mb-12 max-w-3xl text-center"
       >
         <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">
-          Explore subjects
+          {t.exploreSubjectsTag}
         </p>
         <h3 className="mt-3 text-4xl font-semibold tracking-[-0.055em] text-slate-950 md:text-6xl dark:text-white">
-          Every subject feels easy to find.
+          {t.popularSubjectsHeadline}
         </h3>
         <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-500 dark:text-slate-400">
-          Clean subject cards keep the search focused, readable, and fast from
-          the first click.
+          {t.popularSubjectsDesc}
         </p>
       </motion.div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {popularSubjects.map((subject, index) => {
+        {subjects.map((subject, index) => {
           const Icon = subject.icon;
           return (
             <motion.div
@@ -613,7 +549,7 @@ function PopularSubjects() {
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.4, delay: index * 0.05 }}
               whileHover={{ y: -6 }}
-              className="group flex items-center gap-5 rounded-[2rem] bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.06)] ring-1 ring-slate-200/70 transition hover:-translate-y-1 hover:shadow-[0_28px_80px_rgba(15,23,42,0.1)] dark:bg-neutral-900 dark:ring-white/10"
+              className="group flex items-center gap-5 glass-card rounded-[2rem] p-6 transition hover:-translate-y-1"
             >
               <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-slate-100 text-slate-950 transition-transform duration-300 group-hover:scale-105 dark:bg-neutral-800 dark:text-white">
                 <Icon size={20} />
@@ -635,6 +571,8 @@ function PopularSubjects() {
 }
 
 function FeaturedTutors({ tutors }) {
+  const { t } = useLanguage();
+
   if (!tutors.length) {
     return (
       <section
@@ -643,10 +581,10 @@ function FeaturedTutors({ tutors }) {
       >
         <div className="rounded-[2rem] bg-white p-8 text-center shadow-sm ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10">
           <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">
-            Featured tutors
+            {t.featuredTutorsTag}
           </p>
           <p className="mt-2 text-base text-slate-600 dark:text-slate-300">
-            No featured tutor profiles are available yet.
+            {t.noFeaturedTutors}
           </p>
         </div>
       </section>
@@ -658,17 +596,17 @@ function FeaturedTutors({ tutors }) {
       <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">
-            Featured tutors
+            {t.featuredTutorsTag}
           </p>
           <h3 className="mt-3 max-w-2xl text-4xl font-semibold tracking-[-0.055em] text-slate-950 md:text-6xl dark:text-white">
-            Profiles with just enough detail.
+            {t.featuredTutorsHeadline}
           </h3>
         </div>
         <Link
           to="/tutors"
-          className="inline-flex w-fit items-center gap-2 rounded-full bg-neutral-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-neutral-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+          className="inline-flex w-fit items-center gap-2 rounded-full glass-btn bg-neutral-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-neutral-800 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
         >
-          View all tutors →
+          {t.viewAllTutors}
         </Link>
       </div>
 
@@ -683,10 +621,10 @@ function FeaturedTutors({ tutors }) {
               to={`/tutor/${tutor.id}`}
               data-tutor-id={tutor.id}
               data-tutor-magnetic
-              className="group relative block overflow-hidden rounded-[2rem] bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.06)] ring-1 ring-slate-200/70 transition duration-300 hover:-translate-y-1 hover:shadow-[0_28px_80px_rgba(15,23,42,0.1)] dark:bg-neutral-900 dark:ring-white/10"
+              className="glass-card group relative block overflow-hidden rounded-[2rem] p-6 transition duration-300"
             >
               <div className="relative z-10 flex items-center gap-3">
-                <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-neutral-950 text-sm font-semibold text-white dark:bg-white dark:text-slate-950">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-neutral-950 text-sm font-semibold text-white dark:bg-neutral-800 dark:text-white">
                   {tutor.avatar_url ? (
                     <img
                       src={tutor.avatar_url}
@@ -705,7 +643,7 @@ function FeaturedTutors({ tutors }) {
                   </p>
                   <div className="mt-1 flex flex-wrap items-center gap-1.5">
                     {hasVerifiedBlueMark ? (
-                      <p className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-bold text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">
+                      <p className="inline-flex items-center gap-1 rounded-full glass-btn bg-blue-50 px-2 py-0.5 text-[10px] font-bold text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">
                         <BadgeCheck size={10} />
                         Verified
                       </p>
@@ -740,9 +678,27 @@ function FeaturedTutors({ tutors }) {
 
 function HomePage() {
   const { user } = useAuth();
+  const { t } = useLanguage();
   const [heroAnimation, setHeroAnimation] = useState(null);
   const [successAnimation, setSuccessAnimation] = useState(null);
   const [isJoinOpen, setIsJoinOpen] = useState(false);
+
+  const heroStats = [
+    { value: "170+", label: t.verifiedTutors },
+    { value: "56K", label: t.studentInquiries },
+    { value: "4.9/5", label: t.avgRating },
+  ];
+  const learningLevels = [t.levelSchool, t.levelAL, t.levelUniversity, t.levelProfessional];
+  const platformSteps = [
+    { title: t.step1Title, description: t.step1Desc, icon: platformStepIcons[0] },
+    { title: t.step2Title, description: t.step2Desc, icon: platformStepIcons[1] },
+    { title: t.step3Title, description: t.step3Desc, icon: platformStepIcons[2] },
+  ];
+  const highlights = [
+    { title: t.highlight1Title, description: t.highlight1Desc, icon: highlightIcons[0] },
+    { title: t.highlight2Title, description: t.highlight2Desc, icon: highlightIcons[1] },
+    { title: t.highlight3Title, description: t.highlight3Desc, icon: highlightIcons[2] },
+  ];
 
   useEffect(() => {
     fetch("https://assets10.lottiefiles.com/packages/lf20_touohxv0.json")
@@ -777,26 +733,24 @@ function HomePage() {
         >
           <motion.div
             variants={heroItem}
-            className="mx-auto inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-slate-700 shadow-sm md:mx-0 dark:border-white/10 dark:bg-neutral-900 dark:text-slate-300"
+            className="mx-auto inline-flex items-center gap-2 rounded-full glass-btn border border-slate-200 bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-slate-700 shadow-sm md:mx-0 dark:border-white/10 dark:bg-neutral-900 dark:text-slate-300"
           >
             <Sparkles className="h-4 w-4" />
-            Smart tutor platform
+            {t.heroTag}
           </motion.div>
 
           <motion.h2
             variants={heroItem}
             className="mt-6 max-w-4xl text-5xl font-black leading-[1.02] tracking-[-0.055em] text-slate-950 sm:text-6xl lg:text-7xl dark:text-white"
           >
-            Find and manage tuition in one clean workspace.
+            {t.heroHeadline}
           </motion.h2>
 
           <motion.p
             variants={heroItem}
             className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-600 md:mx-0 md:text-xl dark:text-slate-300"
           >
-            Smart Tuition Finder helps students and parents compare verified
-            tutors, filter by subject and location, and start conversations from
-            a simple SaaS-style dashboard.
+            {t.heroSubtitle}
           </motion.p>
 
           <motion.div
@@ -805,23 +759,23 @@ function HomePage() {
           >
             <Button
               asChild
-              className="h-12 rounded-full bg-neutral-950 px-7 text-base text-white shadow-sm hover:bg-neutral-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200 sm:w-auto"
+              className="h-12 rounded-full glass-btn bg-neutral-950 px-7 text-base text-white shadow-sm hover:bg-neutral-800 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700 sm:w-auto"
               size="lg"
             >
               <Link
                 to={getStartedPath(user)}
                 className="inline-flex items-center gap-2"
               >
-                Get Started <ArrowUpRight />
+                {t.getStarted} <ArrowUpRight />
               </Link>
             </Button>
             <Button
               asChild
-              className="h-12 rounded-full border-slate-200 bg-white px-7 text-base hover:bg-slate-50 dark:border-white/10 dark:bg-neutral-900 dark:hover:bg-neutral-800 sm:w-auto"
+              className="h-12 rounded-full glass-btn border-slate-200 bg-white px-7 text-base hover:bg-slate-50 dark:border-white/10 dark:bg-neutral-900 dark:hover:bg-neutral-800 sm:w-auto"
               size="lg"
               variant="outline"
             >
-              <a href="#features">See how it works</a>
+              <a href="#features">{t.seeHowItWorks}</a>
             </Button>
           </motion.div>
 
@@ -876,7 +830,7 @@ function HomePage() {
                   </p>
                   <h3 className="mt-1 text-2xl font-black">Tutor shortlist</h3>
                 </div>
-                <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-bold text-slate-700 dark:border-white/10 dark:bg-neutral-900 dark:text-slate-300">
+                <span className="rounded-full glass-btn border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-bold text-slate-700 dark:border-white/10 dark:bg-neutral-900 dark:text-slate-300">
                   12 nearby
                 </span>
               </div>
@@ -889,7 +843,7 @@ function HomePage() {
                       className="rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-white/10 dark:bg-neutral-900"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-neutral-950 text-sm font-black text-white dark:bg-white dark:text-slate-950">
+                        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-neutral-950 text-sm font-black text-white dark:bg-neutral-800 dark:text-white">
                           {tutor.initials}
                         </div>
                         <div className="min-w-0 flex-1">
@@ -900,14 +854,14 @@ function HomePage() {
                             {tutor.subject}
                           </p>
                         </div>
-                        <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-2 py-1 text-xs font-bold text-slate-700 dark:border-white/10 dark:bg-neutral-950 dark:text-slate-300">
+                        <span className="inline-flex items-center gap-1 rounded-full glass-btn border border-slate-200 bg-white px-2 py-1 text-xs font-bold text-slate-700 dark:border-white/10 dark:bg-neutral-950 dark:text-slate-300">
                           <Star size={12} fill="currentColor" />
                           {formatTutorRating(tutor.rating)}
                         </span>
                       </div>
                       <div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-200 dark:bg-neutral-800">
                         <div
-                          className="h-full rounded-full bg-neutral-950 dark:bg-white"
+                          className="h-full rounded-full bg-neutral-950 dark:bg-neutral-700"
                           style={{ width: `${86 - index * 9}%` }}
                         />
                       </div>
@@ -938,16 +892,16 @@ function HomePage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-4">
-        <div className="rounded-[1.75rem] border border-slate-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-neutral-900">
-          <p className="text-center text-xs font-bold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
-            Built for every learning stage
+        <div className="glass-card rounded-[1.75rem] p-4">
+          <p className="text-center text-xs font-bold uppercase tracking-[0.18em] text-slate-500 dark:text-white/50">
+            {t.builtForEveryStage}
           </p>
           <div className="mt-4 grid grid-cols-2 gap-3 text-center md:grid-cols-4">
             {learningLevels.map((item) => (
               <Link
                 key={item}
                 to={`/tutors?level=${encodeURIComponent(item)}`}
-                className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-50 dark:border-white/10 dark:bg-neutral-950/40 dark:text-slate-200 dark:hover:bg-neutral-900"
+                className="glass-card rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 transition hover:-translate-y-0.5 dark:text-white/90"
               >
                 {item}
               </Link>
@@ -968,10 +922,10 @@ function HomePage() {
       >
         <div className="mb-8 text-center">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
-            How it works
+            {t.howItWorksTag}
           </p>
           <h3 className="mt-2 text-3xl font-black tracking-tight text-slate-950 md:text-4xl dark:text-white">
-            A cleaner way to choose tuition
+            {t.howItWorksHeadline}
           </h3>
         </div>
 
@@ -987,7 +941,7 @@ function HomePage() {
                 transition={{ duration: 0.4, delay: index * 0.08 }}
                 className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-slate-300 hover:shadow-md dark:border-white/10 dark:bg-neutral-900 dark:hover:border-white/20"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-neutral-950 text-white dark:bg-white dark:text-slate-950">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-neutral-950 text-white dark:bg-neutral-800 dark:text-white">
                   <Icon size={20} />
                 </div>
                 <h4 className="mt-5 text-lg font-black text-slate-950 dark:text-white">
@@ -1002,9 +956,9 @@ function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <Counter value={25} suffix="+" label="Years of Learning Experience" />
-          <Counter value={56} suffix="K" label="Students Enrolled" />
-          <Counter value={170} suffix="+" label="Experienced Teachers" />
+          <Counter value={25} suffix="+" label={t.yearsExperience} />
+          <Counter value={56} suffix="K" label={t.studentsEnrolled} />
+          <Counter value={170} suffix="+" label={t.experiencedTeachers} />
         </div>
 
         <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -1037,42 +991,41 @@ function HomePage() {
       <section id="join" className="mx-auto max-w-6xl px-4 pb-12 scroll-mt-24">
         <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm md:p-8 dark:border-white/10 dark:bg-neutral-900">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
-            Join the platform
+            {t.joinPlatformTag}
           </p>
           <h3 className="mt-2 text-3xl font-black tracking-tight text-slate-950 dark:text-white">
-            One polished place for learners and tutors
+            {t.joinPlatformHeadline}
           </h3>
           <p className="mt-3 max-w-2xl text-slate-600 dark:text-slate-300">
-            Join as a student to discover the right tutor, or as a tutor to turn
-            your expertise into a stronger teaching profile.
+            {t.joinPlatformDesc}
           </p>
           <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6 dark:border-white/10 dark:bg-neutral-950">
               <h4 className="text-xl font-black text-slate-950 dark:text-white">
-                For Students
+                {t.forStudents}
               </h4>
               <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
-                Find tutors by subject, location, and level with less effort.
+                {t.studentFindDesc}
               </p>
               <button
                 onClick={() => setIsJoinOpen(true)}
-                className="mt-5 rounded-full bg-neutral-950 px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-neutral-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+                className="mt-5 rounded-full glass-btn bg-neutral-950 px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-neutral-800 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
               >
-                Student Sign Up
+                {t.studentSignUp}
               </button>
             </div>
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-neutral-900">
               <h4 className="text-xl font-black text-slate-950 dark:text-white">
-                For Tutors
+                {t.forTutors}
               </h4>
               <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
-                Create your profile and connect with quality students quickly.
+                {t.tutorCreateDesc}
               </p>
               <button
                 onClick={() => setIsJoinOpen(true)}
-                className="mt-5 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-950 shadow-sm hover:bg-slate-50 dark:border-white/10 dark:bg-neutral-950 dark:text-white dark:hover:bg-neutral-800"
+                className="mt-5 rounded-full glass-btn border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-950 shadow-sm hover:bg-slate-50 dark:border-white/10 dark:bg-neutral-950 dark:text-white dark:hover:bg-neutral-800"
               >
-                Tutor Sign Up
+                {t.tutorSignUp}
               </button>
             </div>
           </div>
@@ -1082,19 +1035,18 @@ function HomePage() {
       <section className="mx-auto max-w-6xl px-4 pb-16">
         <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-neutral-950 p-8 text-center text-white shadow-md md:p-10 dark:border-white/10">
           <h3 className="text-3xl font-black tracking-tight md:text-4xl">
-            Build better learning outcomes today
+            {t.ctaHeadline}
           </h3>
           <p className="mx-auto mt-3 max-w-2xl text-slate-300">
-            Smart Tuition Finder brings students, parents, and tutors together
-            through a calm, modern platform.
+            {t.ctaDesc}
           </p>
           <motion.button
             whileHover={{ scale: 1.04, y: -1 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => setIsJoinOpen(true)}
-            className="mt-6 rounded-full bg-white px-6 py-3 text-sm font-bold text-slate-950 shadow-[0_16px_40px_rgba(255,255,255,0.16)]"
+            className="mt-6 rounded-full glass-btn bg-white px-6 py-3 text-sm font-bold text-slate-950 shadow-[0_16px_40px_rgba(255,255,255,0.16)]"
           >
-            Join Smart Tuition Finder
+            {t.joinSmartTuition}
           </motion.button>
         </div>
       </section>
@@ -1113,10 +1065,23 @@ function HomePage() {
 
 function AppleHomePage() {
   const { user } = useAuth();
+  const { t } = useLanguage();
   const [heroAnimation, setHeroAnimation] = useState(null);
   const [successAnimation, setSuccessAnimation] = useState(null);
   const [isJoinOpen, setIsJoinOpen] = useState(false);
   const [featuredTutors, setFeaturedTutors] = useState([]);
+
+  const heroStats = [
+    { value: "170+", label: t.verifiedTutors },
+    { value: "56K", label: t.studentInquiries },
+    { value: "4.9/5", label: t.avgRating },
+  ];
+  const learningLevels = [t.levelSchool, t.levelAL, t.levelUniversity, t.levelProfessional];
+  const platformSteps = [
+    { title: t.step1Title, description: t.step1Desc, icon: platformStepIcons[0] },
+    { title: t.step2Title, description: t.step2Desc, icon: platformStepIcons[1] },
+    { title: t.step3Title, description: t.step3Desc, icon: platformStepIcons[2] },
+  ];
 
   useEffect(() => {
     fetch("https://assets10.lottiefiles.com/packages/lf20_touohxv0.json")
@@ -1149,7 +1114,7 @@ function AppleHomePage() {
   }, []);
 
   return (
-    <div className="relative -mt-[5.5rem] overflow-hidden bg-[#f5f5f7] dark:bg-[#111111]">
+    <div className="bg-aurora relative -mt-[5.5rem] overflow-hidden bg-[#f5f5f7] dark:bg-neutral-950">
       <section
         id="home"
         className="relative overflow-hidden scroll-mt-24"
@@ -1172,15 +1137,14 @@ function AppleHomePage() {
             variants={heroItem}
             className="mt-7 max-w-5xl text-6xl font-semibold leading-[0.94] tracking-[-0.075em] text-slate-950 dark:text-white sm:text-7xl md:text-8xl lg:text-9xl"
           >
-            Tuition. Simplified.
+            {t.heroHeadline2}
           </motion.h1>
 
           <motion.p
             variants={heroItem}
             className="mx-auto mt-7 max-w-3xl text-xl font-medium leading-8 tracking-[-0.02em] text-slate-600 dark:text-slate-300 md:text-2xl md:leading-9"
           >
-            A calm, modern way to discover tutors, compare profiles, and choose
-            the right learning support without clutter.
+            {t.heroSubtitle2}
           </motion.p>
 
           <motion.div
@@ -1189,23 +1153,23 @@ function AppleHomePage() {
           >
             <Button
               asChild
-              className="h-12 rounded-full bg-neutral-950 px-7 text-base font-semibold text-white shadow-sm hover:bg-neutral-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-100"
+              className="h-12 rounded-full glass-btn bg-neutral-950 px-7 text-base font-semibold text-white shadow-sm hover:bg-neutral-800 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
               size="lg"
             >
               <Link
                 to={getStartedPath(user)}
                 className="inline-flex items-center gap-2"
               >
-                Get Started <ArrowUpRight />
+                {t.getStarted} <ArrowUpRight />
               </Link>
             </Button>
             <Button
               asChild
-              className="h-12 rounded-full border border-slate-200 bg-white/70 px-7 text-base font-semibold text-slate-800 shadow-none backdrop-blur-sm hover:bg-white dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
+              className="h-12 rounded-full glass-btn border border-slate-200 bg-white/70 px-7 text-base font-semibold text-slate-800 shadow-none backdrop-blur-sm hover:bg-white dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
               size="lg"
               variant="outline"
             >
-              <a href="#features">Learn more</a>
+              <a href="#features">{t.learnMore}</a>
             </Button>
           </motion.div>
         </motion.div>
@@ -1219,10 +1183,10 @@ function AppleHomePage() {
           <div className="rounded-[2.75rem] bg-white p-3 shadow-[0_40px_120px_rgba(15,23,42,0.14)] ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10">
             <div className="overflow-hidden rounded-[2.25rem] border border-slate-200 bg-[#fbfbfd] dark:border-white/10 dark:bg-neutral-950">
               <div className="flex items-center gap-2 border-b border-slate-200 bg-white px-5 py-4 dark:border-white/10 dark:bg-neutral-900">
-                <span className="h-3 w-3 rounded-full bg-slate-300 dark:bg-slate-700" />
-                <span className="h-3 w-3 rounded-full bg-slate-300 dark:bg-slate-700" />
-                <span className="h-3 w-3 rounded-full bg-slate-300 dark:bg-slate-700" />
-                <div className="mx-auto hidden w-80 rounded-full bg-slate-100 px-4 py-1.5 text-center text-xs font-medium text-slate-500 md:block dark:bg-neutral-800 dark:text-slate-400">
+                <span className="h-3 w-3 rounded-full bg-slate-300 dark:bg-neutral-700" />
+                <span className="h-3 w-3 rounded-full bg-slate-300 dark:bg-neutral-700" />
+                <span className="h-3 w-3 rounded-full bg-slate-300 dark:bg-neutral-700" />
+                <div className="mx-auto hidden w-80 rounded-full glass-btn bg-slate-100 px-4 py-1.5 text-center text-xs font-medium text-slate-500 md:block dark:bg-neutral-800 dark:text-slate-400">
                   smarttuitionfinder.app
                 </div>
               </div>
@@ -1250,7 +1214,7 @@ function AppleHomePage() {
                     )}
                   </div>
 
-                  <div className="mt-6 rounded-3xl bg-neutral-950 p-5 text-white dark:bg-white dark:text-slate-950">
+                  <div className="mt-6 rounded-3xl bg-neutral-950 p-5 text-white dark:bg-neutral-800 dark:text-white">
                     <p className="text-sm font-medium opacity-70">
                       Recommended match
                     </p>
@@ -1270,7 +1234,7 @@ function AppleHomePage() {
                         Clean profiles. Clear choices.
                       </h2>
                     </div>
-                    <span className="hidden rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-600 shadow-sm ring-1 ring-slate-200/70 md:inline-flex dark:bg-neutral-900 dark:text-slate-300 dark:ring-white/10">
+                    <span className="hidden rounded-full glass-btn bg-white px-4 py-2 text-sm font-semibold text-slate-600 shadow-sm ring-1 ring-slate-200/70 md:inline-flex dark:bg-neutral-900 dark:text-slate-300 dark:ring-white/10">
                       12 nearby
                     </span>
                   </div>
@@ -1282,7 +1246,7 @@ function AppleHomePage() {
                           key={tutor.id}
                           className="rounded-[2rem] bg-white p-5 shadow-sm ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10"
                         >
-                          <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-neutral-950 text-sm font-semibold text-white dark:bg-white dark:text-slate-950">
+                          <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-neutral-950 text-sm font-semibold text-white dark:bg-neutral-800 dark:text-white">
                             {tutor.avatar_url ? (
                               <img
                                 src={tutor.avatar_url}
@@ -1342,9 +1306,9 @@ function AppleHomePage() {
             <Link
               key={item}
               to={`/tutors?level=${encodeURIComponent(item)}`}
-              className="rounded-[2rem] bg-white p-6 text-center shadow-sm ring-1 ring-slate-200/70 transition hover:-translate-y-0.5 hover:bg-slate-50 dark:bg-neutral-900 dark:ring-white/10 dark:hover:bg-neutral-800"
+              className="glass-card rounded-[2rem] p-6 text-center transition"
             >
-              <p className="text-lg font-semibold tracking-[-0.02em] text-slate-950 dark:text-white">
+              <p className="text-lg font-semibold tracking-[-0.02em] text-slate-950 dark:text-white/90">
                 {item}
               </p>
             </Link>
@@ -1358,10 +1322,10 @@ function AppleHomePage() {
       >
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">
-            Designed for focus
+            {t.designedForFocusTag}
           </p>
           <h2 className="mt-3 text-4xl font-semibold tracking-[-0.055em] text-slate-950 md:text-6xl dark:text-white">
-            Everything feels calm, clear, and intentional.
+            {t.designedForFocusHeadline}
           </h2>
         </div>
 
@@ -1375,7 +1339,7 @@ function AppleHomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-45px" }}
                 transition={{ duration: 0.4, delay: index * 0.08 }}
-                className="rounded-[2.25rem] bg-white p-8 shadow-[0_20px_60px_rgba(15,23,42,0.06)] ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10"
+                className="glass-card rounded-[2.25rem] p-8"
               >
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-950 dark:bg-neutral-800 dark:text-white">
                   <Icon size={20} />
@@ -1392,9 +1356,9 @@ function AppleHomePage() {
         </div>
 
         <div className="mt-14 grid grid-cols-1 gap-10 border-y border-slate-200 py-12 md:grid-cols-3 dark:border-white/10">
-          <Counter value={25} suffix="+" label="Years of Learning Experience" />
-          <Counter value={56} suffix="K" label="Students Enrolled" />
-          <Counter value={170} suffix="+" label="Experienced Teachers" />
+          <Counter value={25} suffix="+" label={t.yearsExperience} />
+          <Counter value={56} suffix="K" label={t.studentsEnrolled} />
+          <Counter value={170} suffix="+" label={t.experiencedTeachers} />
         </div>
       </section>
 
@@ -1412,38 +1376,36 @@ function AppleHomePage() {
           <div className="grid gap-0 md:grid-cols-2">
             <div className="p-8 md:p-12">
               <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">
-                For students
+                {t.forStudents}
               </p>
               <h2 className="mt-3 text-4xl font-semibold tracking-[-0.055em] text-slate-950 md:text-5xl dark:text-white">
-                Find the tutor that fits your goals.
+                {t.studentFindTitle}
               </h2>
               <p className="mt-5 text-lg leading-8 text-slate-500 dark:text-slate-400">
-                Compare subject fit, location, ratings, and teaching style in a
-                clean experience.
+                {t.studentFindLongDesc}
               </p>
               <button
                 onClick={() => setIsJoinOpen(true)}
-                className="mt-8 rounded-full bg-neutral-950 px-6 py-3 text-sm font-semibold text-white hover:bg-neutral-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+                className="mt-8 rounded-full glass-btn bg-neutral-950 px-6 py-3 text-sm font-semibold text-white hover:bg-neutral-800 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
               >
-                Student Sign Up
+                {t.studentSignUp}
               </button>
             </div>
             <div className="border-t border-slate-200 bg-[#fbfbfd] p-8 md:border-l md:border-t-0 md:p-12 dark:border-white/10 dark:bg-neutral-950">
               <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">
-                For tutors
+                {t.forTutors}
               </p>
               <h2 className="mt-3 text-4xl font-semibold tracking-[-0.055em] text-slate-950 md:text-5xl dark:text-white">
-                Present your teaching beautifully.
+                {t.tutorPresentTitle}
               </h2>
               <p className="mt-5 text-lg leading-8 text-slate-500 dark:text-slate-400">
-                Build a profile that helps students understand your strengths at
-                a glance.
+                {t.tutorPresentDesc}
               </p>
               <button
                 onClick={() => setIsJoinOpen(true)}
-                className="mt-8 rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-950 hover:bg-slate-50 dark:border-white/10 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
+                className="mt-8 rounded-full glass-btn border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-950 hover:bg-slate-50 dark:border-white/10 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
               >
-                Tutor Sign Up
+                {t.tutorSignUp}
               </button>
             </div>
           </div>
@@ -1453,19 +1415,18 @@ function AppleHomePage() {
       <section className="mx-auto max-w-6xl px-6 pb-24">
         <div className="rounded-[2.75rem] bg-neutral-950 px-8 py-16 text-center text-white shadow-[0_30px_90px_rgba(15,23,42,0.18)] md:px-12">
           <h2 className="text-4xl font-semibold tracking-[-0.055em] md:text-6xl">
-            Ready when you are.
+            {t.ctaHeadline2}
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-300">
-            Start with a cleaner way to discover tutors and build better
-            learning outcomes.
+            {t.ctaDesc2}
           </p>
           <motion.button
             whileHover={{ scale: 1.03, y: -1 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => setIsJoinOpen(true)}
-            className="mt-8 rounded-full bg-white px-7 py-3 text-sm font-semibold text-slate-950"
+            className="mt-8 rounded-full glass-btn bg-white px-7 py-3 text-sm font-semibold text-slate-950"
           >
-            Join Smart Tuition Finder
+            {t.joinSmartTuition}
           </motion.button>
         </div>
       </section>
@@ -1486,6 +1447,7 @@ export default function App() {
   return (
     <div className="flex min-h-dvh flex-col overflow-x-hidden bg-background text-foreground transition-colors">
       <Navbar />
+      <LanguageSwitcher />
 
       <main className="flex w-full min-h-0 flex-1 flex-col pt-[5.5rem]">
         <Routes>

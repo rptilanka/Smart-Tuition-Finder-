@@ -165,7 +165,7 @@ export default function TutorDemoVideosEditor({
           type="button"
           onClick={addRow}
           disabled={disabled || local.length >= 8}
-          className="inline-flex items-center gap-1.5 rounded-full bg-neutral-950 px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-neutral-800 disabled:opacity-50 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+          className="inline-flex items-center gap-1.5 rounded-full glass-btn bg-neutral-950 px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-neutral-800 disabled:opacity-50 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
         >
           <Plus size={14} /> Add video
         </button>
@@ -220,7 +220,7 @@ export default function TutorDemoVideosEditor({
                       type="button"
                       onClick={() => handlePickVideo(row.id)}
                       disabled={disabled || uploadingRowId === row.id}
-                      className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-950 px-3 py-2 text-xs font-semibold text-white transition hover:bg-neutral-800 disabled:opacity-60 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+                      className="inline-flex w-full items-center justify-center gap-2 rounded-xl glass-btn bg-neutral-950 px-3 py-2 text-xs font-semibold text-white transition hover:bg-neutral-800 disabled:opacity-60 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
                     >
                       {uploadingRowId === row.id ? (
                         <Loader2 size={13} className="animate-spin" />
@@ -231,7 +231,7 @@ export default function TutorDemoVideosEditor({
                         ? "Uploading..."
                         : "Upload video file"}
                     </button>
-                    <p className="truncate rounded-lg bg-slate-100 px-2 py-1 font-mono text-[11px] text-slate-600 dark:bg-neutral-900 dark:text-slate-300">
+                    <p className="truncate rounded-lg glass-btn bg-slate-100 px-2 py-1 font-mono text-[11px] text-slate-600 dark:bg-neutral-900 dark:text-slate-300">
                       {row.video_url || "No file uploaded yet"}
                     </p>
                   </div>
@@ -278,7 +278,7 @@ export default function TutorDemoVideosEditor({
         </div>
       ) : null}
       {error ? (
-        <p className="mt-3 rounded-lg border border-rose-200/70 bg-rose-50 px-3 py-2 text-xs font-semibold text-rose-600 dark:border-rose-500/40 dark:bg-rose-500/10 dark:text-rose-300">
+        <p className="mt-3 rounded-lg glass-btn border border-rose-200/70 bg-rose-50 px-3 py-2 text-xs font-semibold text-rose-600 dark:border-rose-500/40 dark:bg-rose-500/10 dark:text-rose-300">
           {error}
         </p>
       ) : null}

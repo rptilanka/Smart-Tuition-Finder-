@@ -323,12 +323,12 @@ export default function TutorProfileEditPage() {
   const saveDisabled = disabled || status === "saving";
 
   return (
-    <div className="min-h-screen bg-[#f5f5f7] px-6 py-10 dark:bg-neutral-950">
+    <div className="min-h-screen bg-[#f5f5f7] dark:bg-neutral-950 px-6 py-10 dark:bg-neutral-950">
       <div className="mx-auto max-w-5xl">
         <div className="mb-5">
           <Link
             to="/tutor-profile"
-            className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-white/10 dark:bg-neutral-950 dark:text-slate-100 dark:hover:bg-neutral-800"
+            className="inline-flex items-center gap-2 rounded-full glass-btn border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-white/10 dark:bg-neutral-950 dark:text-slate-100 dark:hover:bg-neutral-800"
           >
             <ArrowLeft size={14} /> Back to profile
           </Link>
@@ -381,7 +381,7 @@ export default function TutorProfileEditPage() {
                 size="sm"
                 onClick={runSave}
                 disabled={saveDisabled}
-                className="rounded-full bg-neutral-950 px-4 py-2 text-xs font-semibold text-white hover:bg-neutral-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+                className="rounded-full glass-btn bg-neutral-950 px-4 py-2 text-xs font-semibold text-white hover:bg-neutral-800 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
               >
                 {status === "saving" ? "Saving..." : "Save"}
               </Button>
@@ -421,7 +421,7 @@ export default function TutorProfileEditPage() {
                   Public preview
                 </p>
                 <div className="mt-4 flex flex-wrap items-center gap-4">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-neutral-950 text-lg font-semibold text-white dark:bg-white dark:text-slate-950">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-neutral-950 text-lg font-semibold text-white dark:bg-neutral-800 dark:text-white">
                     {initialsFor(name || user?.email)}
                   </div>
                   <div className="min-w-0">

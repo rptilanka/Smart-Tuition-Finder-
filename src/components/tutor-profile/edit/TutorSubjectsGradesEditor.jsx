@@ -83,7 +83,7 @@ export default function TutorSubjectsGradesEditor({
           type="button"
           onClick={addRow}
           disabled={disabled}
-          className="inline-flex items-center gap-1.5 rounded-full bg-neutral-950 px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-neutral-800 disabled:opacity-50 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+          className="inline-flex items-center gap-1.5 rounded-full glass-btn bg-neutral-950 px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-neutral-800 disabled:opacity-50 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
         >
           <Plus size={14} /> Add row
         </button>

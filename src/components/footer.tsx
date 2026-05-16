@@ -8,28 +8,31 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-
-const footerSections = [
-  {
-    title: "Product",
-    links: [
-      { title: "Overview", href: "/" },
-      { title: "Features", href: "/#features" },
-      { title: "Tutors", href: "/tutors" },
-      { title: "Join", href: "/#join" },
-    ],
-  },
-  {
-    title: "Resources",
-    links: [
-      { title: "Student Login", href: "/students-login" },
-      { title: "Tutor Login", href: "/tutor-login" },
-      { title: "Sign up", href: "/signup" },
-    ],
-  },
-];
+import { useLanguage } from "../context/LanguageContext";
 
 const Footer = () => {
+  const { t } = useLanguage();
+
+  const footerSections = [
+    {
+      title: t.footerProductTitle,
+      links: [
+        { title: t.footerOverview, href: "/" },
+        { title: t.footerFeatures, href: "/#features" },
+        { title: t.footerTutors, href: "/tutors" },
+        { title: t.footerJoin, href: "/#join" },
+      ],
+    },
+    {
+      title: t.footerResourcesTitle,
+      links: [
+        { title: t.footerStudentLogin, href: "/students-login" },
+        { title: t.footerTutorLogin, href: "/tutor-login" },
+        { title: t.footerSignUp, href: "/signup" },
+      ],
+    },
+  ];
+
   return (
     <footer className="bg-black text-white">
       <div className="mx-auto max-w-6xl px-6">
@@ -42,8 +45,7 @@ const Footer = () => {
               Smart Tuition Finder
             </Link>
             <p className="mt-4 max-w-sm text-sm leading-6 text-white/60">
-              Find trusted tutors, compare profiles, and connect with the right
-              learning support faster.
+              {t.footerDesc}
             </p>
           </div>
 
@@ -66,19 +68,19 @@ const Footer = () => {
           ))}
 
           <div className="sm:col-span-2 lg:col-span-2">
-            <h6 className="font-medium text-white">Stay up to date</h6>
+            <h6 className="font-medium text-white">{t.footerStayUpdated}</h6>
             <form className="mt-6 flex flex-col gap-2 sm:flex-row sm:items-center">
               <Input
-                className="h-10 w-full rounded-full border-white/15 bg-white/10 px-4 text-white placeholder:text-white/40 focus-visible:border-white focus-visible:ring-0 sm:w-64"
-                placeholder="Enter your email"
+                className="h-10 w-full rounded-full glass-btn border-white/15 bg-white/10 px-4 text-white placeholder:text-white/40 focus-visible:border-white focus-visible:ring-0 sm:w-64"
+                placeholder={t.footerEmailPlaceholder}
                 type="email"
               />
 
               <Button
-                className="h-10 rounded-full bg-white px-5 text-black hover:bg-white/90"
+                className="h-10 rounded-full glass-btn bg-white px-5 text-black hover:bg-white/90"
                 type="submit"
               >
-                Subscribe
+                {t.footerSubscribe}
               </Button>
             </form>
           </div>
@@ -92,7 +94,7 @@ const Footer = () => {
             <Link className="hover:text-white" to="/">
               Smart Tuition Finder
             </Link>
-            . All rights reserved.
+            . {t.footerAllRightsReserved}
           </span>
 
           <div className="flex items-center gap-2">

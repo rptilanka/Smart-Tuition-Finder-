@@ -95,11 +95,11 @@ export default function TutorLiveHostPage() {
   };
 
   return (
-    <section className="min-h-screen bg-[#f5f5f7] px-6 py-10 dark:bg-neutral-950">
+    <section className="min-h-screen bg-[#f5f5f7] dark:bg-neutral-950 px-6 py-10 dark:bg-neutral-950">
       <div className="mx-auto max-w-5xl">
         <Link
           to="/tutor-dashboard"
-          className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 dark:border-white/10 dark:bg-neutral-900 dark:text-slate-200"
+          className="inline-flex items-center gap-1 rounded-full glass-btn border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 dark:border-white/10 dark:bg-neutral-900 dark:text-slate-200"
         >
           <ArrowLeft size={13} />
           Back to dashboard
@@ -141,7 +141,7 @@ export default function TutorLiveHostPage() {
                   value={title}
                   onChange={(event) => setTitle(event.target.value)}
                   required
-                  className="mt-1 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900 dark:border-white/10 dark:bg-neutral-950 dark:text-white"
+                  className="mt-1 h-10 w-full rounded-xl glass-btn border border-slate-200 bg-white px-3 text-sm text-slate-900 dark:border-white/10 dark:bg-neutral-950 dark:text-white"
                 />
               </label>
               <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400">
@@ -150,7 +150,7 @@ export default function TutorLiveHostPage() {
                   value={description}
                   onChange={(event) => setDescription(event.target.value)}
                   rows={3}
-                  className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 dark:border-white/10 dark:bg-neutral-950 dark:text-white"
+                  className="mt-1 w-full rounded-xl glass-btn border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 dark:border-white/10 dark:bg-neutral-950 dark:text-white"
                 />
               </label>
               <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400">
@@ -159,7 +159,7 @@ export default function TutorLiveHostPage() {
                   value={passcode}
                   onChange={(event) => setPasscode(event.target.value)}
                   placeholder="e.g. 123456"
-                  className="mt-1 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900 dark:border-white/10 dark:bg-neutral-950 dark:text-white"
+                  className="mt-1 h-10 w-full rounded-xl glass-btn border border-slate-200 bg-white px-3 text-sm text-slate-900 dark:border-white/10 dark:bg-neutral-950 dark:text-white"
                 />
               </label>
               <label className="inline-flex items-center gap-2 text-xs font-semibold text-slate-600 dark:text-slate-300">
@@ -178,7 +178,7 @@ export default function TutorLiveHostPage() {
                     value={startsAt}
                     onChange={(event) => setStartsAt(event.target.value)}
                     required
-                    className="mt-1 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900 dark:border-white/10 dark:bg-neutral-950 dark:text-white"
+                    className="mt-1 h-10 w-full rounded-xl glass-btn border border-slate-200 bg-white px-3 text-sm text-slate-900 dark:border-white/10 dark:bg-neutral-950 dark:text-white"
                   />
                 </label>
                 <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400">
@@ -188,19 +188,19 @@ export default function TutorLiveHostPage() {
                     value={endsAt}
                     onChange={(event) => setEndsAt(event.target.value)}
                     required
-                    className="mt-1 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900 dark:border-white/10 dark:bg-neutral-950 dark:text-white"
+                    className="mt-1 h-10 w-full rounded-xl glass-btn border border-slate-200 bg-white px-3 text-sm text-slate-900 dark:border-white/10 dark:bg-neutral-950 dark:text-white"
                   />
                 </label>
               </div>
               {error ? (
-                <p className="rounded-xl bg-rose-50 px-3 py-2 text-xs font-semibold text-rose-600 dark:bg-rose-500/10 dark:text-rose-200">
+                <p className="rounded-xl glass-btn bg-rose-50 px-3 py-2 text-xs font-semibold text-rose-600 dark:bg-rose-500/10 dark:text-rose-200">
                   {error}
                 </p>
               ) : null}
               <button
                 type="submit"
                 disabled={submitting}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-neutral-950 px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-70 dark:bg-white dark:text-slate-950"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full glass-btn bg-neutral-950 px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-70 dark:bg-neutral-800 dark:text-white"
               >
                 <Video size={14} />
                 {submitting ? "Creating..." : "Create & start meeting"}
@@ -228,7 +228,7 @@ export default function TutorLiveHostPage() {
                     setDispatchingReminders(false);
                   }
                 }}
-                className="mt-2 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-700 dark:bg-neutral-800 dark:text-slate-200"
+                className="mt-2 rounded-full glass-btn bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-700 dark:bg-neutral-800 dark:text-slate-200"
               >
                 {dispatchingReminders ? "Dispatching reminders..." : "Dispatch reminders now"}
               </button>
@@ -237,7 +237,7 @@ export default function TutorLiveHostPage() {
                   meetings.map((meeting) => (
                     <li
                       key={meeting.id}
-                      className="rounded-xl bg-slate-50 px-3 py-2 dark:bg-neutral-800"
+                      className="rounded-xl glass-btn bg-slate-50 px-3 py-2 dark:bg-neutral-800"
                     >
                       <p className="text-sm font-semibold text-slate-900 dark:text-white">
                         {meeting.title}

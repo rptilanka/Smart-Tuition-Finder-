@@ -87,13 +87,13 @@ export default function SiteHeader({ isDark, onToggleDark }) {
           </div>
         </Link>
 
-        <div className="hidden items-center gap-1 rounded-full border border-white/30 bg-white/55 px-1.5 py-1 text-[13px] font-semibold text-slate-700 shadow-[0_4px_14px_rgba(15,23,42,0.08)] backdrop-blur-md lg:flex dark:border-white/10 dark:bg-neutral-900/55 dark:text-slate-200">
+        <div className="hidden items-center gap-1 rounded-full glass-btn border border-white/30 bg-white/55 px-1.5 py-1 text-[13px] font-semibold text-slate-700 shadow-[0_4px_14px_rgba(15,23,42,0.08)] backdrop-blur-md lg:flex dark:border-white/10 dark:bg-neutral-900/55 dark:text-slate-200">
           {navItems.map((item) =>
             item.route ? (
               <Link
                 key={item.href}
                 to={item.href}
-                className="rounded-full px-3 py-1.5 transition hover:bg-purple-500/10 hover:text-purple-600 dark:hover:text-purple-300"
+                className="rounded-full glass-btn px-3 py-1.5 transition hover:bg-purple-500/10 hover:text-purple-600 dark:hover:text-purple-300"
               >
                 {item.label}
               </Link>
@@ -101,7 +101,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
               <a
                 key={item.href}
                 href={item.href}
-                className="rounded-full px-3 py-1.5 transition hover:bg-purple-500/10 hover:text-purple-600 dark:hover:text-purple-300"
+                className="rounded-full glass-btn px-3 py-1.5 transition hover:bg-purple-500/10 hover:text-purple-600 dark:hover:text-purple-300"
               >
                 {item.label}
               </a>
@@ -137,7 +137,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
               >
                 <Link
                   to={dashboardPath}
-                  className="inline-flex items-center gap-2 rounded-full border-2 border-purple-500/70 bg-transparent px-4 py-2 text-[13px] font-semibold text-purple-600 transition-colors hover:border-purple-500 hover:bg-purple-500/10 dark:text-purple-300 dark:hover:bg-purple-500/15"
+                  className="inline-flex items-center gap-2 rounded-full glass-btn border-2 border-purple-500/70 bg-transparent px-4 py-2 text-[13px] font-semibold text-purple-600 transition-colors hover:border-purple-500 hover:bg-purple-500/10 dark:text-purple-300 dark:hover:bg-purple-500/15"
                 >
                   <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-[10px] font-extrabold text-white">
                     {initials}
@@ -167,7 +167,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
             >
               <Link
                 to="/tutor-login"
-                className="inline-flex items-center justify-center rounded-full border-2 border-purple-500/70 bg-transparent px-4 py-2 text-[13px] font-semibold text-purple-600 transition-colors hover:border-purple-500 hover:bg-purple-500/10 dark:text-purple-300 dark:hover:bg-purple-500/15"
+                className="inline-flex items-center justify-center rounded-full glass-btn border-2 border-purple-500/70 bg-transparent px-4 py-2 text-[13px] font-semibold text-purple-600 transition-colors hover:border-purple-500 hover:bg-purple-500/10 dark:text-purple-300 dark:hover:bg-purple-500/15"
               >
                 Tutor Login
               </Link>
@@ -186,7 +186,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
           >
             <Link
               to="/students-login"
-              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-4 py-2 text-[13px] font-semibold text-white shadow-[0_10px_24px_rgba(168,85,247,0.4)]"
+              className="inline-flex items-center justify-center rounded-full glass-btn bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-4 py-2 text-[13px] font-semibold text-white shadow-[0_10px_24px_rgba(168,85,247,0.4)]"
             >
               Student Login
             </Link>
@@ -238,7 +238,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
                         <Link
                           to={item.href}
                           onClick={() => setMobileOpen(false)}
-                          className="block rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-purple-500/10 hover:text-purple-600 dark:text-slate-200 dark:hover:text-purple-300"
+                          className="block rounded-xl glass-btn px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-purple-500/10 hover:text-purple-600 dark:text-slate-200 dark:hover:text-purple-300"
                         >
                           {item.label}
                         </Link>
@@ -246,7 +246,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
                         <a
                           href={item.href}
                           onClick={() => setMobileOpen(false)}
-                          className="block rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-purple-500/10 hover:text-purple-600 dark:text-slate-200 dark:hover:text-purple-300"
+                          className="block rounded-xl glass-btn px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-purple-500/10 hover:text-purple-600 dark:text-slate-200 dark:hover:text-purple-300"
                         >
                           {item.label}
                         </a>
@@ -260,7 +260,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
                     <Link
                       to={dashboardPath}
                       onClick={() => setMobileOpen(false)}
-                      className="inline-flex items-center justify-center gap-1 rounded-full border-2 border-purple-500/70 px-4 py-2.5 text-sm font-semibold text-purple-600 transition hover:bg-purple-500/10 dark:text-purple-300"
+                      className="inline-flex items-center justify-center gap-1 rounded-full glass-btn border-2 border-purple-500/70 px-4 py-2.5 text-sm font-semibold text-purple-600 transition hover:bg-purple-500/10 dark:text-purple-300"
                     >
                       <LayoutDashboard size={14} />
                       Dashboard
@@ -269,7 +269,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
                     <Link
                       to="/tutor-login"
                       onClick={() => setMobileOpen(false)}
-                      className="inline-flex items-center justify-center rounded-full border-2 border-purple-500/70 px-4 py-2.5 text-sm font-semibold text-purple-600 transition hover:bg-purple-500/10 dark:text-purple-300"
+                      className="inline-flex items-center justify-center rounded-full glass-btn border-2 border-purple-500/70 px-4 py-2.5 text-sm font-semibold text-purple-600 transition hover:bg-purple-500/10 dark:text-purple-300"
                     >
                       Tutor Login
                     </Link>
@@ -277,7 +277,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
                   <Link
                     to="/students-login"
                     onClick={() => setMobileOpen(false)}
-                    className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-4 py-2.5 text-sm font-semibold text-white shadow-[0_10px_22px_rgba(168,85,247,0.35)]"
+                    className="inline-flex items-center justify-center rounded-full glass-btn bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-4 py-2.5 text-sm font-semibold text-white shadow-[0_10px_22px_rgba(168,85,247,0.35)]"
                   >
                     Student Login
                   </Link>
@@ -288,14 +288,14 @@ export default function SiteHeader({ isDark, onToggleDark }) {
                     type="button"
                     onClick={handleSignOut}
                     disabled={signingOut}
-                    className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-full border border-rose-300/60 bg-rose-50/70 px-4 py-2.5 text-sm font-semibold text-rose-600 transition hover:bg-rose-100/70 disabled:cursor-not-allowed disabled:opacity-60 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-300 md:hidden"
+                    className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-full glass-btn border border-rose-300/60 bg-rose-50/70 px-4 py-2.5 text-sm font-semibold text-rose-600 transition hover:bg-rose-100/70 disabled:cursor-not-allowed disabled:opacity-60 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-300 md:hidden"
                   >
                     <LogOut size={14} />
                     {signingOut ? "Signing out..." : "Sign out"}
                   </button>
                 ) : null}
 
-                <div className="mt-3 flex items-center justify-between rounded-xl border border-white/30 bg-white/60 px-3 py-2 dark:border-white/10 dark:bg-neutral-900/60">
+                <div className="mt-3 flex items-center justify-between rounded-xl glass-btn border border-white/30 bg-white/60 px-3 py-2 dark:border-white/10 dark:bg-neutral-900/60">
                   <span className="text-xs font-semibold text-slate-700 dark:text-slate-200">
                     Appearance
                   </span>

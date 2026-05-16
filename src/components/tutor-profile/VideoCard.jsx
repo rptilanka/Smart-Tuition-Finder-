@@ -30,7 +30,7 @@ export default function VideoCard({ video }) {
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/75 via-slate-900/20 to-transparent" />
 
           {video.duration ? (
-            <span className="absolute bottom-3 right-3 rounded-full bg-black/70 px-2 py-0.5 text-[11px] font-semibold text-white">
+            <span className="absolute bottom-3 right-3 rounded-full glass-btn bg-black/70 px-2 py-0.5 text-[11px] font-semibold text-white">
               {video.duration}
             </span>
           ) : null}

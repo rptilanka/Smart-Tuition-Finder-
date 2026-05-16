@@ -208,13 +208,13 @@ export default function TutorProPlanPage() {
   return (
     <section
       data-locked
-      className="relative min-h-screen overflow-hidden bg-white py-24 text-slate-900"
+      className="relative min-h-screen overflow-hidden bg-white py-24 text-slate-900 dark:bg-neutral-950 dark:text-white"
     >
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="mb-8">
           <Link
             to="/tutor-dashboard"
-            className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:text-slate-900"
+            className="inline-flex items-center gap-1.5 rounded-full glass-btn border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:text-slate-900"
           >
             <ArrowLeft size={12} /> Back to dashboard
           </Link>
@@ -228,7 +228,7 @@ export default function TutorProPlanPage() {
             Choose a plan and complete payment to activate profile boost and a
             verified blue mark on your profile.
           </p>
-          <div className="flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700">
+          <div className="flex items-center gap-2 rounded-full glass-btn bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700">
             <BadgeCheck className="size-4" />
             Secure PayHere checkout
           </div>
@@ -265,7 +265,7 @@ export default function TutorProPlanPage() {
                       </li>
                     ))}
                   </ul>
-                  <div className="mt-4 inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+                  <div className="mt-4 inline-flex items-center gap-1 rounded-full glass-btn bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
                     <Sparkles className="size-3" /> Includes verified blue mark
                     + profile boost
                   </div>
@@ -288,7 +288,7 @@ export default function TutorProPlanPage() {
             ))}
           </div>
           {message ? (
-            <p className="rounded-xl bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700">
+            <p className="rounded-xl glass-btn bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700">
               {message}
             </p>
           ) : null}

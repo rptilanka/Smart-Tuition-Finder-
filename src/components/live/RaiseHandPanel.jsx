@@ -29,7 +29,7 @@ export default function RaiseHandPanel({
         {(participants ?? []).map((p) => (
           <li
             key={`${p.meeting_id}-${p.user_id}`}
-            className="flex items-center justify-between rounded-xl bg-slate-50 px-3 py-2 text-xs dark:bg-neutral-800"
+            className="flex items-center justify-between rounded-xl glass-btn bg-slate-50 px-3 py-2 text-xs dark:bg-neutral-800"
           >
             <span className="font-semibold text-slate-700 dark:text-slate-200">
               {p.user_id === currentUserId ? "You" : `${p.role} ${p.user_id.slice(0, 6)}`}

@@ -123,7 +123,7 @@ export default function ParticipantGrid({
         <div className="pointer-events-none absolute bottom-16 right-4 flex flex-col items-end gap-1">
           {recentReactions.map((r) => (
             <span key={r.id ?? `${r.sender_id}-${r.created_at}`}
-              className="animate-bounce rounded-full bg-black/40 px-2 py-1 text-xl backdrop-blur-sm"
+              className="animate-bounce rounded-full glass-btn bg-black/40 px-2 py-1 text-xl backdrop-blur-sm"
             >{r.emoji}</span>
           ))}
         </div>

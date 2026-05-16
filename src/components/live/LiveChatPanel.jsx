@@ -34,7 +34,7 @@ export default function LiveChatPanel({ messages, currentUserId, onSend }) {
                 key={item.id ?? `${item.sender_id}-${item.created_at}-${item.body}`}
                 className={`rounded-xl px-3 py-2 text-xs ${
                   mine
-                    ? "ml-8 bg-neutral-950 text-white dark:bg-white dark:text-slate-950"
+                    ? "ml-8 bg-neutral-950 text-white dark:bg-neutral-800 dark:text-white"
                     : "mr-8 bg-white text-slate-700 dark:bg-neutral-900 dark:text-slate-200"
                 }`}
               >
@@ -65,11 +65,11 @@ export default function LiveChatPanel({ messages, currentUserId, onSend }) {
           value={text}
           onChange={(event) => setText(event.target.value)}
           placeholder="Ask a question in the live class..."
-          className="h-10 flex-1 rounded-full border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none focus:ring-2 focus:ring-slate-400 dark:border-white/10 dark:bg-neutral-950 dark:text-white"
+          className="h-10 flex-1 rounded-full glass-btn border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none focus:ring-2 focus:ring-slate-400 dark:border-white/10 dark:bg-neutral-950 dark:text-white"
         />
         <button
           type="submit"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-neutral-950 text-white dark:bg-white dark:text-slate-950"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-neutral-950 text-white dark:bg-neutral-800 dark:text-white"
           aria-label="Send message"
         >
           <SendHorizonal size={15} />

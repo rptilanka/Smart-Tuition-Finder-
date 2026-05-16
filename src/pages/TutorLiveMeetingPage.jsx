@@ -53,7 +53,7 @@ export default function TutorLiveMeetingPage() {
   if (!meeting || meeting.tutor_id !== user?.id) {
     return (
       <div className="flex flex-1 items-center justify-center bg-[#1c1c1c] px-6">
-        <div className="rounded-xl border border-red-500/20 bg-red-500/10 px-5 py-4 text-sm text-red-400">
+        <div className="rounded-xl glass-btn border border-red-500/20 bg-red-500/10 px-5 py-4 text-sm text-red-400">
           {error || "Meeting not found or you are not the host."}
         </div>
       </div>
@@ -111,18 +111,18 @@ export default function TutorLiveMeetingPage() {
         {/* Right */}
         <div className="flex items-center gap-2">
           <button type="button" onClick={handleCopyLink}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 px-3 py-1.5 text-xs font-medium text-slate-300 transition hover:bg-white/10"
+            className="inline-flex items-center gap-1.5 rounded-lg glass-btn border border-white/10 px-3 py-1.5 text-xs font-medium text-slate-300 transition hover:bg-white/10"
           >
             {copiedLink ? <><Check size={11} className="text-green-400" /> Copied</> : <><Copy size={11} /> Copy invite</>}
           </button>
           <button type="button" onClick={() => setShowPasscode((v) => !v)}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 px-3 py-1.5 text-xs font-medium text-slate-300 transition hover:bg-white/10"
+            className="inline-flex items-center gap-1.5 rounded-lg glass-btn border border-white/10 px-3 py-1.5 text-xs font-medium text-slate-300 transition hover:bg-white/10"
           >
             <KeyRound size={11} /> Passcode
           </button>
           {!isEnded && meeting.status !== "live" && (
             <button type="button" onClick={handleStart}
-              className="inline-flex items-center gap-1.5 rounded-lg bg-green-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-green-500"
+              className="inline-flex items-center gap-1.5 rounded-lg glass-btn bg-green-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-green-500"
             >
               <Video size={11} /> Go live
             </button>
@@ -140,10 +140,10 @@ export default function TutorLiveMeetingPage() {
               onChange={(e) => setPasscodeDraft(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSavePasscode()}
               placeholder="Set passcode (leave empty to remove)"
-              className="h-7 flex-1 rounded-lg border border-white/10 bg-white/5 px-3 text-xs text-white placeholder-slate-500 outline-none focus:ring-1 focus:ring-white/20"
+              className="h-7 flex-1 rounded-lg glass-btn border border-white/10 bg-white/5 px-3 text-xs text-white placeholder-slate-500 outline-none focus:ring-1 focus:ring-white/20"
             />
             <button type="button" onClick={handleSavePasscode}
-              className="rounded-lg bg-white px-3 py-1 text-xs font-semibold text-slate-900 hover:bg-slate-200"
+              className="rounded-lg glass-btn bg-white px-3 py-1 text-xs font-semibold text-slate-900 hover:bg-slate-200"
             >Save</button>
             <button type="button" onClick={() => setShowPasscode(false)}
               className="rounded-lg p-1 text-slate-400 hover:bg-white/10 hover:text-white"
@@ -159,7 +159,7 @@ export default function TutorLiveMeetingPage() {
             <p className="text-base font-semibold text-white">Meeting ended</p>
             <p className="mt-1 text-xs text-slate-400">This session has finished.</p>
             <Link to="/tutor-dashboard"
-              className="mt-6 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-200"
+              className="mt-6 inline-flex items-center gap-2 rounded-lg glass-btn bg-white px-5 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-200"
             >
               <ArrowLeft size={14} /> Back to dashboard
             </Link>
@@ -182,15 +182,15 @@ export default function TutorLiveMeetingPage() {
 
 function StatusBadge({ status }) {
   if (status === "live") return (
-    <span className="inline-flex items-center gap-1 rounded-full bg-green-600 px-2 py-0.5 text-[10px] font-semibold text-white">
+    <span className="inline-flex items-center gap-1 rounded-full glass-btn bg-green-600 px-2 py-0.5 text-[10px] font-semibold text-white">
       <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" /> Live
     </span>
   );
   if (status === "scheduled") return (
-    <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-semibold text-slate-400">Scheduled</span>
+    <span className="rounded-full glass-btn bg-white/10 px-2 py-0.5 text-[10px] font-semibold text-slate-400">Scheduled</span>
   );
   if (status === "ended") return (
-    <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-semibold text-slate-500">Ended</span>
+    <span className="rounded-full glass-btn bg-white/10 px-2 py-0.5 text-[10px] font-semibold text-slate-500">Ended</span>
   );
   return null;
 }
