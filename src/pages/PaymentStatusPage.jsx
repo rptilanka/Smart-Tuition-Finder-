@@ -2,10 +2,13 @@ import { Link, useLocation } from "react-router-dom";
 import { AlertTriangle, CheckCircle2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { useAuth } from "../context/AuthContext";
 
 export default function PaymentStatusPage() {
   const location = useLocation();
+  const { user } = useAuth();
   const isSuccess = location.pathname.endsWith("/success");
+  const isStudent = user?.user_metadata?.role === "student";
 
   return (
     <section className="min-h-[70vh] bg-[#f5f5f7] px-6 py-16 dark:bg-slate-950">
@@ -22,15 +25,21 @@ export default function PaymentStatusPage() {
         </h1>
         <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
           {isSuccess
-            ? "Your payment has been received. Your Pro status update will be confirmed shortly."
+            ? isStudent
+              ? "Your payment has been received. Subscription activation will be confirmed shortly."
+              : "Your payment has been received. Your Pro status update will be confirmed shortly."
             : "Your payment was not completed. Please try again."}
         </p>
         <div className="mt-6 flex justify-center gap-3">
           <Button asChild>
-            <Link to="/tutor-pro">Back to Pro Plans</Link>
+            <Link to={isStudent ? "/tutors" : "/tutor-pro"}>
+              {isStudent ? "Back to tutor profiles" : "Back to Pro Plans"}
+            </Link>
           </Button>
           <Button asChild variant="outline">
-            <Link to="/tutor-dashboard">Go to Dashboard</Link>
+            <Link to={isStudent ? "/student-dashboard" : "/tutor-dashboard"}>
+              Go to Dashboard
+            </Link>
           </Button>
         </div>
       </div>

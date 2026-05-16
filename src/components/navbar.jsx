@@ -37,11 +37,25 @@ const Navbar = () => {
   };
 
   return (
-    <div className="sticky top-0 z-50 border-b border-slate-200/70 bg-white/75 px-4 backdrop-blur-2xl dark:border-white/10 dark:bg-slate-950/75 md:px-6">
-      <nav className="mx-auto flex h-14 max-w-screen-xl items-center justify-between">
+    <div className="fixed top-4 left-0 right-0 z-[999] flex justify-center px-5 pointer-events-none">
+      <nav
+        className="pointer-events-auto flex h-[4.5rem] w-full max-w-screen-xl items-center justify-between rounded-full px-8 md:px-10"
+        style={{
+          background: 'linear-gradient(135deg, rgba(255,255,255,0.38) 0%, rgba(255,255,255,0.18) 100%)',
+          backdropFilter: 'blur(40px) saturate(200%) brightness(1.05)',
+          WebkitBackdropFilter: 'blur(40px) saturate(200%) brightness(1.05)',
+          border: '1.5px solid rgba(255,255,255,0.55)',
+          boxShadow: `
+            inset 0 2px 0 rgba(255,255,255,0.70),
+            inset 0 -1px 0 rgba(255,255,255,0.20),
+            0 12px 40px rgba(0,0,0,0.13),
+            0 2px 8px rgba(0,0,0,0.06)
+          `,
+        }}
+      >
         <div className="flex items-center gap-4">
           <Link
-            className="text-sm font-semibold tracking-[-0.01em] text-slate-950 dark:text-white"
+            className="text-base font-bold tracking-[-0.02em] text-slate-900/90 drop-shadow-sm dark:text-white/90"
             to="/"
           >
             Smart Tuition
@@ -60,44 +74,63 @@ const Navbar = () => {
                 aria-hidden
               />
             ) : isAuthenticated ? (
-              <button
-                type="button"
-                onClick={handleSignOut}
-                title="Sign out"
-                aria-label="Sign out"
-                className="flex max-w-[min(52vw,240px)] items-center gap-2 rounded-full border border-slate-200 bg-slate-50 py-1 pl-1 pr-2 text-left transition hover:bg-slate-100 dark:border-white/10 dark:bg-slate-900 dark:hover:bg-slate-800 sm:max-w-[280px] sm:pr-3"
-              >
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-slate-950 text-[11px] font-semibold text-white dark:bg-white dark:text-slate-950">
-                  {avatarUrl ? (
-                    <img
-                      src={avatarUrl}
-                      alt=""
-                      className="h-full w-full object-cover"
-                      {...supabaseStorageImageProps(avatarUrl)}
-                    />
-                  ) : (
-                    initialsFor(displayName)
-                  )}
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="block truncate text-sm font-semibold leading-tight text-slate-950 dark:text-white">
-                    {displayName}
+              <div className="flex items-center gap-1.5">
+                <Link
+                  to={user?.user_metadata?.role === "tutor" ? "/tutor-dashboard" : "/student-dashboard"}
+                  className="flex max-w-[min(44vw,220px)] items-center gap-2 rounded-full py-1 pl-1 pr-3 text-left transition sm:max-w-[260px]"
+                  style={{
+                    background: 'rgba(255,255,255,0.22)',
+                    border: '1px solid rgba(255,255,255,0.40)',
+                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.45)',
+                  }}
+                >
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-slate-950 text-[11px] font-semibold text-white dark:bg-white dark:text-slate-950">
+                    {avatarUrl ? (
+                      <img
+                        src={avatarUrl}
+                        alt=""
+                        className="h-full w-full object-cover"
+                        {...supabaseStorageImageProps(avatarUrl)}
+                      />
+                    ) : (
+                      initialsFor(displayName)
+                    )}
                   </span>
-                  {email ? (
-                    <span className="block truncate text-[11px] leading-tight text-slate-500 dark:text-slate-400">
-                      {email}
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-sm font-semibold leading-tight text-slate-950 dark:text-white">
+                      {displayName}
                     </span>
-                  ) : null}
-                </span>
-                <LogOut
-                  className="h-4 w-4 shrink-0 text-slate-400 dark:text-slate-500"
-                  aria-hidden
-                />
-              </button>
+                    {email ? (
+                      <span className="block truncate text-[11px] leading-tight text-slate-500 dark:text-slate-400">
+                        {email}
+                      </span>
+                    ) : null}
+                  </span>
+                </Link>
+                <button
+                  type="button"
+                  onClick={handleSignOut}
+                  title="Sign out"
+                  aria-label="Sign out"
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition hover:text-red-500"
+                  style={{
+                    background: 'rgba(255,255,255,0.18)',
+                    border: '1px solid rgba(255,255,255,0.38)',
+                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.45)',
+                  }}
+                >
+                  <LogOut className="h-4 w-4" aria-hidden />
+                </button>
+              </div>
             ) : (
               <Button
                 asChild
-                className="h-9 rounded-full bg-slate-950 px-4 text-sm text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+                className="h-9 rounded-full px-4 text-sm font-semibold text-slate-900 transition dark:text-white"
+                style={{
+                  background: 'rgba(255,255,255,0.30)',
+                  border: '1px solid rgba(255,255,255,0.50)',
+                  boxShadow: 'inset 0 1.5px 0 rgba(255,255,255,0.60), 0 2px 8px rgba(0,0,0,0.08)',
+                }}
               >
                 <Link to="/signup">
                   Sign up <ArrowUpRight />
@@ -125,6 +158,7 @@ const Navbar = () => {
       </nav>
     </div>
   );
+
 };
 
 export default Navbar;

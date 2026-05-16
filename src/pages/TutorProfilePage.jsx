@@ -9,13 +9,16 @@ import {
   CheckCircle2,
   Clock3,
   Facebook,
+  Heart,
   Instagram,
   MapPin,
   MessageSquareText,
   PlayCircle,
+  Send,
   Star,
   Twitter,
   Users,
+  X,
 } from "lucide-react";
 
 import { getTutorProfile } from "../data/tutors";
@@ -27,6 +30,10 @@ import {
 } from "../lib/tutorProfileNormalize";
 import { getTutorProfileByIdFromSupabase } from "../lib/tutorPublicProfile";
 import { useAuth } from "../context/AuthContext";
+import { startStudentTutorSubscriptionCheckout } from "../lib/liveSubscriptionPayment";
+import { saveTutor, unsaveTutor, isTutorSaved } from "../lib/savedTutors";
+import { submitReview, getTutorReviews } from "../lib/reviews";
+import { sendMessage } from "../lib/messages";
 import VideoCard from "../components/tutor-profile/VideoCard";
 import ReviewCard from "../components/tutor-profile/ReviewCard";
 import BookingSidebar from "../components/tutor-profile/BookingSidebar";
@@ -141,7 +148,19 @@ function StarRow({ value, size = 14 }) {
   );
 }
 
-function ProfileHero({ tutor, onBook, onContact, isOwnProfile }) {
+function ProfileHero({
+  tutor,
+  onBook,
+  onContact,
+  onSubscribe,
+  onSave,
+  onMessage,
+  isOwnProfile,
+  isStudentViewer,
+  isSubscriptionPending,
+  isSaved,
+  savePending,
+}) {
   const hasVerifiedBlueMark = Boolean(
     tutor.verifiedBlueMark || Number(tutor.verifiedMarks) > 0,
   );
@@ -356,26 +375,35 @@ function ProfileHero({ tutor, onBook, onContact, isOwnProfile }) {
               ) : null}
               {!isOwnProfile ? (
                 <div className="mt-5 flex w-full flex-wrap gap-2 md:max-w-none">
-                  <motion.button
-                    type="button"
-                    onClick={onBook}
-                    whileHover={{ scale: 1.04, y: -1 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
-                  >
-                    <CalendarDays size={15} />
-                    Book Session
+                  <motion.button type="button" onClick={onBook} whileHover={{ scale: 1.04, y: -1 }} whileTap={{ scale: 0.97 }}
+                    className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200">
+                    <CalendarDays size={15} /> Book Session
                   </motion.button>
-                  <motion.button
-                    type="button"
-                    onClick={onContact}
-                    whileHover={{ scale: 1.04, y: -1 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-50 dark:border-white/10 dark:bg-slate-900 dark:text-white dark:hover:bg-slate-800"
-                  >
-                    <MessageSquareText size={15} />
-                    Contact Tutor
+                  <motion.button type="button" onClick={onMessage} whileHover={{ scale: 1.04, y: -1 }} whileTap={{ scale: 0.97 }}
+                    className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-50 dark:border-white/10 dark:bg-slate-900 dark:text-white dark:hover:bg-slate-800">
+                    <MessageSquareText size={15} /> Message
                   </motion.button>
+                  <motion.button type="button" onClick={onContact} whileHover={{ scale: 1.04, y: -1 }} whileTap={{ scale: 0.97 }}
+                    className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-50 dark:border-white/10 dark:bg-slate-900 dark:text-white dark:hover:bg-slate-800">
+                    <MessageSquareText size={15} /> WhatsApp
+                  </motion.button>
+                  {isStudentViewer && (
+                    <>
+                      <motion.button type="button" onClick={onSubscribe} disabled={isSubscriptionPending}
+                        whileHover={isSubscriptionPending ? undefined : { scale: 1.04, y: -1 }}
+                        whileTap={isSubscriptionPending ? undefined : { scale: 0.97 }}
+                        className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-slate-950">
+                        <CalendarDays size={15} />
+                        {isSubscriptionPending ? "Processing…" : "Subscribe for live classes"}
+                      </motion.button>
+                      <motion.button type="button" onClick={onSave} disabled={savePending}
+                        whileHover={{ scale: 1.04, y: -1 }} whileTap={{ scale: 0.97 }}
+                        className={`inline-flex items-center gap-2 rounded-full border px-5 py-3 text-sm font-semibold transition disabled:opacity-60 ${isSaved ? "border-slate-300 bg-slate-100 text-slate-700" : "border-slate-300 bg-white text-slate-950 hover:bg-slate-50 dark:border-white/10 dark:bg-slate-900 dark:text-white"}`}>
+                        <Heart size={15} className={isSaved ? "fill-current text-red-500" : ""} />
+                        {isSaved ? "Saved" : "Save tutor"}
+                      </motion.button>
+                    </>
+                  )}
                 </div>
               ) : null}
             </motion.div>
@@ -468,6 +496,101 @@ function AvailabilityGrid({ availability, onBook }) {
   );
 }
 
+/* ─── Review form ────────────────────────────────────────────────────────── */
+function ReviewForm({ tutorId, userId, userName, onSubmitted }) {
+  const [rating, setRating] = useState(0);
+  const [hover, setHover] = useState(0);
+  const [body, setBody] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [done, setDone] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!rating || !userId) return;
+    setSubmitting(true);
+    try {
+      await submitReview({ tutorId, studentId: userId, rating, body, reviewerName: userName });
+      setDone(true);
+      onSubmitted?.();
+    } catch { /* ignore */ }
+    setSubmitting(false);
+  };
+
+  if (done) {
+    return (
+      <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600 dark:border-white/10 dark:bg-slate-800 dark:text-slate-300">
+        Thanks for your review!
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-white/10 dark:bg-slate-800">
+      <p className="mb-3 text-sm font-semibold text-slate-800 dark:text-white">Leave a review</p>
+      <div className="mb-3 flex gap-1">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <button key={star} type="button"
+            onMouseEnter={() => setHover(star)} onMouseLeave={() => setHover(0)}
+            onClick={() => setRating(star)}
+            className="text-2xl transition">
+            <Star size={22} className={(hover || rating) >= star ? "text-slate-900 dark:text-white fill-current" : "text-slate-300 dark:text-slate-600"} />
+          </button>
+        ))}
+      </div>
+      <textarea value={body} onChange={(e) => setBody(e.target.value)} rows={3}
+        placeholder="Share your experience (optional)…"
+        className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 outline-none focus:ring-1 focus:ring-slate-300 dark:border-white/10 dark:bg-slate-900 dark:text-white" />
+      <button type="submit" disabled={!rating || submitting}
+        className="mt-3 inline-flex items-center gap-2 rounded-lg bg-slate-900 px-4 py-2 text-xs font-semibold text-white disabled:opacity-50 dark:bg-white dark:text-slate-900">
+        <Send size={12} /> {submitting ? "Submitting…" : "Submit review"}
+      </button>
+    </form>
+  );
+}
+
+/* ─── Message modal ──────────────────────────────────────────────────────── */
+function MessageModal({ tutorId, tutorName, userId, onClose, onSent }) {
+  const [body, setBody] = useState("");
+  const [sending, setSending] = useState(false);
+
+  const handleSend = async (e) => {
+    e.preventDefault();
+    if (!body.trim() || !userId) return;
+    setSending(true);
+    try {
+      const msg = await sendMessage({ fromUserId: userId, toUserId: tutorId, fromRole: "student", body: body.trim() });
+      onSent(msg);
+    } catch { setSending(false); }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm" onClick={onClose}>
+      <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl dark:bg-slate-900" onClick={(e) => e.stopPropagation()}>
+        <div className="mb-4 flex items-center justify-between">
+          <p className="text-sm font-semibold text-slate-800 dark:text-white">Message {tutorName}</p>
+          <button type="button" onClick={onClose} className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+            <X size={15} />
+          </button>
+        </div>
+        <form onSubmit={handleSend}>
+          <textarea value={body} onChange={(e) => setBody(e.target.value)} rows={4} autoFocus
+            placeholder={`Hi ${tutorName}, I saw your profile on Smart Tuition Finder…`}
+            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-800 outline-none focus:ring-1 focus:ring-slate-300 dark:border-white/10 dark:bg-slate-800 dark:text-white" />
+          <div className="mt-3 flex justify-end gap-2">
+            <button type="button" onClick={onClose} className="rounded-lg border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50 dark:border-white/10 dark:text-slate-300">
+              Cancel
+            </button>
+            <button type="submit" disabled={!body.trim() || sending}
+              className="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 px-4 py-2 text-xs font-semibold text-white disabled:opacity-50 dark:bg-white dark:text-slate-900">
+              <Send size={11} /> {sending ? "Sending…" : "Send message"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 function TutorNotFound() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-24 text-center">
@@ -494,16 +617,22 @@ function TutorNotFound() {
 
 export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
   const { id: routeId } = useParams();
-  const { profile: authProfile } = useAuth();
+  const { profile: authProfile, user } = useAuth();
   const id = tutorIdProp ?? routeId;
   const staticTutor = id ? getTutorProfile(id) : null;
   const isOwnProfile = Boolean(
     authProfile?.id && id && String(authProfile.id) === String(id),
   );
   const [remoteTutor, setRemoteTutor] = useState(null);
-  const [loadingRemoteTutor, setLoadingRemoteTutor] = useState(false);
+  const [loadingRemoteTutor, setLoadingRemoteTutor] = useState(() => Boolean(id && !staticTutor));
+  const [subscriptionPending, setSubscriptionPending] = useState(false);
   const [toast, setToast] = useState("");
+  const [isSaved, setIsSaved] = useState(false);
+  const [savePending, setSavePending] = useState(false);
+  const [showMessageModal, setShowMessageModal] = useState(false);
+  const [liveReviews, setLiveReviews] = useState([]);
   const tutor = staticTutor ?? remoteTutor;
+  const isStudentViewer = user?.user_metadata?.role === "student" && !isOwnProfile;
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
@@ -545,6 +674,15 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
       mounted = false;
     };
   }, [id, staticTutor]);
+
+  // Load saved status + live reviews — must be before any early returns (Rules of Hooks)
+  useEffect(() => {
+    if (!id) return;
+    getTutorReviews(id).then(setLiveReviews).catch(() => {});
+    if (user?.id && isStudentViewer) {
+      isTutorSaved(user.id, id).then(setIsSaved).catch(() => {});
+    }
+  }, [id, user?.id, isStudentViewer]);
 
   if (!id) {
     return <TutorNotFound />;
@@ -593,6 +731,26 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
       ?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  const handleToggleSave = async () => {
+    if (!user?.id || !isStudentViewer) {
+      setToast("Sign in as a student to save tutors.");
+      return;
+    }
+    setSavePending(true);
+    try {
+      if (isSaved) {
+        await unsaveTutor(user.id, id);
+        setIsSaved(false);
+        setToast("Removed from saved tutors.");
+      } else {
+        await saveTutor(user.id, id);
+        setIsSaved(true);
+        setToast("Tutor saved to your list!");
+      }
+    } catch { setToast("Could not update saved status."); }
+    setSavePending(false);
+  };
+
   const handleBook = (slotLabel) => {
     setToast(
       slotLabel
@@ -618,13 +776,55 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
     );
   };
 
+  const handleSubscribeLive = async () => {
+    if (!user?.id || !isStudentViewer) {
+      setToast("Please sign in as a student to subscribe.");
+      return;
+    }
+    setSubscriptionPending(true);
+    try {
+      await startStudentTutorSubscriptionCheckout({
+        studentId: user.id,
+        studentName: user.user_metadata?.name || user.email?.split("@")[0] || "Student",
+        studentEmail: user.email || "",
+        tutorId: tutor.id,
+        tutorName: tutor.name,
+        onCompleted: () => {
+          setToast("Payment received. Subscription activates after secure verification.");
+          setSubscriptionPending(false);
+        },
+        onDismissed: () => {
+          setToast("Subscription payment cancelled.");
+          setSubscriptionPending(false);
+        },
+        onError: (paymentError) => {
+          setToast(`Payment failed: ${String(paymentError || "Unknown error")}`);
+          setSubscriptionPending(false);
+        },
+      });
+    } catch (error) {
+      setToast(error.message || "Could not start subscription checkout.");
+      setSubscriptionPending(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#f5f5f7] pb-20 dark:bg-slate-950">
       <ProfileHero
         tutor={tutor}
         onBook={scrollToAvailability}
         onContact={handleContact}
+        onSubscribe={handleSubscribeLive}
+        onSave={handleToggleSave}
+        onMessage={() => {
+          if (!user?.id || !isStudentViewer) { setToast("Sign in as a student to message this tutor."); return; }
+          setShowMessageModal(true);
+        }}
         isOwnProfile={isOwnProfile}
+        isStudentViewer={isStudentViewer}
+        isSubscriptionPending={subscriptionPending}
+        isSaved={isSaved}
+        savePending={savePending}
       />
 
       <div className="mx-auto mt-8 max-w-6xl px-6">
@@ -719,18 +919,28 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
                   <StarRow value={tutor.rating} />
                   <span>{tutor.rating?.toFixed(1)}</span>
                   {Number.isFinite(tutor.reviewsCount) ? (
-                    <span className="text-slate-500 dark:text-slate-400">
-                      · {tutor.reviewsCount} reviews
-                    </span>
+                    <span className="text-slate-500 dark:text-slate-400">· {tutor.reviewsCount} reviews</span>
                   ) : null}
                 </div>
               }
             >
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                {tutor.reviews.map((review) => (
-                  <ReviewCard key={review.id} review={review} />
-                ))}
-              </div>
+              {liveReviews.length > 0 ? (
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  {liveReviews.map((review) => (
+                    <ReviewCard key={review.id} review={{ ...review, author: review.reviewer_name || "Anonymous", text: review.body }} />
+                  ))}
+                </div>
+              ) : (tutor.reviews?.length > 0 ? (
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  {tutor.reviews.map((review) => <ReviewCard key={review.id} review={review} />)}
+                </div>
+              ) : (
+                <EmptySectionText text="No reviews yet. Be the first to leave one!" />
+              ))}
+
+              {isStudentViewer && (
+                <ReviewForm tutorId={id} userId={user?.id} userName={user?.user_metadata?.name || user?.email?.split("@")[0]} onSubmitted={() => getTutorReviews(id).then(setLiveReviews).catch(() => {})} />
+              )}
             </ProfileSection>
 
             <ProfileSection
@@ -763,6 +973,16 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
           </aside>
         </div>
       </div>
+
+      {showMessageModal && (
+        <MessageModal
+          tutorId={id}
+          tutorName={tutor.name}
+          userId={user?.id}
+          onClose={() => setShowMessageModal(false)}
+          onSent={(msg) => { setShowMessageModal(false); setToast("Message sent!"); }}
+        />
+      )}
 
       <Toast message={toast} />
     </div>

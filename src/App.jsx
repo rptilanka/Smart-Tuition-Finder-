@@ -27,12 +27,15 @@ import {
 import Lottie from "lottie-react";
 import { Button } from "@/components/ui/button";
 import GeminiChatbot from "./components/GeminiChatbot";
+import ShaderBackground from "./components/ShaderBackground";
 import FAQ from "./components/faq.jsx";
 import Footer from "./components/footer";
 import Navbar from "./components/navbar.jsx";
 import TutorProfilePage from "./pages/TutorProfilePage";
 import TutorLoginPage from "./pages/TutorLoginPage";
 import TutorDashboardPage from "./pages/TutorDashboardPage";
+import TutorLiveHostPage from "./pages/TutorLiveHostPage";
+import TutorLiveMeetingPage from "./pages/TutorLiveMeetingPage";
 import TutorOwnProfilePage from "./pages/TutorOwnProfilePage";
 import TutorProfileEditPage from "./pages/TutorProfileEditPage";
 import TutorProPlanPage from "./pages/TutorProPlanPage";
@@ -40,6 +43,7 @@ import PaymentStatusPage from "./pages/PaymentStatusPage";
 import StudentLoginPage from "./pages/StudentLoginPage";
 import SignupPage from "./pages/SignupPage";
 import StudentDashboardPage from "./pages/StudentDashboardPage";
+import StudentLiveJoinPage from "./pages/StudentLiveJoinPage";
 import StudentProfileEditPage from "./pages/StudentProfileEditPage";
 import AllTutorsPage from "./pages/AllTutorsPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
@@ -1148,8 +1152,16 @@ function AppleHomePage() {
     <div className="relative overflow-hidden bg-[#f5f5f7] dark:bg-slate-950">
       <section
         id="home"
-        className="mx-auto max-w-7xl px-6 pb-16 pt-20 text-center scroll-mt-24 md:pb-24 md:pt-28"
+        className="relative overflow-hidden scroll-mt-24"
       >
+        {/* Purple plasma shader background — hero only */}
+        <div className="absolute inset-0 h-full w-full">
+          <ShaderBackground />
+        </div>
+        {/* Subtle bottom fade */}
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#f5f5f7] to-transparent dark:from-slate-950" />
+
+        <div className="relative z-10 mx-auto max-w-7xl px-6 pb-24 pt-20 text-center md:pb-32 md:pt-32">
         <motion.div
           variants={heroContainer}
           initial="hidden"
@@ -1158,14 +1170,14 @@ function AppleHomePage() {
         >
           <motion.h1
             variants={heroItem}
-            className="mt-7 max-w-5xl text-6xl font-semibold leading-[0.94] tracking-[-0.075em] text-slate-950 sm:text-7xl md:text-8xl lg:text-9xl dark:text-white"
+            className="mt-7 max-w-5xl text-6xl font-semibold leading-[0.94] tracking-[-0.075em] text-slate-950 sm:text-7xl md:text-8xl lg:text-9xl"
           >
             Tuition. Simplified.
           </motion.h1>
 
           <motion.p
             variants={heroItem}
-            className="mx-auto mt-7 max-w-3xl text-xl font-medium leading-8 tracking-[-0.02em] text-slate-500 md:text-2xl md:leading-9 dark:text-slate-400"
+            className="mx-auto mt-7 max-w-3xl text-xl font-medium leading-8 tracking-[-0.02em] text-slate-600 md:text-2xl md:leading-9"
           >
             A calm, modern way to discover tutors, compare profiles, and choose
             the right learning support without clutter.
@@ -1177,7 +1189,7 @@ function AppleHomePage() {
           >
             <Button
               asChild
-              className="h-12 rounded-full bg-slate-950 px-7 text-base font-semibold text-white shadow-sm hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+              className="h-12 rounded-full bg-slate-950 px-7 text-base font-semibold text-white shadow-sm hover:bg-slate-800"
               size="lg"
             >
               <Link
@@ -1189,7 +1201,7 @@ function AppleHomePage() {
             </Button>
             <Button
               asChild
-              className="h-12 rounded-full border-transparent bg-transparent px-7 text-base font-semibold text-slate-700 shadow-none hover:bg-white/70 dark:text-slate-200 dark:hover:bg-white/10"
+              className="h-12 rounded-full border border-slate-200 bg-white/70 px-7 text-base font-semibold text-slate-800 shadow-none backdrop-blur-sm hover:bg-white"
               size="lg"
               variant="outline"
             >
@@ -1321,6 +1333,7 @@ function AppleHomePage() {
             </div>
           </div>
         </motion.div>
+        </div>{/* end relative z-10 content wrapper */}
       </section>
 
       <section className="mx-auto max-w-6xl px-6">
@@ -1471,10 +1484,10 @@ function AppleHomePage() {
 
 export default function App() {
   return (
-    <div className="flex min-h-dvh flex-col overflow-x-hidden bg-slate-100 text-slate-900 transition-colors dark:bg-slate-950 dark:text-white">
+    <div className="flex min-h-dvh flex-col overflow-x-hidden bg-white text-slate-900 transition-colors dark:bg-slate-950 dark:text-white">
       <Navbar />
 
-      <main className="flex w-full min-h-0 flex-1 flex-col">
+      <main className="flex w-full min-h-0 flex-1 flex-col pt-20">
         <Routes>
           <Route path="/" element={<AppleHomePage />} />
           <Route path="/tutors" element={<AllTutorsPage />} />
@@ -1512,6 +1525,8 @@ export default function App() {
             />
             <Route path="/tutor-profile" element={<TutorOwnProfilePage />} />
             <Route path="/tutor-pro" element={<TutorProPlanPage />} />
+            <Route path="/live/host" element={<TutorLiveHostPage />} />
+            <Route path="/live/meeting/:meetingId" element={<TutorLiveMeetingPage />} />
             <Route path="/payment/success" element={<PaymentStatusPage />} />
             <Route path="/payment/failed" element={<PaymentStatusPage />} />
           </Route>
@@ -1524,6 +1539,10 @@ export default function App() {
             <Route
               path="/student-profile"
               element={<StudentProfileEditPage />}
+            />
+            <Route
+              path="/live/join/:meetingId"
+              element={<StudentLiveJoinPage />}
             />
           </Route>
 

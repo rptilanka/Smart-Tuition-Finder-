@@ -1,5 +1,5 @@
 import { supabase, TUTOR_PROFILES_TABLE } from "./supabase";
-import { TUTOR_ACCOUNT_SELECT_COLUMNS } from "./tutorProfileColumns";
+import { TUTOR_ACCOUNT_SELECT_COLUMNS, TUTOR_PROFILE_FULL_COLUMNS } from "./tutorProfileColumns";
 import { withTutorProDecorations } from "./tutorProStatus";
 
 function initialsFor(name) {
@@ -51,11 +51,24 @@ export function mapTutorRowToProfileModel(row) {
 
 export async function getTutorProfileByIdFromSupabase(id) {
   if (!supabase || !id) return null;
-  const { data, error } = await supabase
+
+  // Try with social columns first; fall back to base columns if migration hasn't run
+  let { data, error } = await supabase
     .from(TUTOR_PROFILES_TABLE)
-    .select(TUTOR_ACCOUNT_SELECT_COLUMNS)
+    .select(TUTOR_PROFILE_FULL_COLUMNS)
     .eq("id", id)
     .maybeSingle();
-  if (error || !data) return null;
+
+  if (error) {
+    const fallback = await supabase
+      .from(TUTOR_PROFILES_TABLE)
+      .select(TUTOR_ACCOUNT_SELECT_COLUMNS)
+      .eq("id", id)
+      .maybeSingle();
+    if (fallback.error || !fallback.data) return null;
+    data = fallback.data;
+  }
+
+  if (!data) return null;
   return mapTutorRowToProfileModel(data);
 }

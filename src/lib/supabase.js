@@ -49,6 +49,18 @@ export const TUTOR_ACCOUNTS_TABLE = TUTOR_PROFILES_TABLE;
 
 export const STUDENT_ACCOUNTS_TABLE = "student_accounts";
 
+export const TUTOR_STUDENT_SUBSCRIPTIONS_TABLE = "tutor_student_subscriptions";
+export const LIVE_MEETINGS_TABLE = "live_meetings";
+export const LIVE_MEETING_PARTICIPANTS_TABLE = "live_meeting_participants";
+export const LIVE_MEETING_CHAT_MESSAGES_TABLE = "live_meeting_chat_messages";
+export const LIVE_MEETING_WAITING_ROOM_TABLE = "live_meeting_waiting_room";
+export const LIVE_MEETING_REACTIONS_TABLE = "live_meeting_reactions";
+export const LIVE_MEETING_POLLS_TABLE = "live_meeting_polls";
+export const LIVE_MEETING_POLL_VOTES_TABLE = "live_meeting_poll_votes";
+export const LIVE_MEETING_QUESTIONS_TABLE = "live_meeting_questions";
+export const LIVE_MEETING_AUDIT_LOGS_TABLE = "live_meeting_audit_logs";
+export const LIVE_MEETING_REMINDERS_TABLE = "live_meeting_reminders";
+
 if (typeof window !== "undefined" && !isSupabaseConfigured) {
   console.warn(
     "[supabase] Not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY " +
