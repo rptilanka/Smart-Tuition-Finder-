@@ -269,7 +269,7 @@ function TestimonialSlider() {
 
   return (
     <section id="reviews" className="mx-auto mt-24 max-w-5xl px-6 scroll-mt-24">
-      <div className="rounded-[2.5rem] bg-white p-8 text-center shadow-[0_30px_90px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/70 md:p-12 dark:bg-slate-900 dark:ring-white/10">
+      <div className="rounded-[2.5rem] bg-white p-8 text-center shadow-[0_30px_90px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/70 md:p-12 dark:bg-neutral-900 dark:ring-white/10">
         <AnimatePresence mode="wait">
           <motion.div
             key={index}
@@ -399,7 +399,7 @@ function JoinUsModal({ isOpen, onClose, animationData, successAnimationData }) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={close}
-          className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-[70] flex items-center justify-center bg-neutral-900/50 p-4 backdrop-blur-sm"
         >
           <motion.div
             initial={{ opacity: 0, y: 18, scale: 0.92 }}
@@ -412,13 +412,13 @@ function JoinUsModal({ isOpen, onClose, animationData, successAnimationData }) {
             <button
               onClick={close}
               aria-label="Close"
-              className="absolute right-4 top-4 rounded-full border border-white/20 bg-white/70 p-1.5 text-slate-700 transition hover:scale-105 dark:bg-slate-800/80 dark:text-slate-200"
+              className="absolute right-4 top-4 rounded-full border border-white/20 bg-white/70 p-1.5 text-slate-700 transition hover:scale-105 dark:bg-neutral-800/80 dark:text-slate-200"
             >
               <X size={16} />
             </button>
 
             <div className="mb-4 flex justify-center">
-              <div className="h-24 w-24 overflow-hidden rounded-2xl border border-white/20 bg-white/70 p-1 dark:bg-slate-800/70">
+              <div className="h-24 w-24 overflow-hidden rounded-2xl border border-white/20 bg-white/70 p-1 dark:bg-neutral-800/70">
                 {animationData ? (
                   <Lottie
                     animationData={animationData}
@@ -515,8 +515,8 @@ function JoinUsModal({ isOpen, onClose, animationData, successAnimationData }) {
                           onClick={() => setRole(item)}
                           className={`rounded-xl border px-3 py-2 text-sm font-semibold transition ${
                             active
-                              ? "border-slate-950 bg-slate-950 text-white dark:border-white dark:bg-white dark:text-slate-950"
-                              : "border-slate-300/70 bg-white/60 text-slate-700 dark:border-slate-600 dark:bg-slate-800/60 dark:text-slate-200"
+                              ? "border-slate-950 bg-neutral-950 text-white dark:border-white dark:bg-white dark:text-slate-950"
+                              : "border-slate-300/70 bg-white/60 text-slate-700 dark:border-slate-600 dark:bg-neutral-800/60 dark:text-slate-200"
                           }`}
                         >
                           {item}
@@ -531,7 +531,7 @@ function JoinUsModal({ isOpen, onClose, animationData, successAnimationData }) {
                   whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
                   disabled={isSubmitting}
                   type="submit"
-                  className="mt-1 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-950 px-4 py-3 font-semibold text-white disabled:opacity-75 dark:bg-white dark:text-slate-950"
+                  className="mt-1 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-950 px-4 py-3 font-semibold text-white disabled:opacity-75 dark:bg-white dark:text-slate-950"
                 >
                   {isSubmitting ? (
                     <>
@@ -549,7 +549,7 @@ function JoinUsModal({ isOpen, onClose, animationData, successAnimationData }) {
                 animate={{ opacity: 1, scale: 1 }}
                 className="flex flex-col items-center py-8"
               >
-                <div className="h-20 w-20 overflow-hidden rounded-2xl border border-white/20 bg-white/70 p-1 dark:bg-slate-800/70">
+                <div className="h-20 w-20 overflow-hidden rounded-2xl border border-white/20 bg-white/70 p-1 dark:bg-neutral-800/70">
                   {successAnimationData ? (
                     <Lottie
                       animationData={successAnimationData}
@@ -613,9 +613,9 @@ function PopularSubjects() {
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.4, delay: index * 0.05 }}
               whileHover={{ y: -6 }}
-              className="group flex items-center gap-5 rounded-[2rem] bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.06)] ring-1 ring-slate-200/70 transition hover:-translate-y-1 hover:shadow-[0_28px_80px_rgba(15,23,42,0.1)] dark:bg-slate-900 dark:ring-white/10"
+              className="group flex items-center gap-5 rounded-[2rem] bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.06)] ring-1 ring-slate-200/70 transition hover:-translate-y-1 hover:shadow-[0_28px_80px_rgba(15,23,42,0.1)] dark:bg-neutral-900 dark:ring-white/10"
             >
-              <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-slate-100 text-slate-950 transition-transform duration-300 group-hover:scale-105 dark:bg-slate-800 dark:text-white">
+              <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-slate-100 text-slate-950 transition-transform duration-300 group-hover:scale-105 dark:bg-neutral-800 dark:text-white">
                 <Icon size={20} />
               </span>
               <div>
@@ -641,7 +641,7 @@ function FeaturedTutors({ tutors }) {
         id="tutors"
         className="mx-auto mt-28 max-w-6xl px-6 scroll-mt-24"
       >
-        <div className="rounded-[2rem] bg-white p-8 text-center shadow-sm ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10">
+        <div className="rounded-[2rem] bg-white p-8 text-center shadow-sm ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10">
           <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">
             Featured tutors
           </p>
@@ -666,7 +666,7 @@ function FeaturedTutors({ tutors }) {
         </div>
         <Link
           to="/tutors"
-          className="inline-flex w-fit items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+          className="inline-flex w-fit items-center gap-2 rounded-full bg-neutral-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-neutral-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
         >
           View all tutors →
         </Link>
@@ -683,10 +683,10 @@ function FeaturedTutors({ tutors }) {
               to={`/tutor/${tutor.id}`}
               data-tutor-id={tutor.id}
               data-tutor-magnetic
-              className="group relative block overflow-hidden rounded-[2rem] bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.06)] ring-1 ring-slate-200/70 transition duration-300 hover:-translate-y-1 hover:shadow-[0_28px_80px_rgba(15,23,42,0.1)] dark:bg-slate-900 dark:ring-white/10"
+              className="group relative block overflow-hidden rounded-[2rem] bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.06)] ring-1 ring-slate-200/70 transition duration-300 hover:-translate-y-1 hover:shadow-[0_28px_80px_rgba(15,23,42,0.1)] dark:bg-neutral-900 dark:ring-white/10"
             >
               <div className="relative z-10 flex items-center gap-3">
-                <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-slate-950 text-sm font-semibold text-white dark:bg-white dark:text-slate-950">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-neutral-950 text-sm font-semibold text-white dark:bg-white dark:text-slate-950">
                   {tutor.avatar_url ? (
                     <img
                       src={tutor.avatar_url}
@@ -720,7 +720,7 @@ function FeaturedTutors({ tutors }) {
               <p className="relative z-10 mt-5 line-clamp-3 text-sm leading-6 text-slate-500 dark:text-slate-400">
                 {tutor.description}
               </p>
-              <div className="relative z-10 mt-6 flex items-center justify-between rounded-2xl bg-slate-50 px-4 py-3 text-xs font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+              <div className="relative z-10 mt-6 flex items-center justify-between rounded-2xl bg-slate-50 px-4 py-3 text-xs font-semibold text-slate-600 dark:bg-neutral-800 dark:text-slate-300">
                 <span className="inline-flex items-center gap-1 text-slate-600 dark:text-slate-300">
                   <Star size={12} fill="currentColor" />
                   {formatTutorRating(tutor.rating)}
@@ -759,7 +759,7 @@ function HomePage() {
   }, []);
 
   return (
-    <div className="relative isolate animate-fade-in overflow-hidden bg-slate-50 dark:bg-slate-950">
+    <div className="relative isolate animate-fade-in overflow-hidden bg-slate-50 dark:bg-neutral-950">
       <div
         aria-hidden
         className="absolute inset-x-0 top-0 -z-10 h-px bg-slate-200 dark:bg-white/10"
@@ -777,7 +777,7 @@ function HomePage() {
         >
           <motion.div
             variants={heroItem}
-            className="mx-auto inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-slate-700 shadow-sm md:mx-0 dark:border-white/10 dark:bg-slate-900 dark:text-slate-300"
+            className="mx-auto inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-slate-700 shadow-sm md:mx-0 dark:border-white/10 dark:bg-neutral-900 dark:text-slate-300"
           >
             <Sparkles className="h-4 w-4" />
             Smart tutor platform
@@ -805,7 +805,7 @@ function HomePage() {
           >
             <Button
               asChild
-              className="h-12 rounded-full bg-slate-950 px-7 text-base text-white shadow-sm hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200 sm:w-auto"
+              className="h-12 rounded-full bg-neutral-950 px-7 text-base text-white shadow-sm hover:bg-neutral-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200 sm:w-auto"
               size="lg"
             >
               <Link
@@ -817,7 +817,7 @@ function HomePage() {
             </Button>
             <Button
               asChild
-              className="h-12 rounded-full border-slate-200 bg-white px-7 text-base hover:bg-slate-50 dark:border-white/10 dark:bg-slate-900 dark:hover:bg-slate-800 sm:w-auto"
+              className="h-12 rounded-full border-slate-200 bg-white px-7 text-base hover:bg-slate-50 dark:border-white/10 dark:bg-neutral-900 dark:hover:bg-neutral-800 sm:w-auto"
               size="lg"
               variant="outline"
             >
@@ -827,7 +827,7 @@ function HomePage() {
 
           <motion.div
             variants={heroItem}
-            className="mt-10 grid grid-cols-3 gap-3 rounded-[1.75rem] border border-slate-200 bg-white p-3 shadow-sm dark:border-white/10 dark:bg-slate-900"
+            className="mt-10 grid grid-cols-3 gap-3 rounded-[1.75rem] border border-slate-200 bg-white p-3 shadow-sm dark:border-white/10 dark:bg-neutral-900"
           >
             {heroStats.map((stat) => (
               <div
@@ -851,9 +851,9 @@ function HomePage() {
           transition={{ delay: 0.22, duration: 0.58, ease: "easeOut" }}
           className="relative"
         >
-          <div className="absolute -left-6 top-10 hidden rounded-2xl border border-slate-200 bg-white p-3 shadow-md md:block dark:border-white/10 dark:bg-slate-900">
+          <div className="absolute -left-6 top-10 hidden rounded-2xl border border-slate-200 bg-white p-3 shadow-md md:block dark:border-white/10 dark:bg-neutral-900">
             <div className="flex items-center gap-2">
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-900 dark:border-white/10 dark:bg-slate-800 dark:text-white">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-900 dark:border-white/10 dark:bg-neutral-800 dark:text-white">
                 <CheckCircle2 size={18} />
               </span>
               <div>
@@ -867,8 +867,8 @@ function HomePage() {
             </div>
           </div>
 
-          <div className="relative overflow-hidden rounded-[2.25rem] border border-slate-200 bg-white p-4 shadow-xl dark:border-white/10 dark:bg-slate-900">
-            <div className="rounded-[1.75rem] border border-slate-200 bg-white p-4 text-slate-950 dark:border-white/10 dark:bg-slate-950 dark:text-white">
+          <div className="relative overflow-hidden rounded-[2.25rem] border border-slate-200 bg-white p-4 shadow-xl dark:border-white/10 dark:bg-neutral-900">
+            <div className="rounded-[1.75rem] border border-slate-200 bg-white p-4 text-slate-950 dark:border-white/10 dark:bg-neutral-950 dark:text-white">
               <div className="mb-5 flex items-center justify-between border-b border-slate-100 pb-4 dark:border-white/10">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
@@ -876,7 +876,7 @@ function HomePage() {
                   </p>
                   <h3 className="mt-1 text-2xl font-black">Tutor shortlist</h3>
                 </div>
-                <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-bold text-slate-700 dark:border-white/10 dark:bg-slate-900 dark:text-slate-300">
+                <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-bold text-slate-700 dark:border-white/10 dark:bg-neutral-900 dark:text-slate-300">
                   12 nearby
                 </span>
               </div>
@@ -886,10 +886,10 @@ function HomePage() {
                   return (
                     <div
                       key={tutor.id}
-                      className="rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-white/10 dark:bg-slate-900"
+                      className="rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-white/10 dark:bg-neutral-900"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-950 text-sm font-black text-white dark:bg-white dark:text-slate-950">
+                        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-neutral-950 text-sm font-black text-white dark:bg-white dark:text-slate-950">
                           {tutor.initials}
                         </div>
                         <div className="min-w-0 flex-1">
@@ -900,14 +900,14 @@ function HomePage() {
                             {tutor.subject}
                           </p>
                         </div>
-                        <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-2 py-1 text-xs font-bold text-slate-700 dark:border-white/10 dark:bg-slate-950 dark:text-slate-300">
+                        <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-2 py-1 text-xs font-bold text-slate-700 dark:border-white/10 dark:bg-neutral-950 dark:text-slate-300">
                           <Star size={12} fill="currentColor" />
                           {formatTutorRating(tutor.rating)}
                         </span>
                       </div>
-                      <div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
+                      <div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-200 dark:bg-neutral-800">
                         <div
-                          className="h-full rounded-full bg-slate-950 dark:bg-white"
+                          className="h-full rounded-full bg-neutral-950 dark:bg-white"
                           style={{ width: `${86 - index * 9}%` }}
                         />
                       </div>
@@ -917,14 +917,14 @@ function HomePage() {
               </div>
 
               <div className="mt-4 grid grid-cols-2 gap-3">
-                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-white/10 dark:bg-slate-900">
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-white/10 dark:bg-neutral-900">
                   <BookOpen className="h-5 w-5 text-slate-700 dark:text-slate-300" />
                   <p className="mt-3 text-lg font-black">24</p>
                   <p className="text-xs text-slate-500 dark:text-slate-400">
                     subjects covered
                   </p>
                 </div>
-                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-white/10 dark:bg-slate-900">
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-white/10 dark:bg-neutral-900">
                   <Users className="h-5 w-5 text-slate-700 dark:text-slate-300" />
                   <p className="mt-3 text-lg font-black">8 min</p>
                   <p className="text-xs text-slate-500 dark:text-slate-400">
@@ -938,7 +938,7 @@ function HomePage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-4">
-        <div className="rounded-[1.75rem] border border-slate-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-slate-900">
+        <div className="rounded-[1.75rem] border border-slate-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-neutral-900">
           <p className="text-center text-xs font-bold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
             Built for every learning stage
           </p>
@@ -947,7 +947,7 @@ function HomePage() {
               <Link
                 key={item}
                 to={`/tutors?level=${encodeURIComponent(item)}`}
-                className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-50 dark:border-white/10 dark:bg-slate-950/40 dark:text-slate-200 dark:hover:bg-slate-900"
+                className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-50 dark:border-white/10 dark:bg-neutral-950/40 dark:text-slate-200 dark:hover:bg-neutral-900"
               >
                 {item}
               </Link>
@@ -985,9 +985,9 @@ function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-45px" }}
                 transition={{ duration: 0.4, delay: index * 0.08 }}
-                className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-slate-300 hover:shadow-md dark:border-white/10 dark:bg-slate-900 dark:hover:border-white/20"
+                className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-slate-300 hover:shadow-md dark:border-white/10 dark:bg-neutral-900 dark:hover:border-white/20"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-950 text-white dark:bg-white dark:text-slate-950">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-neutral-950 text-white dark:bg-white dark:text-slate-950">
                   <Icon size={20} />
                 </div>
                 <h4 className="mt-5 text-lg font-black text-slate-950 dark:text-white">
@@ -1017,9 +1017,9 @@ function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-45px" }}
                 transition={{ duration: 0.4, delay: index * 0.08 }}
-                className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-slate-900"
+                className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-neutral-900"
               >
-                <span className="inline-flex rounded-2xl border border-slate-200 bg-slate-50 p-3 text-slate-900 dark:border-white/10 dark:bg-slate-800 dark:text-white">
+                <span className="inline-flex rounded-2xl border border-slate-200 bg-slate-50 p-3 text-slate-900 dark:border-white/10 dark:bg-neutral-800 dark:text-white">
                   <Icon size={18} />
                 </span>
                 <h4 className="mt-4 text-lg font-black text-slate-950 dark:text-white">
@@ -1035,7 +1035,7 @@ function HomePage() {
       </section>
 
       <section id="join" className="mx-auto max-w-6xl px-4 pb-12 scroll-mt-24">
-        <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm md:p-8 dark:border-white/10 dark:bg-slate-900">
+        <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm md:p-8 dark:border-white/10 dark:bg-neutral-900">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
             Join the platform
           </p>
@@ -1047,7 +1047,7 @@ function HomePage() {
             your expertise into a stronger teaching profile.
           </p>
           <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6 dark:border-white/10 dark:bg-slate-950">
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6 dark:border-white/10 dark:bg-neutral-950">
               <h4 className="text-xl font-black text-slate-950 dark:text-white">
                 For Students
               </h4>
@@ -1056,12 +1056,12 @@ function HomePage() {
               </p>
               <button
                 onClick={() => setIsJoinOpen(true)}
-                className="mt-5 rounded-full bg-slate-950 px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+                className="mt-5 rounded-full bg-neutral-950 px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-neutral-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
               >
                 Student Sign Up
               </button>
             </div>
-            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-slate-900">
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-neutral-900">
               <h4 className="text-xl font-black text-slate-950 dark:text-white">
                 For Tutors
               </h4>
@@ -1070,7 +1070,7 @@ function HomePage() {
               </p>
               <button
                 onClick={() => setIsJoinOpen(true)}
-                className="mt-5 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-950 shadow-sm hover:bg-slate-50 dark:border-white/10 dark:bg-slate-950 dark:text-white dark:hover:bg-slate-800"
+                className="mt-5 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-950 shadow-sm hover:bg-slate-50 dark:border-white/10 dark:bg-neutral-950 dark:text-white dark:hover:bg-neutral-800"
               >
                 Tutor Sign Up
               </button>
@@ -1080,7 +1080,7 @@ function HomePage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 pb-16">
-        <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-slate-950 p-8 text-center text-white shadow-md md:p-10 dark:border-white/10">
+        <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-neutral-950 p-8 text-center text-white shadow-md md:p-10 dark:border-white/10">
           <h3 className="text-3xl font-black tracking-tight md:text-4xl">
             Build better learning outcomes today
           </h3>
@@ -1149,7 +1149,7 @@ function AppleHomePage() {
   }, []);
 
   return (
-    <div className="relative overflow-hidden bg-[#f5f5f7] dark:bg-slate-950">
+    <div className="relative -mt-[5.5rem] overflow-hidden bg-[#f5f5f7] dark:bg-[#111111]">
       <section
         id="home"
         className="relative overflow-hidden scroll-mt-24"
@@ -1159,9 +1159,9 @@ function AppleHomePage() {
           <ShaderBackground />
         </div>
         {/* Subtle bottom fade */}
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#f5f5f7] to-transparent dark:from-slate-950" />
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#f5f5f7] to-transparent dark:from-[#111111]" />
 
-        <div className="relative z-10 mx-auto max-w-7xl px-6 pb-24 pt-20 text-center md:pb-32 md:pt-32">
+        <div className="relative z-10 mx-auto max-w-7xl px-6 pb-24 pt-[9rem] text-center md:pb-32 md:pt-[11rem]">
         <motion.div
           variants={heroContainer}
           initial="hidden"
@@ -1170,14 +1170,14 @@ function AppleHomePage() {
         >
           <motion.h1
             variants={heroItem}
-            className="mt-7 max-w-5xl text-6xl font-semibold leading-[0.94] tracking-[-0.075em] text-slate-950 sm:text-7xl md:text-8xl lg:text-9xl"
+            className="mt-7 max-w-5xl text-6xl font-semibold leading-[0.94] tracking-[-0.075em] text-slate-950 dark:text-white sm:text-7xl md:text-8xl lg:text-9xl"
           >
             Tuition. Simplified.
           </motion.h1>
 
           <motion.p
             variants={heroItem}
-            className="mx-auto mt-7 max-w-3xl text-xl font-medium leading-8 tracking-[-0.02em] text-slate-600 md:text-2xl md:leading-9"
+            className="mx-auto mt-7 max-w-3xl text-xl font-medium leading-8 tracking-[-0.02em] text-slate-600 dark:text-slate-300 md:text-2xl md:leading-9"
           >
             A calm, modern way to discover tutors, compare profiles, and choose
             the right learning support without clutter.
@@ -1189,7 +1189,7 @@ function AppleHomePage() {
           >
             <Button
               asChild
-              className="h-12 rounded-full bg-slate-950 px-7 text-base font-semibold text-white shadow-sm hover:bg-slate-800"
+              className="h-12 rounded-full bg-neutral-950 px-7 text-base font-semibold text-white shadow-sm hover:bg-neutral-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-100"
               size="lg"
             >
               <Link
@@ -1201,7 +1201,7 @@ function AppleHomePage() {
             </Button>
             <Button
               asChild
-              className="h-12 rounded-full border border-slate-200 bg-white/70 px-7 text-base font-semibold text-slate-800 shadow-none backdrop-blur-sm hover:bg-white"
+              className="h-12 rounded-full border border-slate-200 bg-white/70 px-7 text-base font-semibold text-slate-800 shadow-none backdrop-blur-sm hover:bg-white dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
               size="lg"
               variant="outline"
             >
@@ -1216,19 +1216,19 @@ function AppleHomePage() {
           transition={{ delay: 0.22, duration: 0.58, ease: "easeOut" }}
           className="mx-auto mt-16 max-w-6xl"
         >
-          <div className="rounded-[2.75rem] bg-white p-3 shadow-[0_40px_120px_rgba(15,23,42,0.14)] ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10">
-            <div className="overflow-hidden rounded-[2.25rem] border border-slate-200 bg-[#fbfbfd] dark:border-white/10 dark:bg-slate-950">
-              <div className="flex items-center gap-2 border-b border-slate-200 bg-white px-5 py-4 dark:border-white/10 dark:bg-slate-900">
+          <div className="rounded-[2.75rem] bg-white p-3 shadow-[0_40px_120px_rgba(15,23,42,0.14)] ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10">
+            <div className="overflow-hidden rounded-[2.25rem] border border-slate-200 bg-[#fbfbfd] dark:border-white/10 dark:bg-neutral-950">
+              <div className="flex items-center gap-2 border-b border-slate-200 bg-white px-5 py-4 dark:border-white/10 dark:bg-neutral-900">
                 <span className="h-3 w-3 rounded-full bg-slate-300 dark:bg-slate-700" />
                 <span className="h-3 w-3 rounded-full bg-slate-300 dark:bg-slate-700" />
                 <span className="h-3 w-3 rounded-full bg-slate-300 dark:bg-slate-700" />
-                <div className="mx-auto hidden w-80 rounded-full bg-slate-100 px-4 py-1.5 text-center text-xs font-medium text-slate-500 md:block dark:bg-slate-800 dark:text-slate-400">
+                <div className="mx-auto hidden w-80 rounded-full bg-slate-100 px-4 py-1.5 text-center text-xs font-medium text-slate-500 md:block dark:bg-neutral-800 dark:text-slate-400">
                   smarttuitionfinder.app
                 </div>
               </div>
 
               <div className="grid gap-6 p-5 text-left md:grid-cols-[0.85fr_1.15fr] md:p-8">
-                <aside className="rounded-[2rem] bg-white p-5 shadow-sm ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10">
+                <aside className="rounded-[2rem] bg-white p-5 shadow-sm ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10">
                   <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">
                     Search
                   </p>
@@ -1241,7 +1241,7 @@ function AppleHomePage() {
                       (item) => (
                         <div
                           key={item}
-                          className="flex items-center justify-between rounded-2xl bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                          className="flex items-center justify-between rounded-2xl bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-700 dark:bg-neutral-800 dark:text-slate-200"
                         >
                           <span>{item}</span>
                           <CheckCircle2 size={16} />
@@ -1250,7 +1250,7 @@ function AppleHomePage() {
                     )}
                   </div>
 
-                  <div className="mt-6 rounded-3xl bg-slate-950 p-5 text-white dark:bg-white dark:text-slate-950">
+                  <div className="mt-6 rounded-3xl bg-neutral-950 p-5 text-white dark:bg-white dark:text-slate-950">
                     <p className="text-sm font-medium opacity-70">
                       Recommended match
                     </p>
@@ -1270,7 +1270,7 @@ function AppleHomePage() {
                         Clean profiles. Clear choices.
                       </h2>
                     </div>
-                    <span className="hidden rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-600 shadow-sm ring-1 ring-slate-200/70 md:inline-flex dark:bg-slate-900 dark:text-slate-300 dark:ring-white/10">
+                    <span className="hidden rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-600 shadow-sm ring-1 ring-slate-200/70 md:inline-flex dark:bg-neutral-900 dark:text-slate-300 dark:ring-white/10">
                       12 nearby
                     </span>
                   </div>
@@ -1280,9 +1280,9 @@ function AppleHomePage() {
                       return (
                         <div
                           key={tutor.id}
-                          className="rounded-[2rem] bg-white p-5 shadow-sm ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10"
+                          className="rounded-[2rem] bg-white p-5 shadow-sm ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10"
                         >
-                          <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-slate-950 text-sm font-semibold text-white dark:bg-white dark:text-slate-950">
+                          <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-neutral-950 text-sm font-semibold text-white dark:bg-white dark:text-slate-950">
                             {tutor.avatar_url ? (
                               <img
                                 src={tutor.avatar_url}
@@ -1317,7 +1317,7 @@ function AppleHomePage() {
                     {heroStats.map((stat) => (
                       <div
                         key={stat.label}
-                        className="rounded-[1.75rem] bg-white p-5 shadow-sm ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10"
+                        className="rounded-[1.75rem] bg-white p-5 shadow-sm ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10"
                       >
                         <p className="text-3xl font-semibold tracking-[-0.05em] text-slate-950 dark:text-white">
                           {stat.value}
@@ -1342,7 +1342,7 @@ function AppleHomePage() {
             <Link
               key={item}
               to={`/tutors?level=${encodeURIComponent(item)}`}
-              className="rounded-[2rem] bg-white p-6 text-center shadow-sm ring-1 ring-slate-200/70 transition hover:-translate-y-0.5 hover:bg-slate-50 dark:bg-slate-900 dark:ring-white/10 dark:hover:bg-slate-800"
+              className="rounded-[2rem] bg-white p-6 text-center shadow-sm ring-1 ring-slate-200/70 transition hover:-translate-y-0.5 hover:bg-slate-50 dark:bg-neutral-900 dark:ring-white/10 dark:hover:bg-neutral-800"
             >
               <p className="text-lg font-semibold tracking-[-0.02em] text-slate-950 dark:text-white">
                 {item}
@@ -1375,9 +1375,9 @@ function AppleHomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-45px" }}
                 transition={{ duration: 0.4, delay: index * 0.08 }}
-                className="rounded-[2.25rem] bg-white p-8 shadow-[0_20px_60px_rgba(15,23,42,0.06)] ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10"
+                className="rounded-[2.25rem] bg-white p-8 shadow-[0_20px_60px_rgba(15,23,42,0.06)] ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-950 dark:bg-slate-800 dark:text-white">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-950 dark:bg-neutral-800 dark:text-white">
                   <Icon size={20} />
                 </div>
                 <h3 className="mt-10 text-2xl font-semibold tracking-[-0.04em] text-slate-950 dark:text-white">
@@ -1408,7 +1408,7 @@ function AppleHomePage() {
         id="join"
         className="mx-auto mt-28 max-w-6xl px-6 pb-16 scroll-mt-24"
       >
-        <div className="overflow-hidden rounded-[2.75rem] bg-white shadow-[0_30px_90px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10">
+        <div className="overflow-hidden rounded-[2.75rem] bg-white shadow-[0_30px_90px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10">
           <div className="grid gap-0 md:grid-cols-2">
             <div className="p-8 md:p-12">
               <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">
@@ -1423,12 +1423,12 @@ function AppleHomePage() {
               </p>
               <button
                 onClick={() => setIsJoinOpen(true)}
-                className="mt-8 rounded-full bg-slate-950 px-6 py-3 text-sm font-semibold text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+                className="mt-8 rounded-full bg-neutral-950 px-6 py-3 text-sm font-semibold text-white hover:bg-neutral-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
               >
                 Student Sign Up
               </button>
             </div>
-            <div className="border-t border-slate-200 bg-[#fbfbfd] p-8 md:border-l md:border-t-0 md:p-12 dark:border-white/10 dark:bg-slate-950">
+            <div className="border-t border-slate-200 bg-[#fbfbfd] p-8 md:border-l md:border-t-0 md:p-12 dark:border-white/10 dark:bg-neutral-950">
               <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">
                 For tutors
               </p>
@@ -1441,7 +1441,7 @@ function AppleHomePage() {
               </p>
               <button
                 onClick={() => setIsJoinOpen(true)}
-                className="mt-8 rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-950 hover:bg-slate-50 dark:border-white/10 dark:bg-slate-900 dark:text-white dark:hover:bg-slate-800"
+                className="mt-8 rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-950 hover:bg-slate-50 dark:border-white/10 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
               >
                 Tutor Sign Up
               </button>
@@ -1451,7 +1451,7 @@ function AppleHomePage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-6 pb-24">
-        <div className="rounded-[2.75rem] bg-slate-950 px-8 py-16 text-center text-white shadow-[0_30px_90px_rgba(15,23,42,0.18)] md:px-12">
+        <div className="rounded-[2.75rem] bg-neutral-950 px-8 py-16 text-center text-white shadow-[0_30px_90px_rgba(15,23,42,0.18)] md:px-12">
           <h2 className="text-4xl font-semibold tracking-[-0.055em] md:text-6xl">
             Ready when you are.
           </h2>
@@ -1484,10 +1484,10 @@ function AppleHomePage() {
 
 export default function App() {
   return (
-    <div className="flex min-h-dvh flex-col overflow-x-hidden bg-white text-slate-900 transition-colors dark:bg-slate-950 dark:text-white">
+    <div className="flex min-h-dvh flex-col overflow-x-hidden bg-background text-foreground transition-colors">
       <Navbar />
 
-      <main className="flex w-full min-h-0 flex-1 flex-col pt-20">
+      <main className="flex w-full min-h-0 flex-1 flex-col pt-[5.5rem]">
         <Routes>
           <Route path="/" element={<AppleHomePage />} />
           <Route path="/tutors" element={<AllTutorsPage />} />

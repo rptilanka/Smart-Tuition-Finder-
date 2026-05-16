@@ -308,10 +308,10 @@ function TutorPreviewCard({
           role="tooltip"
           aria-live="polite"
         >
-          <div className="overflow-hidden rounded-[2rem] bg-white p-4 shadow-[0_24px_80px_rgba(15,23,42,0.14)] ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10">
+          <div className="overflow-hidden rounded-[2rem] bg-white p-4 shadow-[0_24px_80px_rgba(15,23,42,0.14)] ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10">
             <div>
               <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-slate-950 text-base font-semibold text-white dark:bg-white dark:text-slate-950">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-neutral-950 text-base font-semibold text-white dark:bg-white dark:text-slate-950">
                   {tutor.initials ??
                     tutor.name
                       ?.split(" ")
@@ -324,7 +324,7 @@ function TutorPreviewCard({
                     {tutor.name}
                   </p>
                   <div className="mt-1 flex items-center gap-1.5">
-                    <span className="inline-flex rounded-full bg-slate-100 px-2 py-[2px] text-[11px] font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                    <span className="inline-flex rounded-full bg-slate-100 px-2 py-[2px] text-[11px] font-semibold text-slate-600 dark:bg-neutral-800 dark:text-slate-300">
                       {tutor.subject}
                     </span>
                     <Rating value={tutor.rating} />
@@ -335,7 +335,7 @@ function TutorPreviewCard({
                     type="button"
                     onClick={onDismiss}
                     aria-label="Dismiss tutor preview"
-                    className="rounded-full bg-slate-100 px-2 py-1 text-[10px] font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-200"
+                    className="rounded-full bg-slate-100 px-2 py-1 text-[10px] font-semibold text-slate-600 dark:bg-neutral-800 dark:text-slate-200"
                   >
                     Close
                   </button>
@@ -353,7 +353,7 @@ function TutorPreviewCard({
 
               <Link
                 to={tutor.profileUrl ?? `/tutor/${tutor.id ?? ""}`}
-                className="mt-4 inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-slate-950 px-3 py-2 text-[12px] font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+                className="mt-4 inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-neutral-950 px-3 py-2 text-[12px] font-semibold text-white transition hover:bg-neutral-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
               >
                 View Profile
                 <ArrowUpRight size={14} />

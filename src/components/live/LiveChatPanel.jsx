@@ -21,11 +21,11 @@ export default function LiveChatPanel({ messages, currentUserId, onSend }) {
   );
 
   return (
-    <div className="rounded-2xl bg-white p-4 ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10">
+    <div className="rounded-2xl bg-white p-4 ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10">
       <h3 className="text-sm font-extrabold uppercase tracking-[0.14em] text-slate-700 dark:text-slate-100">
         Live chat
       </h3>
-      <div className="mt-3 h-64 space-y-2 overflow-y-auto rounded-xl bg-slate-50 p-3 dark:bg-slate-800">
+      <div className="mt-3 h-64 space-y-2 overflow-y-auto rounded-xl bg-slate-50 p-3 dark:bg-neutral-800">
         {sorted.length ? (
           sorted.map((item) => {
             const mine = item.sender_id === currentUserId;
@@ -34,8 +34,8 @@ export default function LiveChatPanel({ messages, currentUserId, onSend }) {
                 key={item.id ?? `${item.sender_id}-${item.created_at}-${item.body}`}
                 className={`rounded-xl px-3 py-2 text-xs ${
                   mine
-                    ? "ml-8 bg-slate-950 text-white dark:bg-white dark:text-slate-950"
-                    : "mr-8 bg-white text-slate-700 dark:bg-slate-900 dark:text-slate-200"
+                    ? "ml-8 bg-neutral-950 text-white dark:bg-white dark:text-slate-950"
+                    : "mr-8 bg-white text-slate-700 dark:bg-neutral-900 dark:text-slate-200"
                 }`}
               >
                 <p className="break-words">{item.body}</p>
@@ -65,11 +65,11 @@ export default function LiveChatPanel({ messages, currentUserId, onSend }) {
           value={text}
           onChange={(event) => setText(event.target.value)}
           placeholder="Ask a question in the live class..."
-          className="h-10 flex-1 rounded-full border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none focus:ring-2 focus:ring-slate-400 dark:border-white/10 dark:bg-slate-950 dark:text-white"
+          className="h-10 flex-1 rounded-full border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none focus:ring-2 focus:ring-slate-400 dark:border-white/10 dark:bg-neutral-950 dark:text-white"
         />
         <button
           type="submit"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-950 text-white dark:bg-white dark:text-slate-950"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-neutral-950 text-white dark:bg-white dark:text-slate-950"
           aria-label="Send message"
         >
           <SendHorizonal size={15} />

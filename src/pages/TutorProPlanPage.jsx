@@ -276,7 +276,7 @@ export default function TutorProPlanPage() {
                     type="button"
                     onClick={() => handlePay(plan)}
                     disabled={payingPlanId === plan.id}
-                    className="w-full rounded-lg bg-slate-950 text-white hover:bg-slate-800"
+                    className="w-full rounded-lg bg-neutral-950 text-white hover:bg-neutral-800"
                   >
                     {payingPlanId === plan.id
                       ? "Processing..."

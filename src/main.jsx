@@ -5,16 +5,19 @@ import App from "./App";
 import "./index.css";
 import { TutorPreviewProvider } from "./components/TutorPreviewProvider";
 import { AuthProvider } from "./context/AuthContext";
+import { ThemeProvider } from "./components/theme-provider";
 import { tutorsById } from "./data/tutors";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
-      <AuthProvider>
-        <TutorPreviewProvider tutors={tutorsById}>
-          <App />
-        </TutorPreviewProvider>
-      </AuthProvider>
+      <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+        <AuthProvider>
+          <TutorPreviewProvider tutors={tutorsById}>
+            <App />
+          </TutorPreviewProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </BrowserRouter>
   </React.StrictMode>,
 );

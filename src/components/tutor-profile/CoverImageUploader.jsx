@@ -156,7 +156,7 @@ export default function CoverImageUploader({
   };
 
   return (
-    <div className="rounded-[2rem] bg-slate-50 p-4 dark:bg-slate-950">
+    <div className="rounded-[2rem] bg-slate-50 p-4 dark:bg-neutral-950">
       <div className="mb-3 flex items-center gap-2">
         <ImageIcon size={16} className="text-slate-600 dark:text-slate-300" />
         <h3 className="text-sm font-semibold uppercase tracking-[0.12em] text-slate-700 dark:text-slate-200">
@@ -173,12 +173,12 @@ export default function CoverImageUploader({
             {...supabaseStorageImageProps(previewUrl)}
           />
         ) : (
-          <div className="flex h-40 w-full items-center justify-center bg-slate-200 text-sm font-medium text-slate-600 sm:h-48 dark:bg-slate-800 dark:text-slate-300">
+          <div className="flex h-40 w-full items-center justify-center bg-slate-200 text-sm font-medium text-slate-600 sm:h-48 dark:bg-neutral-800 dark:text-slate-300">
             No cover image
           </div>
         )}
         {uploading || savingUrl ? (
-          <div className="absolute inset-0 flex items-center justify-center bg-slate-950/40 backdrop-blur-sm">
+          <div className="absolute inset-0 flex items-center justify-center bg-neutral-950/40 backdrop-blur-sm">
             <Loader2 size={22} className="animate-spin text-white" />
           </div>
         ) : null}
@@ -189,7 +189,7 @@ export default function CoverImageUploader({
           type="button"
           onClick={handlePick}
           disabled={uploading || savingUrl}
-          className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+          className="inline-flex items-center gap-2 rounded-full bg-neutral-950 px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
         >
           {uploading ? (
             <Loader2 size={13} className="animate-spin" />
@@ -207,7 +207,7 @@ export default function CoverImageUploader({
             type="button"
             onClick={handleRemove}
             disabled={removing || uploading || savingUrl}
-            className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-800"
+            className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:bg-neutral-950 dark:text-slate-200 dark:hover:bg-neutral-800"
           >
             {removing ? (
               <Loader2 size={13} className="animate-spin" />

@@ -40,7 +40,7 @@ export default function FormField({
         </label>
         <div
           className={cn(
-            "flex items-center rounded-lg border border-gray-200 bg-white transition-colors focus-within:border-black dark:border-white/15 dark:bg-slate-950 dark:focus-within:border-white",
+            "flex items-center rounded-lg border border-gray-200 bg-white transition-colors focus-within:border-black dark:border-white/15 dark:bg-neutral-950 dark:focus-within:border-white",
             hasError &&
               "border-red-500 focus-within:border-red-500 dark:border-red-500",
             disabled && "opacity-60",
@@ -101,7 +101,7 @@ export default function FormField({
         {label}
       </label>
       <div
-        className={`group relative flex items-center gap-2 rounded-2xl border bg-slate-50 px-3 transition focus-within:bg-white dark:bg-slate-950 dark:focus-within:bg-slate-900 ${
+        className={`group relative flex items-center gap-2 rounded-2xl border bg-slate-50 px-3 transition focus-within:bg-white dark:bg-neutral-950 dark:focus-within:bg-slate-900 ${
           hasError
             ? "border-rose-400/80 focus-within:border-rose-500 focus-within:ring-0"
             : "border-slate-200 focus-within:border-black focus-within:ring-0 dark:border-white/10 dark:focus-within:border-white"
@@ -138,7 +138,7 @@ export default function FormField({
           <button
             type="button"
             onClick={() => setShowPassword((v) => !v)}
-            className="inline-flex h-7 w-7 items-center justify-center rounded-md text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+            className="inline-flex h-7 w-7 items-center justify-center rounded-md text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-neutral-800 dark:hover:text-slate-200"
             aria-label={showPassword ? "Hide password" : "Show password"}
             tabIndex={-1}
           >

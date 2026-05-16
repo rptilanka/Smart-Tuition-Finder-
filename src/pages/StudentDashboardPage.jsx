@@ -91,14 +91,14 @@ export default function StudentDashboardPage() {
   const invites = subscriptions.filter((s) => s.metadata?.join_link);
 
   return (
-    <div className="min-h-screen bg-[#f7f7f8] px-4 py-8 dark:bg-slate-950">
+    <div className="min-h-screen bg-[#f7f7f8] px-4 py-8 dark:bg-neutral-950">
       <div className="mx-auto max-w-5xl space-y-5">
 
         {/* Header */}
-        <div className="rounded-2xl bg-white p-6 ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-white/10">
+        <div className="rounded-2xl bg-white p-6 ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-slate-900 text-sm font-semibold text-white dark:bg-white dark:text-slate-900">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-neutral-900 text-sm font-semibold text-white dark:bg-white dark:text-slate-900">
                 {initials}
               </div>
               <div>
@@ -140,13 +140,13 @@ export default function StudentDashboardPage() {
         )}
 
         {/* Live class access */}
-        <div className="rounded-2xl bg-white ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-white/10">
+        <div className="rounded-2xl bg-white ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
           <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4 dark:border-white/10">
             <div className="flex items-center gap-2">
               <Video size={15} className="text-slate-400" />
               <h2 className="text-sm font-semibold text-slate-800 dark:text-white">Live Classes</h2>
             </div>
-            <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-semibold text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+            <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-semibold text-slate-500 dark:bg-neutral-800 dark:text-slate-400">
               {subscriptions.length} tutor{subscriptions.length !== 1 ? "s" : ""}
             </span>
           </div>
@@ -172,7 +172,7 @@ export default function StudentDashboardPage() {
                       <div className="flex items-center gap-2">
                         <p className="text-sm font-medium text-slate-900 dark:text-white">{meeting.title}</p>
                         {meeting.status === "live" && (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-slate-900 px-2 py-0.5 text-[10px] font-semibold text-white dark:bg-white dark:text-slate-900">
+                          <span className="inline-flex items-center gap-1 rounded-full bg-neutral-900 px-2 py-0.5 text-[10px] font-semibold text-white dark:bg-white dark:text-slate-900">
                             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-400" />
                             Live
                           </span>
@@ -184,7 +184,7 @@ export default function StudentDashboardPage() {
                     </div>
                     <Link
                       to={buildSecureJoinLink(meeting)}
-                      className="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-slate-700 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
+                      className="inline-flex items-center gap-1.5 rounded-lg bg-neutral-900 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-slate-700 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
                     >
                       <Video size={12} /> Join
                     </Link>
@@ -203,7 +203,7 @@ export default function StudentDashboardPage() {
           {/* Sidebar */}
           <div className="space-y-4">
             {/* Profile */}
-            <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-white/10">
+            <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
               <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-400">Profile</h2>
               <ProfileRow icon={UserRound} label="Name" value={displayName} />
               <ProfileRow icon={Mail} label="Email" value={profile?.email ?? user?.email ?? "—"} />
@@ -219,7 +219,7 @@ export default function StudentDashboardPage() {
             </div>
 
             {/* Saved tutors */}
-            <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-white/10">
+            <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
               <div className="mb-3 flex items-center justify-between">
                 <h2 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-slate-400">
                   <Heart size={11} /> Saved tutors
@@ -239,8 +239,8 @@ export default function StudentDashboardPage() {
                     const subject = Array.isArray(s.subjects) && s.subjects.length > 0 ? s.subjects[0] : null;
                     return (
                       <li key={s.tutor_id}>
-                        <Link to={href} className="flex items-center gap-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 px-1 py-1.5 -mx-1 transition">
-                          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-slate-100 text-[10px] font-bold text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+                        <Link to={href} className="flex items-center gap-2 rounded-lg hover:bg-slate-50 dark:hover:bg-neutral-800 px-1 py-1.5 -mx-1 transition">
+                          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-slate-100 text-[10px] font-bold text-slate-500 dark:bg-neutral-800 dark:text-slate-400">
                             {initials || "T"}
                           </div>
                           <div className="min-w-0">
@@ -260,7 +260,7 @@ export default function StudentDashboardPage() {
 
 
 {/* Tips */}
-            <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-white/10">
+            <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
               <h2 className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-slate-400">
                 <BookOpen size={11} /> Tips
               </h2>
@@ -283,9 +283,9 @@ function InviteBanner({ sub }) {
   const sentAt = sub.metadata?.invite_sent_at;
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white px-5 py-4 dark:border-white/10 dark:bg-slate-900">
+    <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white px-5 py-4 dark:border-white/10 dark:bg-neutral-900">
       <div className="flex items-center gap-3">
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500 dark:bg-slate-800">
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500 dark:bg-neutral-800">
           <Video size={14} />
         </div>
         <div>
@@ -294,7 +294,7 @@ function InviteBanner({ sub }) {
               Your tutor invited you to: {title}
             </p>
             {status === "live" && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-slate-900 px-2 py-0.5 text-[10px] font-semibold text-white dark:bg-white dark:text-slate-900">
+              <span className="inline-flex items-center gap-1 rounded-full bg-neutral-900 px-2 py-0.5 text-[10px] font-semibold text-white dark:bg-white dark:text-slate-900">
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-400" />
                 Live now
               </span>
@@ -309,7 +309,7 @@ function InviteBanner({ sub }) {
       </div>
       <Link
         to={joinPath}
-        className="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-slate-700 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
+        className="inline-flex items-center gap-1.5 rounded-lg bg-neutral-900 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-slate-700 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
       >
         <Video size={12} /> Join class
       </Link>
@@ -352,7 +352,7 @@ function StudentMessagesSection({ userId }) {
   };
 
   return (
-    <div className="rounded-2xl bg-white ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-white/10">
+    <div className="rounded-2xl bg-white ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
       <div className="flex items-center gap-2 border-b border-slate-100 px-5 py-4 dark:border-white/10">
         <MessageSquareText size={15} className="text-slate-400" />
         <h2 className="text-sm font-semibold text-slate-800 dark:text-white">Messages</h2>
@@ -375,7 +375,7 @@ function StudentMessagesSection({ userId }) {
               return (
                 <li key={conv.otherId}>
                   <button type="button" onClick={() => setActive(conv.otherId)}
-                    className={`w-full px-4 py-3 text-left transition hover:bg-slate-50 dark:hover:bg-slate-800 ${active === conv.otherId ? "bg-slate-50 dark:bg-slate-800" : ""}`}>
+                    className={`w-full px-4 py-3 text-left transition hover:bg-slate-50 dark:hover:bg-neutral-800 ${active === conv.otherId ? "bg-slate-50 dark:bg-neutral-800" : ""}`}>
                     <div className="flex items-center gap-2">
                       <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-slate-200 text-[10px] font-bold text-slate-600 dark:bg-slate-700 dark:text-slate-300">
                         T
@@ -400,7 +400,7 @@ function StudentMessagesSection({ userId }) {
                     const mine = msg.from_user_id === userId;
                     return (
                       <li key={msg.id} className={`flex ${mine ? "justify-end" : "justify-start"}`}>
-                        <div className={`max-w-[80%] rounded-xl px-3 py-2 text-xs ${mine ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900" : "bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200"}`}>
+                        <div className={`max-w-[80%] rounded-xl px-3 py-2 text-xs ${mine ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900" : "bg-slate-100 text-slate-800 dark:bg-neutral-800 dark:text-slate-200"}`}>
                           {msg.body}
                         </div>
                       </li>
@@ -412,9 +412,9 @@ function StudentMessagesSection({ userId }) {
                   <input value={reply} onChange={(e) => setReply(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleSend()}
                     placeholder="Reply…"
-                    className="h-8 flex-1 rounded-lg border border-slate-200 bg-white px-3 text-xs outline-none focus:ring-1 focus:ring-slate-300 dark:border-white/10 dark:bg-slate-800 dark:text-white" />
+                    className="h-8 flex-1 rounded-lg border border-slate-200 bg-white px-3 text-xs outline-none focus:ring-1 focus:ring-slate-300 dark:border-white/10 dark:bg-neutral-800 dark:text-white" />
                   <button type="button" onClick={handleSend} disabled={sending || !reply.trim()}
-                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-900 text-white disabled:opacity-40 dark:bg-white dark:text-slate-900">
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-neutral-900 text-white disabled:opacity-40 dark:bg-white dark:text-slate-900">
                     <Send size={12} />
                   </button>
                 </div>
@@ -432,7 +432,7 @@ function StudentMessagesSection({ userId }) {
 /* ─── Stat card ─────────────────────────────────────────────────────────── */
 function StatCard({ icon: Icon, label, value, sub }) {
   return (
-    <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-white/10">
+    <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
       <div className="flex items-center gap-2 text-slate-400">
         <Icon size={14} />
         <p className="text-xs font-medium">{label}</p>

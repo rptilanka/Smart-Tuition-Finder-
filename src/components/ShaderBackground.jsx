@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { useTheme } from './theme-provider';
 
 const vsSource = `
   attribute vec4 aVertexPosition;
@@ -11,6 +12,7 @@ const fsSource = `
   precision highp float;
   uniform vec2 iResolution;
   uniform float iTime;
+  uniform vec3 iBgColor;
 
   const float overallSpeed = 0.2;
   const float gridSmoothWidth = 0.015;
@@ -59,7 +61,7 @@ const fsSource = `
     space.x += random(space.y * warpFrequency + iTime * warpSpeed + 2.0) * warpAmplitude * horizontalFade;
 
     vec4 lines = vec4(0.0);
-    vec4 bgColor = vec4(1.0, 1.0, 1.0, 1.0);
+    vec4 bgColor = vec4(iBgColor, 1.0);
 
     for(int l = 0; l < linesPerGroup; l++) {
       float normalizedLineIndex = float(l) / float(linesPerGroup);
@@ -117,6 +119,13 @@ function initShaderProgram(gl) {
 
 export default function ShaderBackground() {
   const canvasRef = useRef(null);
+  const { theme } = useTheme();
+
+  const isDark = theme === 'dark' ||
+    (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+  // neutral-950 (#0a0a0a) in dark, #f5f5f7 in light
+  const bg = isDark ? [0.039, 0.039, 0.039] : [0.961, 0.961, 0.969];
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -135,6 +144,7 @@ export default function ShaderBackground() {
     const vertexPosition = gl.getAttribLocation(program, 'aVertexPosition');
     const uResolution = gl.getUniformLocation(program, 'iResolution');
     const uTime = gl.getUniformLocation(program, 'iTime');
+    const uBgColor = gl.getUniformLocation(program, 'iBgColor');
 
     const resize = () => {
       canvas.width = canvas.offsetWidth;
@@ -155,6 +165,7 @@ export default function ShaderBackground() {
       gl.useProgram(program);
       gl.uniform2f(uResolution, canvas.width, canvas.height);
       gl.uniform1f(uTime, t);
+      gl.uniform3f(uBgColor, bg[0], bg[1], bg[2]);
       gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
       gl.vertexAttribPointer(vertexPosition, 2, gl.FLOAT, false, 0, 0);
       gl.enableVertexAttribArray(vertexPosition);
@@ -168,7 +179,7 @@ export default function ShaderBackground() {
       cancelAnimationFrame(raf);
       ro.disconnect();
     };
-  }, []);
+  }, [isDark]);
 
   return <canvas ref={canvasRef} className="absolute inset-0 z-0 h-full w-full" />;
 }

@@ -5,7 +5,7 @@ import { demoVideoRowToCardShape } from "../../../lib/tutorProfileNormalize";
 import { uploadDemoVideo } from "../../../lib/storage";
 
 const inputClass =
-  "w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-medium text-slate-900 placeholder:text-slate-400 transition focus:border-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-950/10 dark:border-white/10 dark:bg-slate-950 dark:text-white dark:focus:bg-slate-900 dark:focus:ring-white/10";
+  "w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-medium text-slate-900 placeholder:text-slate-400 transition focus:border-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-950/10 dark:border-white/10 dark:bg-neutral-950 dark:text-white dark:focus:bg-slate-900 dark:focus:ring-white/10";
 
 function newId() {
   return typeof crypto !== "undefined" && crypto.randomUUID
@@ -145,10 +145,10 @@ export default function TutorDemoVideosEditor({
     .filter(Boolean);
 
   return (
-    <section className="rounded-[2rem] bg-white p-6 shadow-sm ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10">
+    <section className="rounded-[2rem] bg-white p-6 shadow-sm ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10">
       <header className="mb-4 flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-950 dark:bg-slate-800 dark:text-white">
+          <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-950 dark:bg-neutral-800 dark:text-white">
             <PlayCircle size={16} />
           </span>
           <div>
@@ -165,7 +165,7 @@ export default function TutorDemoVideosEditor({
           type="button"
           onClick={addRow}
           disabled={disabled || local.length >= 8}
-          className="inline-flex items-center gap-1.5 rounded-full bg-slate-950 px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-slate-800 disabled:opacity-50 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+          className="inline-flex items-center gap-1.5 rounded-full bg-neutral-950 px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-neutral-800 disabled:opacity-50 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
         >
           <Plus size={14} /> Add video
         </button>
@@ -175,7 +175,7 @@ export default function TutorDemoVideosEditor({
         {local.map((row) => (
           <li
             key={row.id}
-            className="rounded-2xl bg-slate-50 p-3 dark:bg-slate-800"
+            className="rounded-2xl bg-slate-50 p-3 dark:bg-neutral-800"
           >
             <div className="mb-2 flex justify-end">
               <button
@@ -220,7 +220,7 @@ export default function TutorDemoVideosEditor({
                       type="button"
                       onClick={() => handlePickVideo(row.id)}
                       disabled={disabled || uploadingRowId === row.id}
-                      className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-950 px-3 py-2 text-xs font-semibold text-white transition hover:bg-slate-800 disabled:opacity-60 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+                      className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-950 px-3 py-2 text-xs font-semibold text-white transition hover:bg-neutral-800 disabled:opacity-60 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
                     >
                       {uploadingRowId === row.id ? (
                         <Loader2 size={13} className="animate-spin" />
@@ -231,7 +231,7 @@ export default function TutorDemoVideosEditor({
                         ? "Uploading..."
                         : "Upload video file"}
                     </button>
-                    <p className="truncate rounded-lg bg-slate-100 px-2 py-1 font-mono text-[11px] text-slate-600 dark:bg-slate-900 dark:text-slate-300">
+                    <p className="truncate rounded-lg bg-slate-100 px-2 py-1 font-mono text-[11px] text-slate-600 dark:bg-neutral-900 dark:text-slate-300">
                       {row.video_url || "No file uploaded yet"}
                     </p>
                   </div>

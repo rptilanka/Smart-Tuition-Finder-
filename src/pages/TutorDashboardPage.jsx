@@ -116,14 +116,14 @@ export default function TutorDashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f7f7f8] px-4 py-8 dark:bg-slate-950">
+    <div className="min-h-screen bg-[#f7f7f8] px-4 py-8 dark:bg-neutral-950">
       <div className="mx-auto max-w-5xl space-y-5">
 
         {/* Header */}
-        <div className="rounded-2xl bg-white p-6 ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-white/10">
+        <div className="rounded-2xl bg-white p-6 ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-slate-900 text-sm font-semibold text-white dark:bg-white dark:text-slate-900">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-neutral-900 text-sm font-semibold text-white dark:bg-white dark:text-slate-900">
                 {profile?.avatar_url ? (
                   <img
                     src={profile.avatar_url}
@@ -191,7 +191,7 @@ export default function TutorDashboardPage() {
 
           {/* Sidebar */}
           <div className="space-y-4">
-            <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-white/10">
+            <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
               <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-400">Profile</h2>
               <ProfileRow icon={UserRound} label="Name" value={displayName} />
               <ProfileRow icon={Mail} label="Email" value={profile?.email ?? user?.email ?? "—"} />
@@ -205,7 +205,7 @@ export default function TutorDashboardPage() {
                 ) : null}
               </AnimatePresence>
             </div>
-            <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-white/10">
+            <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
               <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">Quick links</h2>
               <Link to="/live/host" className="flex items-center gap-2 py-2 text-xs text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">
                 <CalendarDays size={12} /> Manage meetings
@@ -227,7 +227,7 @@ export default function TutorDashboardPage() {
 /* ─── Stat card ─────────────────────────────────────────────────────────── */
 function StatCard({ icon: Icon, label, value, sub }) {
   return (
-    <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-white/10">
+    <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
       <div className="flex items-center gap-2 text-slate-400">
         <Icon size={14} />
         <p className="text-xs font-medium">{label}</p>
@@ -304,7 +304,7 @@ function LiveClassesSection({ userId, navigate }) {
     `${window.location.origin}${buildSecureJoinLink(meeting)}`;
 
   return (
-    <div className="rounded-2xl bg-white ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-white/10">
+    <div className="rounded-2xl bg-white ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4 dark:border-white/10">
         <div className="flex items-center gap-2">
@@ -315,7 +315,7 @@ function LiveClassesSection({ userId, navigate }) {
           type="button"
           onClick={handleNewMeeting}
           disabled={creating}
-          className="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-slate-700 disabled:opacity-50 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
+          className="inline-flex items-center gap-1.5 rounded-lg bg-neutral-900 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-slate-700 disabled:opacity-50 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
         >
           <Plus size={13} />
           {creating ? "Creating…" : "New meeting"}
@@ -348,7 +348,7 @@ function LiveClassesSection({ userId, navigate }) {
                   {/* Top row: title + status + actions */}
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <div className="flex items-center gap-3">
-                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500 dark:bg-slate-800">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500 dark:bg-neutral-800">
                         <Video size={13} />
                       </span>
                       <div>
@@ -367,7 +367,7 @@ function LiveClassesSection({ userId, navigate }) {
                       {meeting.status !== "ended" && meeting.status !== "cancelled" && (
                         <Link
                           to={`/live/meeting/${meeting.id}`}
-                          className="inline-flex items-center gap-1 rounded-lg bg-slate-900 px-2.5 py-1.5 text-[11px] font-semibold text-white hover:bg-slate-700 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
+                          className="inline-flex items-center gap-1 rounded-lg bg-neutral-900 px-2.5 py-1.5 text-[11px] font-semibold text-white hover:bg-slate-700 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
                         >
                           <Video size={11} /> Join room
                         </Link>
@@ -376,7 +376,7 @@ function LiveClassesSection({ userId, navigate }) {
                   </div>
 
                   {/* Share link row */}
-                  <div className="mt-2.5 flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 dark:border-white/10 dark:bg-slate-800/50">
+                  <div className="mt-2.5 flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 dark:border-white/10 dark:bg-neutral-800/50">
                     <p className="min-w-0 flex-1 truncate font-mono text-[11px] text-slate-500 dark:text-slate-400">
                       {link}
                     </p>
@@ -445,13 +445,13 @@ function PaidStudentsSection({ userId }) {
     Math.max(0, Math.ceil((new Date(endAt).getTime() - Date.now()) / 86400000));
 
   return (
-    <div className="rounded-2xl bg-white ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-white/10">
+    <div className="rounded-2xl bg-white ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
       <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4 dark:border-white/10">
         <div className="flex items-center gap-2">
           <Wallet size={15} className="text-slate-400" />
           <h2 className="text-sm font-semibold text-slate-800 dark:text-white">Paid Students</h2>
         </div>
-        <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-semibold text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+        <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-semibold text-slate-500 dark:bg-neutral-800 dark:text-slate-400">
           {loading ? "…" : `${subscribers.length} active`}
         </span>
       </div>
@@ -481,7 +481,7 @@ function PaidStudentsSection({ userId }) {
                 return (
                   <li key={sub.id} className="flex flex-wrap items-center justify-between gap-3 py-3 first:pt-0 last:pb-0">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-[11px] font-bold text-slate-600 dark:bg-neutral-800 dark:text-slate-300">
                         {name[0]?.toUpperCase() ?? "S"}
                       </div>
                       <div>
@@ -496,7 +496,7 @@ function PaidStudentsSection({ userId }) {
                       type="button"
                       onClick={() => handleCopyForStudent(sub.student_id)}
                       disabled={!latestMeeting}
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[11px] font-semibold text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/10 dark:bg-slate-950 dark:text-slate-300 dark:hover:bg-slate-800"
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[11px] font-semibold text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/10 dark:bg-neutral-950 dark:text-slate-300 dark:hover:bg-neutral-800"
                     >
                       {copiedKey === sub.student_id ? (
                         <><Check size={11} className="text-green-500" /> Copied</>
@@ -519,7 +519,7 @@ function PaidStudentsSection({ userId }) {
 function StatusBadge({ status }) {
   if (status === "live") {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full bg-slate-900 px-2 py-0.5 text-[10px] font-semibold text-white dark:bg-white dark:text-slate-900">
+      <span className="inline-flex items-center gap-1 rounded-full bg-neutral-900 px-2 py-0.5 text-[10px] font-semibold text-white dark:bg-white dark:text-slate-900">
         <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-400" />
         Live
       </span>
@@ -527,13 +527,13 @@ function StatusBadge({ status }) {
   }
   if (status === "scheduled") {
     return (
-      <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+      <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-500 dark:bg-neutral-800 dark:text-slate-400">
         Scheduled
       </span>
     );
   }
   return (
-    <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-400 dark:bg-slate-800">
+    <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-400 dark:bg-neutral-800">
       {status}
     </span>
   );
@@ -581,12 +581,12 @@ function MessagesSection({ userId, role }) {
   };
 
   return (
-    <div className="rounded-2xl bg-white ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-white/10">
+    <div className="rounded-2xl bg-white ring-1 ring-slate-200 dark:bg-neutral-900 dark:ring-white/10">
       <div className="flex items-center gap-2 border-b border-slate-100 px-5 py-4 dark:border-white/10">
         <MessageSquareText size={15} className="text-slate-400" />
         <h2 className="text-sm font-semibold text-slate-800 dark:text-white">Messages</h2>
         {conversations.filter(c => c.messages.some(m => m.to_user_id === userId && !m.read_at)).length > 0 && (
-          <span className="rounded-full bg-slate-900 px-2 py-0.5 text-[10px] font-bold text-white dark:bg-white dark:text-slate-900">
+          <span className="rounded-full bg-neutral-900 px-2 py-0.5 text-[10px] font-bold text-white dark:bg-white dark:text-slate-900">
             {conversations.filter(c => c.messages.some(m => m.to_user_id === userId && !m.read_at)).length} new
           </span>
         )}
@@ -612,7 +612,7 @@ function MessagesSection({ userId, role }) {
                   <button
                     type="button"
                     onClick={() => setActive(conv.otherId)}
-                    className={`w-full px-4 py-3 text-left transition hover:bg-slate-50 dark:hover:bg-slate-800 ${active === conv.otherId ? "bg-slate-50 dark:bg-slate-800" : ""}`}
+                    className={`w-full px-4 py-3 text-left transition hover:bg-slate-50 dark:hover:bg-neutral-800 ${active === conv.otherId ? "bg-slate-50 dark:bg-neutral-800" : ""}`}
                   >
                     <div className="flex items-center gap-2">
                       <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-slate-200 text-[10px] font-bold text-slate-600 dark:bg-slate-700 dark:text-slate-300">
@@ -640,7 +640,7 @@ function MessagesSection({ userId, role }) {
                     const mine = msg.from_user_id === userId;
                     return (
                       <li key={msg.id} className={`flex ${mine ? "justify-end" : "justify-start"}`}>
-                        <div className={`max-w-[80%] rounded-xl px-3 py-2 text-xs ${mine ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900" : "bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200"}`}>
+                        <div className={`max-w-[80%] rounded-xl px-3 py-2 text-xs ${mine ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900" : "bg-slate-100 text-slate-800 dark:bg-neutral-800 dark:text-slate-200"}`}>
                           {msg.body}
                         </div>
                       </li>
@@ -654,10 +654,10 @@ function MessagesSection({ userId, role }) {
                     onChange={(e) => setReply(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleSend()}
                     placeholder="Reply…"
-                    className="h-8 flex-1 rounded-lg border border-slate-200 bg-white px-3 text-xs outline-none focus:ring-1 focus:ring-slate-300 dark:border-white/10 dark:bg-slate-800 dark:text-white"
+                    className="h-8 flex-1 rounded-lg border border-slate-200 bg-white px-3 text-xs outline-none focus:ring-1 focus:ring-slate-300 dark:border-white/10 dark:bg-neutral-800 dark:text-white"
                   />
                   <button type="button" onClick={handleSend} disabled={sending || !reply.trim()}
-                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-900 text-white disabled:opacity-40 dark:bg-white dark:text-slate-900">
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-neutral-900 text-white disabled:opacity-40 dark:bg-white dark:text-slate-900">
                     <Send size={12} />
                   </button>
                 </div>

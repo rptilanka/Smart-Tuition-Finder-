@@ -189,7 +189,7 @@ export default function TutorLoginPage() {
         <Button
           type="submit"
           size="lg"
-          className="w-full rounded-full bg-slate-950 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+          className="w-full rounded-full bg-neutral-950 text-white hover:bg-neutral-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
           disabled={submitting || !isConfigured}
         >
           {submitting ? (

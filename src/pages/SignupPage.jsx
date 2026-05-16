@@ -53,7 +53,7 @@ export default function SignupPage() {
         }}
         className="flex flex-col"
       >
-        <TabsList className="grid h-11 w-full grid-cols-2 rounded-none bg-slate-200/90 p-1 dark:bg-slate-800/90">
+        <TabsList className="grid h-11 w-full grid-cols-2 rounded-none bg-slate-200/90 p-1 dark:bg-neutral-800/90">
           <TabsTrigger
             value="student"
             className="rounded-none text-sm font-semibold text-slate-600 data-[state=active]:bg-white data-[state=active]:text-slate-950 data-[state=active]:shadow-sm after:hidden dark:text-slate-300 dark:data-[state=active]:bg-slate-950 dark:data-[state=active]:text-white"

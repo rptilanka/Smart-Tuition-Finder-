@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { BookOpen, Plus, Trash2 } from "lucide-react";
 
 const inputClass =
-  "w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-medium text-slate-900 placeholder:text-slate-400 transition focus:border-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-950/10 dark:border-white/10 dark:bg-slate-950 dark:text-white dark:focus:bg-slate-900 dark:focus:ring-white/10";
+  "w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-medium text-slate-900 placeholder:text-slate-400 transition focus:border-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-950/10 dark:border-white/10 dark:bg-neutral-950 dark:text-white dark:focus:bg-slate-900 dark:focus:ring-white/10";
 
 function newKey() {
   return `sg-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
@@ -63,10 +63,10 @@ export default function TutorSubjectsGradesEditor({
   };
 
   return (
-    <section className="rounded-[2rem] bg-white p-6 shadow-sm ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10">
+    <section className="rounded-[2rem] bg-white p-6 shadow-sm ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10">
       <header className="mb-4 flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-950 dark:bg-slate-800 dark:text-white">
+          <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-950 dark:bg-neutral-800 dark:text-white">
             <BookOpen size={16} />
           </span>
           <div>
@@ -83,7 +83,7 @@ export default function TutorSubjectsGradesEditor({
           type="button"
           onClick={addRow}
           disabled={disabled}
-          className="inline-flex items-center gap-1.5 rounded-full bg-slate-950 px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-slate-800 disabled:opacity-50 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+          className="inline-flex items-center gap-1.5 rounded-full bg-neutral-950 px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-neutral-800 disabled:opacity-50 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
         >
           <Plus size={14} /> Add row
         </button>
@@ -93,7 +93,7 @@ export default function TutorSubjectsGradesEditor({
         {local.map((row) => (
           <li
             key={row.key}
-            className="grid grid-cols-1 gap-3 rounded-2xl bg-slate-50 p-3 md:grid-cols-[1fr_1fr_auto] dark:bg-slate-800"
+            className="grid grid-cols-1 gap-3 rounded-2xl bg-slate-50 p-3 md:grid-cols-[1fr_1fr_auto] dark:bg-neutral-800"
           >
             <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
               Subject

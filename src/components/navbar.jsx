@@ -1,4 +1,4 @@
-import { ArrowUpRight, LogOut, Menu, X } from "lucide-react";
+import { ArrowUpRight, LogOut, Menu, Moon, Sun, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
@@ -7,6 +7,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useAuth } from "../context/AuthContext";
+import { useTheme } from "./theme-provider";
 import { supabaseStorageImageProps } from "../lib/storage";
 import { NavMenu } from "./nav-menu.jsx";
 
@@ -24,6 +25,9 @@ function initialsFor(name) {
 
 const Navbar = () => {
   const { user, profile, isAuthenticated, loading, signOut } = useAuth();
+  const { theme, setTheme } = useTheme();
+  const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  const toggleTheme = () => setTheme(isDark ? "light" : "dark");
   const displayName =
     (profile?.name ?? "").trim() ||
     (user?.user_metadata?.name ?? "").trim() ||
@@ -40,22 +44,23 @@ const Navbar = () => {
     <div className="fixed top-4 left-0 right-0 z-[999] flex justify-center px-5 pointer-events-none">
       <nav
         className="pointer-events-auto flex h-[4.5rem] w-full max-w-screen-xl items-center justify-between rounded-full px-8 md:px-10"
-        style={{
-          background: 'linear-gradient(135deg, rgba(255,255,255,0.38) 0%, rgba(255,255,255,0.18) 100%)',
+        style={isDark ? {
+          background: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
+          backdropFilter: 'blur(40px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+          border: 'none',
+          boxShadow: '0 12px 40px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.25)',
+        } : {
+          background: 'linear-gradient(135deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.25) 100%)',
           backdropFilter: 'blur(40px) saturate(200%) brightness(1.05)',
           WebkitBackdropFilter: 'blur(40px) saturate(200%) brightness(1.05)',
-          border: '1.5px solid rgba(255,255,255,0.55)',
-          boxShadow: `
-            inset 0 2px 0 rgba(255,255,255,0.70),
-            inset 0 -1px 0 rgba(255,255,255,0.20),
-            0 12px 40px rgba(0,0,0,0.13),
-            0 2px 8px rgba(0,0,0,0.06)
-          `,
+          border: 'none',
+          boxShadow: 'inset 0 2px 0 rgba(255,255,255,0.80), 0 12px 40px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.05)',
         }}
       >
         <div className="flex items-center gap-4">
           <Link
-            className="text-base font-bold tracking-[-0.02em] text-slate-900/90 drop-shadow-sm dark:text-white/90"
+            className="text-xl font-bold tracking-[-0.02em] text-slate-900/90 drop-shadow-sm dark:text-white/90"
             to="/"
           >
             Smart Tuition
@@ -77,35 +82,19 @@ const Navbar = () => {
               <div className="flex items-center gap-1.5">
                 <Link
                   to={user?.user_metadata?.role === "tutor" ? "/tutor-dashboard" : "/student-dashboard"}
-                  className="flex max-w-[min(44vw,220px)] items-center gap-2 rounded-full py-1 pl-1 pr-3 text-left transition sm:max-w-[260px]"
-                  style={{
-                    background: 'rgba(255,255,255,0.22)',
-                    border: '1px solid rgba(255,255,255,0.40)',
-                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.45)',
-                  }}
+                  className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-neutral-950 text-[11px] font-semibold text-white transition hover:opacity-80 dark:bg-white dark:text-neutral-950"
+                  title={displayName}
                 >
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-slate-950 text-[11px] font-semibold text-white dark:bg-white dark:text-slate-950">
-                    {avatarUrl ? (
-                      <img
-                        src={avatarUrl}
-                        alt=""
-                        className="h-full w-full object-cover"
-                        {...supabaseStorageImageProps(avatarUrl)}
-                      />
-                    ) : (
-                      initialsFor(displayName)
-                    )}
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate text-sm font-semibold leading-tight text-slate-950 dark:text-white">
-                      {displayName}
-                    </span>
-                    {email ? (
-                      <span className="block truncate text-[11px] leading-tight text-slate-500 dark:text-slate-400">
-                        {email}
-                      </span>
-                    ) : null}
-                  </span>
+                  {avatarUrl ? (
+                    <img
+                      src={avatarUrl}
+                      alt=""
+                      className="h-full w-full object-cover"
+                      {...supabaseStorageImageProps(avatarUrl)}
+                    />
+                  ) : (
+                    initialsFor(displayName)
+                  )}
                 </Link>
                 <button
                   type="button"
@@ -113,10 +102,10 @@ const Navbar = () => {
                   title="Sign out"
                   aria-label="Sign out"
                   className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition hover:text-red-500"
-                  style={{
-                    background: 'rgba(255,255,255,0.18)',
-                    border: '1px solid rgba(255,255,255,0.38)',
-                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.45)',
+                  style={isDark ? {
+                    background: 'rgba(255,255,255,0.07)',
+                  } : {
+                    background: 'rgba(255,255,255,0.50)',
                   }}
                 >
                   <LogOut className="h-4 w-4" aria-hidden />
@@ -126,10 +115,11 @@ const Navbar = () => {
               <Button
                 asChild
                 className="h-9 rounded-full px-4 text-sm font-semibold text-slate-900 transition dark:text-white"
-                style={{
-                  background: 'rgba(255,255,255,0.30)',
-                  border: '1px solid rgba(255,255,255,0.50)',
-                  boxShadow: 'inset 0 1.5px 0 rgba(255,255,255,0.60), 0 2px 8px rgba(0,0,0,0.08)',
+                style={isDark ? {
+                  background: 'rgba(255,255,255,0.08)',
+                } : {
+                  background: 'rgba(255,255,255,0.55)',
+                  boxShadow: 'inset 0 1.5px 0 rgba(255,255,255,0.75)',
                 }}
               >
                 <Link to="/signup">
@@ -138,6 +128,25 @@ const Navbar = () => {
               </Button>
             )}
           </div>
+
+          <button
+            type="button"
+            onClick={toggleTheme}
+            title="Toggle theme"
+            aria-label="Toggle theme"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition"
+            style={isDark ? {
+              background: 'rgba(255,255,255,0.07)',
+            } : {
+              background: 'rgba(255,255,255,0.50)',
+              boxShadow: 'inset 0 1.5px 0 rgba(255,255,255,0.70)',
+            }}
+          >
+            {isDark
+              ? <Sun className="h-[1.1rem] w-[1.1rem] text-white" />
+              : <Moon className="h-[1.1rem] w-[1.1rem] text-slate-700" />
+            }
+          </button>
 
           <Popover>
             <PopoverTrigger asChild className="group md:hidden">

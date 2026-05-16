@@ -323,12 +323,12 @@ export default function TutorProfileEditPage() {
   const saveDisabled = disabled || status === "saving";
 
   return (
-    <div className="min-h-screen bg-[#f5f5f7] px-6 py-10 dark:bg-slate-950">
+    <div className="min-h-screen bg-[#f5f5f7] px-6 py-10 dark:bg-neutral-950">
       <div className="mx-auto max-w-5xl">
         <div className="mb-5">
           <Link
             to="/tutor-profile"
-            className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-white/10 dark:bg-slate-950 dark:text-slate-100 dark:hover:bg-slate-800"
+            className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-white/10 dark:bg-neutral-950 dark:text-slate-100 dark:hover:bg-neutral-800"
           >
             <ArrowLeft size={14} /> Back to profile
           </Link>
@@ -338,7 +338,7 @@ export default function TutorProfileEditPage() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="rounded-[2.5rem] bg-white p-8 shadow-[0_30px_90px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10"
+          className="rounded-[2.5rem] bg-white p-8 shadow-[0_30px_90px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10"
         >
           <div>
             <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">
@@ -358,11 +358,11 @@ export default function TutorProfileEditPage() {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.05 }}
-          className="mt-6 rounded-[2rem] bg-white p-6 shadow-sm ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10"
+          className="mt-6 rounded-[2rem] bg-white p-6 shadow-sm ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10"
         >
           <header className="mb-5 flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-2">
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-950 dark:bg-slate-800 dark:text-white">
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-950 dark:bg-neutral-800 dark:text-white">
                 <Sparkles size={16} />
               </span>
               <div>
@@ -381,7 +381,7 @@ export default function TutorProfileEditPage() {
                 size="sm"
                 onClick={runSave}
                 disabled={saveDisabled}
-                className="rounded-full bg-slate-950 px-4 py-2 text-xs font-semibold text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+                className="rounded-full bg-neutral-950 px-4 py-2 text-xs font-semibold text-white hover:bg-neutral-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
               >
                 {status === "saving" ? "Saving..." : "Save"}
               </Button>
@@ -416,12 +416,12 @@ export default function TutorProfileEditPage() {
                 }
               />
 
-              <div className="rounded-[2rem] bg-slate-50 p-5 dark:bg-slate-950">
+              <div className="rounded-[2rem] bg-slate-50 p-5 dark:bg-neutral-950">
                 <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
                   Public preview
                 </p>
                 <div className="mt-4 flex flex-wrap items-center gap-4">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-950 text-lg font-semibold text-white dark:bg-white dark:text-slate-950">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-neutral-950 text-lg font-semibold text-white dark:bg-white dark:text-slate-950">
                     {initialsFor(name || user?.email)}
                   </div>
                   <div className="min-w-0">
@@ -574,9 +574,9 @@ export default function TutorProfileEditPage() {
                 </Field>
               </div>
 
-              <div className="mt-6 rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-slate-800/40">
+              <div className="mt-6 rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-neutral-800/40">
                 <div className="mb-3 flex items-center gap-2">
-                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white text-slate-950 shadow-sm dark:bg-slate-900 dark:text-white">
+                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white text-slate-950 shadow-sm dark:bg-neutral-900 dark:text-white">
                     <Share2 size={15} />
                   </span>
                   <div>
@@ -671,9 +671,9 @@ export default function TutorProfileEditPage() {
           transition={{ duration: 0.4, delay: 0.08 }}
           className="mt-6 space-y-6"
         >
-          <section className="rounded-[2rem] bg-white p-6 shadow-sm ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10">
+          <section className="rounded-[2rem] bg-white p-6 shadow-sm ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10">
             <header className="mb-4 flex items-center gap-2">
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-950 dark:bg-slate-800 dark:text-white">
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-950 dark:bg-neutral-800 dark:text-white">
                 <ShieldCheck size={16} />
               </span>
               <div>
@@ -758,7 +758,7 @@ function Field({ id, label, icon: Icon, children }) {
 
 function PreviewStat({ label, value }) {
   return (
-    <div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10">
+    <div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10">
       <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
         {label}
       </p>

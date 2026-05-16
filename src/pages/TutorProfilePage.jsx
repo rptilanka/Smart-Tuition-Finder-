@@ -76,7 +76,7 @@ function extractWhatsappNumber(tutor) {
 
 function EmptySectionText({ text = "No details added yet." }) {
   return (
-    <p className="rounded-xl border border-dashed border-slate-300/80 bg-slate-100/60 px-3 py-2 text-sm text-slate-500 dark:border-slate-600/80 dark:bg-slate-800/40 dark:text-slate-300">
+    <p className="rounded-xl border border-dashed border-slate-300/80 bg-slate-100/60 px-3 py-2 text-sm text-slate-500 dark:border-slate-600/80 dark:bg-neutral-800/40 dark:text-slate-300">
       {text}
     </p>
   );
@@ -92,10 +92,10 @@ function ProfileSection({ id, title, icon: Icon, actions, children }) {
       viewport={{ once: true, margin: "-80px" }}
       className="scroll-mt-24"
     >
-      <div className="rounded-[2rem] bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.06)] ring-1 ring-slate-200/70 md:p-7 dark:bg-slate-900 dark:ring-white/10">
+      <div className="rounded-[2rem] bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.06)] ring-1 ring-slate-200/70 md:p-7 dark:bg-neutral-900 dark:ring-white/10">
         <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <span className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-100 text-slate-950 dark:bg-slate-800 dark:text-white">
+            <span className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-100 text-slate-950 dark:bg-neutral-800 dark:text-white">
               <Icon size={18} />
             </span>
             <h2 className="text-2xl font-semibold tracking-[-0.04em] text-slate-950 dark:text-white md:text-3xl">
@@ -205,7 +205,7 @@ function ProfileHero({
 
   return (
     <section className="mx-auto max-w-6xl px-6 pt-10">
-      <div className="overflow-hidden rounded-[2.75rem] bg-white shadow-[0_40px_120px_rgba(15,23,42,0.12)] ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10">
+      <div className="overflow-hidden rounded-[2.75rem] bg-white shadow-[0_40px_120px_rgba(15,23,42,0.12)] ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10">
         {}
         <div
           className="relative h-32 w-full overflow-hidden sm:h-36 md:h-40 lg:h-44"
@@ -242,7 +242,7 @@ function ProfileHero({
               transition={{ duration: 0.45, ease: "easeOut" }}
               className="relative z-10 shrink-0"
             >
-              <div className="flex h-[7.25rem] w-[7.25rem] shrink-0 items-center justify-center overflow-hidden rounded-[2rem] bg-slate-950 text-3xl font-semibold text-white shadow-xl ring-4 ring-white md:h-36 md:w-36 md:text-5xl dark:bg-white dark:text-slate-950 dark:ring-slate-900">
+              <div className="flex h-[7.25rem] w-[7.25rem] shrink-0 items-center justify-center overflow-hidden rounded-[2rem] bg-neutral-950 text-3xl font-semibold text-white shadow-xl ring-4 ring-white md:h-36 md:w-36 md:text-5xl dark:bg-white dark:text-slate-950 dark:ring-slate-900">
                 {tutor.avatar_url ? (
                   <img
                     src={tutor.avatar_url}
@@ -262,7 +262,7 @@ function ProfileHero({
               className="flex min-h-0 min-w-0 flex-1 flex-col pt-4 text-left sm:pt-5 md:min-h-[min(16rem,28vh)] md:pt-7 lg:min-h-[min(17rem,30vh)] lg:pt-9"
             >
               {tutor.subject ? (
-                <p className="inline-flex rounded-full bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                <p className="inline-flex rounded-full bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-600 dark:bg-neutral-800 dark:text-slate-300">
                   {tutor.subject}
                 </p>
               ) : null}
@@ -318,7 +318,7 @@ function ProfileHero({
                 {tutor.subjectsTaught?.map((entry) => (
                   <span
                     key={entry.subject}
-                    className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-[12px] font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300"
+                    className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-[12px] font-semibold text-slate-600 dark:bg-neutral-800 dark:text-slate-300"
                   >
                     {entry.subject}
                   </span>
@@ -376,15 +376,15 @@ function ProfileHero({
               {!isOwnProfile ? (
                 <div className="mt-5 flex w-full flex-wrap gap-2 md:max-w-none">
                   <motion.button type="button" onClick={onBook} whileHover={{ scale: 1.04, y: -1 }} whileTap={{ scale: 0.97 }}
-                    className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200">
+                    className="inline-flex items-center gap-2 rounded-full bg-neutral-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-neutral-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200">
                     <CalendarDays size={15} /> Book Session
                   </motion.button>
                   <motion.button type="button" onClick={onMessage} whileHover={{ scale: 1.04, y: -1 }} whileTap={{ scale: 0.97 }}
-                    className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-50 dark:border-white/10 dark:bg-slate-900 dark:text-white dark:hover:bg-slate-800">
+                    className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-50 dark:border-white/10 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
                     <MessageSquareText size={15} /> Message
                   </motion.button>
                   <motion.button type="button" onClick={onContact} whileHover={{ scale: 1.04, y: -1 }} whileTap={{ scale: 0.97 }}
-                    className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-50 dark:border-white/10 dark:bg-slate-900 dark:text-white dark:hover:bg-slate-800">
+                    className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-50 dark:border-white/10 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
                     <MessageSquareText size={15} /> WhatsApp
                   </motion.button>
                   {isStudentViewer && (
@@ -392,13 +392,13 @@ function ProfileHero({
                       <motion.button type="button" onClick={onSubscribe} disabled={isSubscriptionPending}
                         whileHover={isSubscriptionPending ? undefined : { scale: 1.04, y: -1 }}
                         whileTap={isSubscriptionPending ? undefined : { scale: 0.97 }}
-                        className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-slate-950">
+                        className="inline-flex items-center gap-2 rounded-full bg-neutral-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-slate-950">
                         <CalendarDays size={15} />
                         {isSubscriptionPending ? "Processing…" : "Subscribe for live classes"}
                       </motion.button>
                       <motion.button type="button" onClick={onSave} disabled={savePending}
                         whileHover={{ scale: 1.04, y: -1 }} whileTap={{ scale: 0.97 }}
-                        className={`inline-flex items-center gap-2 rounded-full border px-5 py-3 text-sm font-semibold transition disabled:opacity-60 ${isSaved ? "border-slate-300 bg-slate-100 text-slate-700" : "border-slate-300 bg-white text-slate-950 hover:bg-slate-50 dark:border-white/10 dark:bg-slate-900 dark:text-white"}`}>
+                        className={`inline-flex items-center gap-2 rounded-full border px-5 py-3 text-sm font-semibold transition disabled:opacity-60 ${isSaved ? "border-slate-300 bg-slate-100 text-slate-700" : "border-slate-300 bg-white text-slate-950 hover:bg-slate-50 dark:border-white/10 dark:bg-neutral-900 dark:text-white"}`}>
                         <Heart size={15} className={isSaved ? "fill-current text-red-500" : ""} />
                         {isSaved ? "Saved" : "Save tutor"}
                       </motion.button>
@@ -423,7 +423,7 @@ function Toast({ message }) {
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 12 }}
-          className="fixed bottom-6 left-1/2 z-[90] -translate-x-1/2 rounded-full border border-white/20 bg-slate-900/90 px-4 py-2 text-sm font-semibold text-white shadow-[0_16px_36px_rgba(15,23,42,0.45)] backdrop-blur-md"
+          className="fixed bottom-6 left-1/2 z-[90] -translate-x-1/2 rounded-full border border-white/20 bg-neutral-900/90 px-4 py-2 text-sm font-semibold text-white shadow-[0_16px_36px_rgba(15,23,42,0.45)] backdrop-blur-md"
         >
           {message}
         </motion.div>
@@ -443,7 +443,7 @@ function AvailabilityGrid({ availability, onBook }) {
           return (
             <div
               key={entry.day}
-              className="rounded-2xl bg-white p-3 text-center shadow-sm ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10"
+              className="rounded-2xl bg-white p-3 text-center shadow-sm ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10"
             >
               <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                 {entry.day.slice(0, 3)}
@@ -461,7 +461,7 @@ function AvailabilityGrid({ availability, onBook }) {
                         className={`w-full rounded-lg px-2 py-1 text-[11px] font-semibold transition ${
                           isSelected
                             ? "bg-slate-950 text-white dark:bg-white dark:text-slate-950"
-                            : "bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+                            : "bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-neutral-800 dark:text-slate-200 dark:hover:bg-slate-700"
                         }`}
                       >
                         {slot}
@@ -469,7 +469,7 @@ function AvailabilityGrid({ availability, onBook }) {
                     );
                   })
                 ) : (
-                  <span className="inline-flex rounded-lg bg-slate-200/50 px-2 py-1 text-[11px] font-semibold text-slate-400 dark:bg-slate-800/60 dark:text-slate-500">
+                  <span className="inline-flex rounded-lg bg-slate-200/50 px-2 py-1 text-[11px] font-semibold text-slate-400 dark:bg-neutral-800/60 dark:text-slate-500">
                     Unavailable
                   </span>
                 )}
@@ -485,7 +485,7 @@ function AvailabilityGrid({ availability, onBook }) {
         disabled={!selected}
         whileHover={selected ? { y: -1 } : undefined}
         whileTap={selected ? { scale: 0.98 } : undefined}
-        className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-slate-950 md:w-auto md:px-8"
+        className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-neutral-950 px-5 py-3 text-sm font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-slate-950 md:w-auto md:px-8"
       >
         <CalendarDays size={16} />
         {selected
@@ -518,14 +518,14 @@ function ReviewForm({ tutorId, userId, userName, onSubmitted }) {
 
   if (done) {
     return (
-      <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600 dark:border-white/10 dark:bg-slate-800 dark:text-slate-300">
+      <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600 dark:border-white/10 dark:bg-neutral-800 dark:text-slate-300">
         Thanks for your review!
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-white/10 dark:bg-slate-800">
+    <form onSubmit={handleSubmit} className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-white/10 dark:bg-neutral-800">
       <p className="mb-3 text-sm font-semibold text-slate-800 dark:text-white">Leave a review</p>
       <div className="mb-3 flex gap-1">
         {[1, 2, 3, 4, 5].map((star) => (
@@ -539,9 +539,9 @@ function ReviewForm({ tutorId, userId, userName, onSubmitted }) {
       </div>
       <textarea value={body} onChange={(e) => setBody(e.target.value)} rows={3}
         placeholder="Share your experience (optional)…"
-        className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 outline-none focus:ring-1 focus:ring-slate-300 dark:border-white/10 dark:bg-slate-900 dark:text-white" />
+        className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 outline-none focus:ring-1 focus:ring-slate-300 dark:border-white/10 dark:bg-neutral-900 dark:text-white" />
       <button type="submit" disabled={!rating || submitting}
-        className="mt-3 inline-flex items-center gap-2 rounded-lg bg-slate-900 px-4 py-2 text-xs font-semibold text-white disabled:opacity-50 dark:bg-white dark:text-slate-900">
+        className="mt-3 inline-flex items-center gap-2 rounded-lg bg-neutral-900 px-4 py-2 text-xs font-semibold text-white disabled:opacity-50 dark:bg-white dark:text-slate-900">
         <Send size={12} /> {submitting ? "Submitting…" : "Submit review"}
       </button>
     </form>
@@ -565,23 +565,23 @@ function MessageModal({ tutorId, tutorName, userId, onClose, onSent }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm" onClick={onClose}>
-      <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl dark:bg-slate-900" onClick={(e) => e.stopPropagation()}>
+      <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl dark:bg-neutral-900" onClick={(e) => e.stopPropagation()}>
         <div className="mb-4 flex items-center justify-between">
           <p className="text-sm font-semibold text-slate-800 dark:text-white">Message {tutorName}</p>
-          <button type="button" onClick={onClose} className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+          <button type="button" onClick={onClose} className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 dark:hover:bg-neutral-800">
             <X size={15} />
           </button>
         </div>
         <form onSubmit={handleSend}>
           <textarea value={body} onChange={(e) => setBody(e.target.value)} rows={4} autoFocus
             placeholder={`Hi ${tutorName}, I saw your profile on Smart Tuition Finder…`}
-            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-800 outline-none focus:ring-1 focus:ring-slate-300 dark:border-white/10 dark:bg-slate-800 dark:text-white" />
+            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-800 outline-none focus:ring-1 focus:ring-slate-300 dark:border-white/10 dark:bg-neutral-800 dark:text-white" />
           <div className="mt-3 flex justify-end gap-2">
             <button type="button" onClick={onClose} className="rounded-lg border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50 dark:border-white/10 dark:text-slate-300">
               Cancel
             </button>
             <button type="submit" disabled={!body.trim() || sending}
-              className="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 px-4 py-2 text-xs font-semibold text-white disabled:opacity-50 dark:bg-white dark:text-slate-900">
+              className="inline-flex items-center gap-1.5 rounded-lg bg-neutral-900 px-4 py-2 text-xs font-semibold text-white disabled:opacity-50 dark:bg-white dark:text-slate-900">
               <Send size={11} /> {sending ? "Sending…" : "Send message"}
             </button>
           </div>
@@ -607,7 +607,7 @@ function TutorNotFound() {
       </p>
       <Link
         to="/"
-        className="mt-6 inline-flex items-center gap-1.5 rounded-full bg-slate-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950"
+        className="mt-6 inline-flex items-center gap-1.5 rounded-full bg-neutral-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-neutral-800 dark:bg-white dark:text-slate-950"
       >
         <ArrowLeft size={14} /> Back to homepage
       </Link>
@@ -809,7 +809,7 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f5f7] pb-20 dark:bg-slate-950">
+    <div className="min-h-screen bg-[#f5f5f7] pb-20 dark:bg-neutral-950">
       <ProfileHero
         tutor={tutor}
         onBook={scrollToAvailability}
@@ -848,7 +848,7 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
               icon={Award}
             >
               {qualificationsText ? (
-                <div className="rounded-2xl bg-slate-50 p-4 text-[15px] leading-relaxed text-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                <div className="rounded-2xl bg-slate-50 p-4 text-[15px] leading-relaxed text-slate-700 dark:bg-neutral-800 dark:text-slate-200">
                   {qualificationsText}
                 </div>
               ) : (
@@ -866,7 +866,7 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
                   {subjectsTaught.map((entry) => (
                     <div
                       key={entry.subject}
-                      className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-800"
+                      className="rounded-2xl bg-slate-50 p-4 dark:bg-neutral-800"
                     >
                       <p className="text-sm font-bold text-slate-900 dark:text-white">
                         {entry.subject || "Subject"}
@@ -875,7 +875,7 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
                         {(entry.grades ?? []).map((g) => (
                           <span
                             key={g}
-                            className="rounded-full bg-white px-2.5 py-0.5 text-[11px] font-semibold text-slate-600 ring-1 ring-slate-200 dark:bg-slate-900 dark:text-slate-300 dark:ring-white/10"
+                            className="rounded-full bg-white px-2.5 py-0.5 text-[11px] font-semibold text-slate-600 ring-1 ring-slate-200 dark:bg-neutral-900 dark:text-slate-300 dark:ring-white/10"
                           >
                             {g}
                           </span>
@@ -894,7 +894,7 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
               title="Demo videos"
               icon={PlayCircle}
               actions={
-                <span className="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                <span className="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-semibold text-slate-600 dark:bg-neutral-800 dark:text-slate-300">
                   {demoVideos.length} videos
                 </span>
               }
@@ -949,7 +949,7 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
               icon={CalendarDays}
             >
               {availabilityText ? (
-                <div className="rounded-2xl bg-slate-50 p-4 text-[15px] leading-relaxed text-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                <div className="rounded-2xl bg-slate-50 p-4 text-[15px] leading-relaxed text-slate-700 dark:bg-neutral-800 dark:text-slate-200">
                   {availabilityText}
                 </div>
               ) : availabilityGrid.length > 0 ? (

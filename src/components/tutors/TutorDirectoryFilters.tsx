@@ -98,7 +98,7 @@ export function TutorDirectoryFilterToolbar({
         onClick={onToggleSidebar}
         aria-expanded={sidebarOpen}
         aria-controls="tutor-directory-filters"
-        className="relative shrink-0 gap-1.5 rounded-full bg-slate-950 px-4 py-2 text-xs font-semibold text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+        className="relative shrink-0 gap-1.5 rounded-full bg-neutral-950 px-4 py-2 text-xs font-semibold text-white hover:bg-neutral-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
       >
         <SlidersHorizontal className="size-3.5" />
         Filters

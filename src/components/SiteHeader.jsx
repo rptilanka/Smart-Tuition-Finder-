@@ -71,7 +71,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
       .join("") || "T";
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/20 bg-white/60 backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/60">
+    <header className="sticky top-0 z-40 border-b border-white/20 bg-white/60 backdrop-blur-xl dark:border-white/10 dark:bg-neutral-950/60">
       <nav className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 md:py-4">
         <Link to="/" className="group flex items-center gap-2.5">
           <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white shadow-[0_8px_20px_rgba(124,58,237,0.45)] transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-105">
@@ -87,7 +87,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
           </div>
         </Link>
 
-        <div className="hidden items-center gap-1 rounded-full border border-white/30 bg-white/55 px-1.5 py-1 text-[13px] font-semibold text-slate-700 shadow-[0_4px_14px_rgba(15,23,42,0.08)] backdrop-blur-md lg:flex dark:border-white/10 dark:bg-slate-900/55 dark:text-slate-200">
+        <div className="hidden items-center gap-1 rounded-full border border-white/30 bg-white/55 px-1.5 py-1 text-[13px] font-semibold text-slate-700 shadow-[0_4px_14px_rgba(15,23,42,0.08)] backdrop-blur-md lg:flex dark:border-white/10 dark:bg-neutral-900/55 dark:text-slate-200">
           {navItems.map((item) =>
             item.route ? (
               <Link
@@ -114,7 +114,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
             type="button"
             onClick={handleSearch}
             aria-label="Search"
-            className="hidden h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/55 text-slate-700 shadow-[0_4px_12px_rgba(15,23,42,0.08)] transition hover:scale-105 hover:text-purple-600 dark:border-white/10 dark:bg-slate-900/50 dark:text-slate-200 dark:hover:text-purple-300 md:inline-flex"
+            className="hidden h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/55 text-slate-700 shadow-[0_4px_12px_rgba(15,23,42,0.08)] transition hover:scale-105 hover:text-purple-600 dark:border-white/10 dark:bg-neutral-900/50 dark:text-slate-200 dark:hover:text-purple-300 md:inline-flex"
           >
             <Search size={16} />
           </button>
@@ -123,7 +123,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
             type="button"
             onClick={onToggleDark}
             aria-label="Toggle dark mode"
-            className="hidden h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/55 text-slate-700 shadow-[0_4px_12px_rgba(15,23,42,0.08)] transition hover:scale-105 hover:text-purple-600 dark:border-white/10 dark:bg-slate-900/50 dark:text-slate-200 dark:hover:text-purple-300 sm:inline-flex"
+            className="hidden h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/55 text-slate-700 shadow-[0_4px_12px_rgba(15,23,42,0.08)] transition hover:scale-105 hover:text-purple-600 dark:border-white/10 dark:bg-neutral-900/50 dark:text-slate-200 dark:hover:text-purple-300 sm:inline-flex"
           >
             {isDark ? <Sun size={16} /> : <Moon size={16} />}
           </button>
@@ -153,7 +153,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 aria-label="Sign out"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/55 text-slate-600 shadow-[0_4px_12px_rgba(15,23,42,0.08)] transition hover:text-rose-500 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:bg-slate-900/50 dark:text-slate-200"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/55 text-slate-600 shadow-[0_4px_12px_rgba(15,23,42,0.08)] transition hover:text-rose-500 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:bg-neutral-900/50 dark:text-slate-200"
               >
                 <LogOut size={14} />
               </motion.button>
@@ -198,7 +198,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
             aria-controls="mobile-drawer"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/55 text-slate-700 shadow-[0_4px_12px_rgba(15,23,42,0.08)] transition hover:scale-105 lg:hidden dark:border-white/10 dark:bg-slate-900/50 dark:text-slate-200"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/55 text-slate-700 shadow-[0_4px_12px_rgba(15,23,42,0.08)] transition hover:scale-105 lg:hidden dark:border-white/10 dark:bg-neutral-900/50 dark:text-slate-200"
           >
             {mobileOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
@@ -215,7 +215,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
               onClick={() => setMobileOpen(false)}
-              className="fixed inset-x-0 bottom-0 top-[72px] z-30 bg-slate-900/45 backdrop-blur-sm lg:hidden"
+              className="fixed inset-x-0 bottom-0 top-[72px] z-30 bg-neutral-900/45 backdrop-blur-sm lg:hidden"
             />
 
             <motion.div
@@ -228,7 +228,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
               role="dialog"
               aria-modal="true"
               aria-label="Navigation menu"
-              className="absolute inset-x-0 top-full z-40 border-b border-white/20 bg-white/85 backdrop-blur-2xl lg:hidden dark:border-white/10 dark:bg-slate-950/85"
+              className="absolute inset-x-0 top-full z-40 border-b border-white/20 bg-white/85 backdrop-blur-2xl lg:hidden dark:border-white/10 dark:bg-neutral-950/85"
             >
               <div className="mx-auto max-w-6xl px-4 py-4">
                 <ul className="flex flex-col gap-1">
@@ -295,7 +295,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
                   </button>
                 ) : null}
 
-                <div className="mt-3 flex items-center justify-between rounded-xl border border-white/30 bg-white/60 px-3 py-2 dark:border-white/10 dark:bg-slate-900/60">
+                <div className="mt-3 flex items-center justify-between rounded-xl border border-white/30 bg-white/60 px-3 py-2 dark:border-white/10 dark:bg-neutral-900/60">
                   <span className="text-xs font-semibold text-slate-700 dark:text-slate-200">
                     Appearance
                   </span>
@@ -303,7 +303,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
                     type="button"
                     onClick={onToggleDark}
                     aria-label="Toggle dark mode"
-                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/30 bg-white/70 text-slate-700 transition hover:scale-105 dark:border-white/10 dark:bg-slate-800/70 dark:text-slate-200"
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/30 bg-white/70 text-slate-700 transition hover:scale-105 dark:border-white/10 dark:bg-neutral-800/70 dark:text-slate-200"
                   >
                     {isDark ? <Sun size={14} /> : <Moon size={14} />}
                   </button>

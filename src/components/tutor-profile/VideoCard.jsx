@@ -16,7 +16,7 @@ export default function VideoCard({ video }) {
         whileHover={{ y: -4 }}
         whileTap={{ scale: 0.98 }}
         transition={{ type: "spring", stiffness: 260, damping: 22 }}
-        className="group relative block w-full overflow-hidden rounded-2xl border border-white/25 bg-white/55 text-left shadow-[0_12px_28px_rgba(15,23,42,0.12)] backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-teal-500/60 dark:border-white/10 dark:bg-slate-900/50"
+        className="group relative block w-full overflow-hidden rounded-2xl border border-white/25 bg-white/55 text-left shadow-[0_12px_28px_rgba(15,23,42,0.12)] backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-teal-500/60 dark:border-white/10 dark:bg-neutral-900/50"
       >
         <div className="relative aspect-video overflow-hidden">
           <img
@@ -68,7 +68,7 @@ export default function VideoCard({ video }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setOpen(false)}
-            className="fixed inset-0 z-[110] flex items-center justify-center bg-slate-950/75 p-4 backdrop-blur-md"
+            className="fixed inset-0 z-[110] flex items-center justify-center bg-neutral-950/75 p-4 backdrop-blur-md"
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.94, y: 10 }}
@@ -76,7 +76,7 @@ export default function VideoCard({ video }) {
               exit={{ opacity: 0, scale: 0.96, y: 6 }}
               transition={{ duration: 0.22, ease: "easeOut" }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-4xl overflow-hidden rounded-2xl border border-white/15 bg-slate-900 shadow-[0_30px_60px_rgba(0,0,0,0.55)]"
+              className="relative w-full max-w-4xl overflow-hidden rounded-2xl border border-white/15 bg-neutral-900 shadow-[0_30px_60px_rgba(0,0,0,0.55)]"
             >
               <button
                 type="button"

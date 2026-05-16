@@ -20,7 +20,7 @@ export default function PollsQaPanel({
 
   return (
     <div className="space-y-4">
-      <div className="rounded-2xl bg-white p-4 ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10">
+      <div className="rounded-2xl bg-white p-4 ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10">
         <h3 className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-[0.14em] text-slate-700 dark:text-slate-100">
           <Vote size={14} />
           Polls
@@ -45,18 +45,18 @@ export default function PollsQaPanel({
               value={pollQuestion}
               onChange={(event) => setPollQuestion(event.target.value)}
               placeholder="Poll question"
-              className="h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm dark:border-white/10 dark:bg-slate-950"
+              className="h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm dark:border-white/10 dark:bg-neutral-950"
             />
             <textarea
               value={pollOptions}
               onChange={(event) => setPollOptions(event.target.value)}
               rows={3}
               placeholder={"One option per line"}
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm dark:border-white/10 dark:bg-slate-950"
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm dark:border-white/10 dark:bg-neutral-950"
             />
             <button
               type="submit"
-              className="inline-flex items-center gap-1 rounded-full bg-slate-950 px-3 py-1.5 text-xs font-semibold text-white dark:bg-white dark:text-slate-950"
+              className="inline-flex items-center gap-1 rounded-full bg-neutral-950 px-3 py-1.5 text-xs font-semibold text-white dark:bg-white dark:text-slate-950"
             >
               <ListChecks size={12} />
               Create poll
@@ -66,7 +66,7 @@ export default function PollsQaPanel({
 
         <ul className="mt-3 space-y-2">
           {sortedPolls.map((poll) => (
-            <li key={poll.id} className="rounded-xl bg-slate-50 p-3 text-xs dark:bg-slate-800">
+            <li key={poll.id} className="rounded-xl bg-slate-50 p-3 text-xs dark:bg-neutral-800">
               <p className="font-semibold text-slate-900 dark:text-white">{poll.question}</p>
               <div className="mt-2 space-y-1">
                 {(poll.options ?? []).map((option, idx) => {
@@ -77,7 +77,7 @@ export default function PollsQaPanel({
                       type="button"
                       disabled={poll.status !== "open"}
                       onClick={() => onVotePoll?.(poll.id, idx)}
-                      className="flex w-full items-center justify-between rounded-lg bg-white px-2 py-1 text-left disabled:opacity-70 dark:bg-slate-900"
+                      className="flex w-full items-center justify-between rounded-lg bg-white px-2 py-1 text-left disabled:opacity-70 dark:bg-neutral-900"
                     >
                       <span>{option}</span>
                       <span className="font-bold">{votes}</span>
@@ -99,7 +99,7 @@ export default function PollsQaPanel({
         </ul>
       </div>
 
-      <div className="rounded-2xl bg-white p-4 ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10">
+      <div className="rounded-2xl bg-white p-4 ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10">
         <h3 className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-[0.14em] text-slate-700 dark:text-slate-100">
           <CircleHelp size={14} />
           Q&A
@@ -118,18 +118,18 @@ export default function PollsQaPanel({
             value={questionText}
             onChange={(event) => setQuestionText(event.target.value)}
             placeholder="Ask a question..."
-            className="h-10 flex-1 rounded-xl border border-slate-200 bg-white px-3 text-sm dark:border-white/10 dark:bg-slate-950"
+            className="h-10 flex-1 rounded-xl border border-slate-200 bg-white px-3 text-sm dark:border-white/10 dark:bg-neutral-950"
           />
           <button
             type="submit"
-            className="rounded-full bg-slate-950 px-3 py-2 text-xs font-semibold text-white dark:bg-white dark:text-slate-950"
+            className="rounded-full bg-neutral-950 px-3 py-2 text-xs font-semibold text-white dark:bg-white dark:text-slate-950"
           >
             Ask
           </button>
         </form>
         <ul className="mt-3 space-y-2">
           {(questions ?? []).slice(0, 8).map((question) => (
-            <li key={question.id} className="rounded-xl bg-slate-50 px-3 py-2 text-xs dark:bg-slate-800">
+            <li key={question.id} className="rounded-xl bg-slate-50 px-3 py-2 text-xs dark:bg-neutral-800">
               <div className="flex items-center justify-between gap-2">
                 <p className="font-semibold text-slate-700 dark:text-slate-200">{question.body}</p>
                 {role === "tutor" ? (

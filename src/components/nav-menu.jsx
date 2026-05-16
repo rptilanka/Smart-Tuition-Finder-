@@ -29,7 +29,7 @@ export const NavMenu = ({ className, orientation, ...props }) => {
             <NavigationMenuLink
               asChild
               className={navigationMenuTriggerStyle({
-                className: cn({ "text-xl": orientation === "vertical" }),
+                className: cn("text-base font-medium", { "text-xl": orientation === "vertical" }),
               })}
             >
               <Link to={link.href}>{link.label}</Link>

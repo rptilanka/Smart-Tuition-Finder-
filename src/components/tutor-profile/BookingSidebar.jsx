@@ -84,7 +84,7 @@ export default function BookingSidebar({
 
   return (
     <div className="lg:sticky lg:top-24">
-      <div className="relative overflow-hidden rounded-[2rem] bg-white p-5 shadow-[0_20px_60px_rgba(15,23,42,0.06)] ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10">
+      <div className="relative overflow-hidden rounded-[2rem] bg-white p-5 shadow-[0_20px_60px_rgba(15,23,42,0.06)] ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10">
         <div className="relative z-10 flex items-start justify-between gap-3">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
@@ -114,7 +114,7 @@ export default function BookingSidebar({
               className={`inline-flex h-10 w-10 items-center justify-center rounded-full border transition ${
                 isBookmarked
                   ? "border-amber-400/60 bg-amber-400/15 text-amber-500"
-                  : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-amber-500 dark:border-white/10 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-white/20"
+                  : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-amber-500 dark:border-white/10 dark:bg-neutral-800 dark:text-slate-300 dark:hover:border-white/20"
               }`}
             >
               {isBookmarked ? (
@@ -149,14 +149,14 @@ export default function BookingSidebar({
             <>
               <Link
                 to="/tutor-profile/edit"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-slate-950 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-neutral-950 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-neutral-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
               >
                 <Settings size={16} />
                 Edit profile
               </Link>
               <Link
                 to="/tutor-dashboard"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-200/90 active:scale-[0.99] dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-700"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-200/90 active:scale-[0.99] dark:bg-neutral-800 dark:text-slate-50 dark:hover:bg-slate-700"
               >
                 <LayoutDashboard size={16} className="text-slate-600 dark:text-slate-300" />
                 Dashboard
@@ -169,7 +169,7 @@ export default function BookingSidebar({
                 onClick={onBook}
                 whileHover={{ y: -1 }}
                 whileTap={{ scale: 0.98 }}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-slate-950 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-neutral-950 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-neutral-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
               >
                 <CalendarDays size={16} />
                 Book a session
@@ -180,7 +180,7 @@ export default function BookingSidebar({
                 onClick={onContact}
                 whileHover={{ y: -1 }}
                 whileTap={{ scale: 0.98 }}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-200/90 active:scale-[0.99] dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-700"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-200/90 active:scale-[0.99] dark:bg-neutral-800 dark:text-slate-50 dark:hover:bg-slate-700"
               >
                 <MessageSquareText
                   size={16}
@@ -216,7 +216,7 @@ export default function BookingSidebar({
                   className="flex items-center justify-between text-xs font-semibold text-foreground"
                 >
                   <span>{slot.day}</span>
-                  <span className="rounded-full bg-slate-100 px-2 py-0.5 text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                  <span className="rounded-full bg-slate-100 px-2 py-0.5 text-slate-600 dark:bg-neutral-800 dark:text-slate-300">
                     {slot.time}
                   </span>
                 </li>

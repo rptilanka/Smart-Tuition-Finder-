@@ -16,7 +16,7 @@ export default function ReviewCard({ review }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className="relative overflow-hidden rounded-2xl border border-white/25 bg-white/55 p-5 shadow-[0_12px_28px_rgba(15,23,42,0.12)] backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/45"
+      className="relative overflow-hidden rounded-2xl border border-white/25 bg-white/55 p-5 shadow-[0_12px_28px_rgba(15,23,42,0.12)] backdrop-blur-xl dark:border-white/10 dark:bg-neutral-900/45"
     >
       <div className="flex items-start gap-3">
         <div

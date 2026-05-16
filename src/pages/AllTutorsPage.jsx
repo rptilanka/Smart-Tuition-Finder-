@@ -172,7 +172,7 @@ export default function AllTutorsPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-72px)] animate-fade-in bg-[#f5f5f7] dark:bg-slate-950">
+    <div className="min-h-[calc(100vh-72px)] animate-fade-in bg-[#f5f5f7] dark:bg-neutral-950">
       <div className="mx-auto max-w-7xl px-6 py-14">
         {}
         <motion.section
@@ -200,8 +200,8 @@ export default function AllTutorsPage() {
           transition={{ duration: 0.45, delay: 0.05 }}
           className="w-full"
         >
-          <div className="flex w-full items-center gap-2 rounded-[1.75rem] bg-white p-2 shadow-[0_24px_70px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10">
-            <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-100 text-slate-950 dark:bg-slate-800 dark:text-white">
+          <div className="flex w-full items-center gap-2 rounded-[1.75rem] bg-white p-2 shadow-[0_24px_70px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10">
+            <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-100 text-slate-950 dark:bg-neutral-800 dark:text-white">
               <Search size={16} />
             </span>
             <input
@@ -216,7 +216,7 @@ export default function AllTutorsPage() {
                 type="button"
                 onClick={() => setQuery("")}
                 aria-label="Clear search"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 dark:hover:bg-neutral-800"
               >
                 <X size={14} />
               </button>
@@ -288,10 +288,10 @@ function TutorCard({ tutor }) {
   return (
     <Link
       to={tutor.profileUrl ?? `/tutor/${tutor.id}`}
-      className="flex h-full min-h-0 w-full min-w-0 max-w-full flex-col rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm outline-none transition-[border-color,box-shadow] hover:border-slate-300 hover:shadow-md focus-visible:ring-2 focus-visible:ring-slate-950/20 focus-visible:ring-offset-2 dark:border-white/10 dark:bg-slate-900 dark:hover:border-white/20 dark:focus-visible:ring-white/30 dark:focus-visible:ring-offset-slate-950"
+      className="flex h-full min-h-0 w-full min-w-0 max-w-full flex-col rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm outline-none transition-[border-color,box-shadow] hover:border-slate-300 hover:shadow-md focus-visible:ring-2 focus-visible:ring-slate-950/20 focus-visible:ring-offset-2 dark:border-white/10 dark:bg-neutral-900 dark:hover:border-white/20 dark:focus-visible:ring-white/30 dark:focus-visible:ring-offset-slate-950"
     >
       <div className="mb-4 flex items-center justify-between gap-2">
-        <span className="inline-flex min-w-0 max-w-full items-center rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.08em] text-slate-700 dark:bg-slate-800 dark:text-slate-200">
+        <span className="inline-flex min-w-0 max-w-full items-center rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.08em] text-slate-700 dark:bg-neutral-800 dark:text-slate-200">
           {primarySubject || "General"}
         </span>
         {tutor.isProfileBoosted ? (
@@ -302,7 +302,7 @@ function TutorCard({ tutor }) {
       </div>
 
       <div className="flex items-start gap-4">
-        <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-slate-950 text-base font-semibold text-white dark:bg-white dark:text-slate-950">
+        <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-neutral-950 text-base font-semibold text-white dark:bg-white dark:text-slate-950">
           {tutor.avatar_url ? (
             <img
               src={tutor.avatar_url}
@@ -349,15 +349,15 @@ function TutorCard({ tutor }) {
       </p>
 
       <div className="mt-5 grid grid-cols-2 gap-2.5 text-xs font-semibold">
-        <span className="inline-flex items-center justify-center gap-1 rounded-2xl bg-slate-100 px-3 py-2 text-slate-700 dark:bg-slate-800 dark:text-slate-200">
+        <span className="inline-flex items-center justify-center gap-1 rounded-2xl bg-slate-100 px-3 py-2 text-slate-700 dark:bg-neutral-800 dark:text-slate-200">
           <Star size={11} fill="currentColor" />
           {tutor.rating != null ? tutor.rating.toFixed(1) : "—"}
         </span>
-        <span className="inline-flex items-center justify-center rounded-2xl bg-slate-100 px-3 py-2 text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+        <span className="inline-flex items-center justify-center rounded-2xl bg-slate-100 px-3 py-2 text-slate-600 dark:bg-neutral-800 dark:text-slate-300">
           {reviewsLabel}
         </span>
         {city ? (
-          <span className="col-span-2 inline-flex items-center justify-center gap-1 rounded-2xl bg-slate-100 px-3 py-2 text-slate-700 dark:bg-slate-800 dark:text-slate-200">
+          <span className="col-span-2 inline-flex items-center justify-center gap-1 rounded-2xl bg-slate-100 px-3 py-2 text-slate-700 dark:bg-neutral-800 dark:text-slate-200">
             <MapPin size={11} />
             {city}
           </span>
@@ -389,7 +389,7 @@ function TutorCard({ tutor }) {
               </p>
             )}
           </div>
-          <span className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-full bg-slate-950 px-3 py-2 text-[11px] font-semibold leading-none text-white dark:bg-white dark:text-slate-950">
+          <span className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-full bg-neutral-950 px-3 py-2 text-[11px] font-semibold leading-none text-white dark:bg-white dark:text-slate-950">
             View profile
             <ArrowRight className="size-3 shrink-0" aria-hidden />
           </span>
@@ -401,8 +401,8 @@ function TutorCard({ tutor }) {
 
 function EmptyState({ onReset }) {
   return (
-    <div className="rounded-[2rem] border-2 border-dashed border-slate-200 bg-white px-6 py-14 text-center dark:border-white/10 dark:bg-slate-900">
-      <span className="mx-auto inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-950 dark:bg-slate-800 dark:text-white">
+    <div className="rounded-[2rem] border-2 border-dashed border-slate-200 bg-white px-6 py-14 text-center dark:border-white/10 dark:bg-neutral-900">
+      <span className="mx-auto inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-950 dark:bg-neutral-800 dark:text-white">
         <Search size={20} />
       </span>
       <h3 className="mt-4 text-xl font-semibold tracking-[-0.02em] text-slate-950 dark:text-white">
@@ -415,7 +415,7 @@ function EmptyState({ onReset }) {
       <button
         type="button"
         onClick={onReset}
-        className="mt-5 inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-2.5 text-xs font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+        className="mt-5 inline-flex items-center gap-2 rounded-full bg-neutral-950 px-5 py-2.5 text-xs font-semibold text-white transition hover:bg-neutral-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
       >
         Reset filters
       </button>

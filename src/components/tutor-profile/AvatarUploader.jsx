@@ -113,7 +113,7 @@ export default function AvatarUploader({
           initial={{ scale: 0.96, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.3 }}
-          className="relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-[2rem] bg-slate-100 shadow-sm ring-1 ring-slate-200/70 dark:bg-slate-800 dark:ring-white/10"
+          className="relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-[2rem] bg-slate-100 shadow-sm ring-1 ring-slate-200/70 dark:bg-neutral-800 dark:ring-white/10"
         >
           {previewUrl ? (
             <img
@@ -129,7 +129,7 @@ export default function AvatarUploader({
           )}
 
           {uploading ? (
-            <div className="absolute inset-0 flex items-center justify-center bg-slate-950/40 backdrop-blur-sm">
+            <div className="absolute inset-0 flex items-center justify-center bg-neutral-950/40 backdrop-blur-sm">
               <Loader2 size={22} className="animate-spin text-white" />
             </div>
           ) : null}
@@ -140,7 +140,7 @@ export default function AvatarUploader({
           onClick={handlePick}
           disabled={uploading}
           aria-label="Change profile photo"
-          className="absolute -bottom-1 -right-1 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-slate-700 shadow-sm ring-1 ring-slate-200 transition hover:scale-105 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-slate-900 dark:text-slate-200 dark:ring-white/10"
+          className="absolute -bottom-1 -right-1 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-slate-700 shadow-sm ring-1 ring-slate-200 transition hover:scale-105 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-neutral-900 dark:text-slate-200 dark:ring-white/10"
         >
           <Camera size={15} />
         </button>
@@ -160,7 +160,7 @@ export default function AvatarUploader({
             type="button"
             onClick={handlePick}
             disabled={uploading}
-            className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+            className="inline-flex items-center gap-2 rounded-full bg-neutral-950 px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
           >
             {uploading ? (
               <Loader2 size={13} className="animate-spin" />
@@ -179,7 +179,7 @@ export default function AvatarUploader({
               type="button"
               onClick={handleRemove}
               disabled={removing || uploading}
-              className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-800"
+              className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:bg-neutral-950 dark:text-slate-200 dark:hover:bg-neutral-800"
             >
               {removing ? (
                 <Loader2 size={13} className="animate-spin" />

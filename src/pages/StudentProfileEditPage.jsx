@@ -85,12 +85,12 @@ export default function StudentProfileEditPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f5f5f7] px-6 py-10 dark:bg-slate-950">
+    <div className="min-h-screen bg-[#f5f5f7] px-6 py-10 dark:bg-neutral-950">
       <div className="mx-auto max-w-5xl">
         <div className="mb-5">
           <Link
             to="/student-dashboard"
-            className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-600 shadow-sm ring-1 ring-slate-200/70 transition hover:text-slate-950 dark:bg-slate-900 dark:text-slate-300 dark:ring-white/10 dark:hover:text-white"
+            className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-600 shadow-sm ring-1 ring-slate-200/70 transition hover:text-slate-950 dark:bg-neutral-900 dark:text-slate-300 dark:ring-white/10 dark:hover:text-white"
           >
             <ArrowLeft size={12} /> Back to dashboard
           </Link>
@@ -100,7 +100,7 @@ export default function StudentProfileEditPage() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="rounded-[2.5rem] bg-white p-8 shadow-[0_30px_90px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10"
+          className="rounded-[2.5rem] bg-white p-8 shadow-[0_30px_90px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10"
         >
           <div>
             <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">
@@ -120,11 +120,11 @@ export default function StudentProfileEditPage() {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.05 }}
-          className="mt-6 rounded-[2rem] bg-white p-6 shadow-sm ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-white/10"
+          className="mt-6 rounded-[2rem] bg-white p-6 shadow-sm ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10"
         >
           <header className="mb-5 flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2">
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-950 dark:bg-slate-800 dark:text-white">
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-950 dark:bg-neutral-800 dark:text-white">
                 <Sparkles size={16} />
               </span>
               <div>
@@ -145,8 +145,8 @@ export default function StudentProfileEditPage() {
             </p>
           ) : (
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-[280px_1fr]">
-              <aside className="rounded-[2rem] bg-slate-50 p-5 dark:bg-slate-950">
-                <div className="flex h-20 w-20 items-center justify-center rounded-[1.5rem] bg-slate-950 text-2xl font-semibold text-white dark:bg-white dark:text-slate-950">
+              <aside className="rounded-[2rem] bg-slate-50 p-5 dark:bg-neutral-950">
+                <div className="flex h-20 w-20 items-center justify-center rounded-[1.5rem] bg-neutral-950 text-2xl font-semibold text-white dark:bg-white dark:text-slate-950">
                   {initialsFor(name || user?.email)}
                 </div>
                 <h3 className="mt-5 text-2xl font-semibold tracking-[-0.04em] text-slate-950 dark:text-white">
@@ -176,7 +176,7 @@ export default function StudentProfileEditPage() {
                   <input
                     value={user?.email ?? ""}
                     readOnly
-                    className={`${inputClass} cursor-not-allowed bg-slate-100/60 text-slate-500 dark:bg-slate-800/50 dark:text-slate-400`}
+                    className={`${inputClass} cursor-not-allowed bg-slate-100/60 text-slate-500 dark:bg-neutral-800/50 dark:text-slate-400`}
                   />
                 </Field>
 
@@ -218,7 +218,7 @@ function Field({ label, icon: Icon, children }) {
 }
 
 const inputClass =
-  "w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-medium text-slate-900 placeholder:text-slate-400 transition focus:border-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-950/10 dark:border-white/10 dark:bg-slate-950 dark:text-white dark:focus:bg-slate-900 dark:focus:ring-white/10";
+  "w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-medium text-slate-900 placeholder:text-slate-400 transition focus:border-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-950/10 dark:border-white/10 dark:bg-neutral-950 dark:text-white dark:focus:bg-slate-900 dark:focus:ring-white/10";
 
 function initialsFor(value) {
   if (!value) return "S";
