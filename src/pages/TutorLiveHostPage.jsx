@@ -256,7 +256,7 @@ export default function TutorLiveHostPage() {
                       </div>
                       <div className="mt-1 flex items-center gap-1 text-[11px] text-slate-500 dark:text-slate-400">
                         <Link2 size={11} />
-                        Student link: {buildSecureJoinLink(meeting)}
+                        Student link: {`${window.location.origin}${buildSecureJoinLink(meeting)}`}
                       </div>
                     </li>
                   ))

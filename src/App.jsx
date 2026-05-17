@@ -1,5 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, Navigate, Route, Routes } from "react-router-dom";
+import {
+  Link,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { AnimatePresence, motion, useInView } from "framer-motion";
 import {
   ArrowUpRight,
@@ -47,6 +54,7 @@ import SignupPage from "./pages/SignupPage";
 import StudentDashboardPage from "./pages/StudentDashboardPage";
 import StudentLiveJoinPage from "./pages/StudentLiveJoinPage";
 import StudentProfileEditPage from "./pages/StudentProfileEditPage";
+import JoinMeetingPage from "./pages/JoinMeetingPage";
 import AllTutorsPage from "./pages/AllTutorsPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import PublicOnlyRoute from "./components/auth/PublicOnlyRoute";
@@ -1444,6 +1452,41 @@ function AppleHomePage() {
 }
 
 export default function App() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const isUuid = (value) =>
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+      String(value || "").trim(),
+    );
+
+  useEffect(() => {
+    const hash = location.hash || "";
+    if (!hash.startsWith("#join")) return;
+
+    const queryIndex = hash.indexOf("?");
+    if (queryIndex === -1) {
+      navigate("/join", { replace: true });
+      return;
+    }
+
+    const params = new URLSearchParams(hash.slice(queryIndex + 1));
+    const meetingId = (params.get("meetingId") || params.get("meeting") || "").trim();
+    if (!meetingId) return;
+
+    const token = (params.get("token") || "").trim();
+    if (!isUuid(meetingId)) {
+      const qs = new URLSearchParams();
+      qs.set("meetingId", meetingId);
+      if (token) qs.set("token", token);
+      navigate(`/join?${qs.toString()}`, { replace: true });
+      return;
+    }
+
+    const tokenQuery = token ? `?token=${encodeURIComponent(token)}` : "";
+    navigate(`/live/join/${meetingId}${tokenQuery}`, { replace: true });
+  }, [location.hash, navigate]);
+
   return (
     <div className="flex min-h-dvh flex-col overflow-x-hidden bg-background text-foreground transition-colors">
       <Navbar />
@@ -1452,6 +1495,7 @@ export default function App() {
       <main className="flex w-full min-h-0 flex-1 flex-col pt-[5.5rem]">
         <Routes>
           <Route path="/" element={<AppleHomePage />} />
+          <Route path="/join" element={<JoinMeetingPage />} />
           <Route path="/tutors" element={<AllTutorsPage />} />
           <Route path="/tutor/:id" element={<TutorProfilePage />} />
 

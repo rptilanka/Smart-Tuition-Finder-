@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Bot, MessageCircle, Send, User, X } from "lucide-react";
 
@@ -122,6 +122,12 @@ export default function GeminiChatbot() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const fullTitle = "Tutor Guide";
+  const fullHeading = "How can I help you today?";
+  const [typedTitle, setTypedTitle] = useState("");
+  const [typedHeading, setTypedHeading] = useState("");
+  const typingRef = useRef({ cancelled: false });
+  const [isTyping, setIsTyping] = useState(false);
 
   const sendMessage = async () => {
     const prompt = input.trim();
@@ -214,6 +220,55 @@ export default function GeminiChatbot() {
     sendMessage();
   };
 
+  useEffect(() => {
+    let mounted = true;
+    typingRef.current.cancelled = false;
+
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+    const type = async (text, setter, charDelay = 40, endDelay = 120) => {
+      setter("");
+      for (let i = 0; i < text.length; i += 1) {
+        if (!mounted || typingRef.current.cancelled) return;
+        setter((prev) => prev + text[i]);
+        // small jitter to feel more natural
+        // eslint-disable-next-line no-await-in-loop
+        await sleep(charDelay + (i % 3 === 0 ? 10 : 0));
+      }
+      // pause after finishing this string
+      // eslint-disable-next-line no-await-in-loop
+      await sleep(endDelay);
+    };
+
+    (async () => {
+      if (isOpen && messages.length === 0) {
+        typingRef.current.cancelled = false;
+        setTypedTitle("");
+        setTypedHeading("");
+        setIsTyping(true);
+
+        await type(fullTitle, setTypedTitle, 45, 140);
+        if (!mounted || typingRef.current.cancelled) {
+          setIsTyping(false);
+          return;
+        }
+        await type(fullHeading, setTypedHeading, 36, 0);
+        setIsTyping(false);
+      } else {
+        // show full text immediately when modal closed or there are messages
+        setTypedTitle(fullTitle);
+        setTypedHeading(fullHeading);
+        setIsTyping(false);
+      }
+    })();
+
+    return () => {
+      mounted = false;
+      typingRef.current.cancelled = true;
+      setIsTyping(false);
+    };
+  }, [isOpen, messages.length]);
+
   return (
     <>
       <motion.button
@@ -228,37 +283,72 @@ export default function GeminiChatbot() {
 
       <AnimatePresence>
         {isOpen ? (
-          <motion.section
-            initial={{ opacity: 0, y: 16, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 12, scale: 0.96 }}
-            transition={{ duration: 0.2 }}
-            className="fixed bottom-24 right-6 z-[80] flex h-[520px] w-[360px] flex-col overflow-hidden rounded-3xl border border-white/10 bg-black text-white shadow-[0_24px_56px_rgba(0,0,0,0.6)]"
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.18 }}
+            className="fixed inset-0 z-[80] flex items-center justify-center px-6"
           >
-            <header className="flex items-center justify-between border-b border-white/10 px-4 py-3">
-              <div className="flex items-center gap-2">
-                <span className="rounded-full bg-white/10 p-2 text-white">
-                  <Bot size={17} />
-                </span>
-                <div>
-                  <p className="text-sm font-bold text-white">Tutor Guide</p>
-                  <p className="text-xs text-white/65">Smart Tuition Finder</p>
-                </div>
-              </div>
+            <div
+              onClick={() => setIsOpen(false)}
+              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            />
+
+            <motion.section
+              initial={{ opacity: 0, y: 8, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 8, scale: 0.98 }}
+              transition={{ duration: 0.22 }}
+              className="relative z-10 mx-auto flex h-[520px] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-md text-white shadow-[0_24px_56px_rgba(0,0,0,0.6)]"
+            >
+            <div className="relative px-4 py-3">
               <button
                 onClick={() => setIsOpen(false)}
-                className="rounded-full p-1 text-white/70 transition hover:bg-white/10 hover:text-white"
+                className="absolute right-3 top-3 rounded-full p-1 text-white/70 transition hover:bg-white/10 hover:text-white"
                 aria-label="Close chatbot"
               >
                 <X size={16} />
               </button>
-            </header>
+            </div>
 
-            <div className="flex-1 space-y-3 overflow-y-auto bg-black px-3 py-4">
+            <div className="flex-1 space-y-3 overflow-y-auto bg-transparent px-3 py-4">
               {messages.length === 0 ? (
-                <p className="px-1 text-center text-sm text-white/60">
-                  Ask a question below.
-                </p>
+                <div className="flex h-full w-full flex-col items-center justify-center gap-8 px-4">
+                  <div className="text-center">
+                    <p className="text-2xl md:text-3xl font-extrabold text-white mb-6">{typedTitle}</p>
+                    <h2 className="mx-auto max-w-2xl text-2xl md:text-3xl font-semibold text-black dark:text-white">
+                      <span>{typedHeading}</span>
+                      {isTyping ? (
+                        <span className="ml-1 inline-block w-3 animate-pulse text-black dark:text-white">|</span>
+                      ) : null}
+                    </h2>
+                  </div>
+
+                  <form onSubmit={onSubmit} className="w-full max-w-3xl">
+                    <div className="flex items-center gap-3 rounded-full bg-white px-4 py-3 shadow-lg">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-gray-500">
+                        <span className="text-xl">+</span>
+                      </div>
+
+                      <input
+                        value={input}
+                        onChange={(event) => setInput(event.target.value)}
+                        placeholder="Ask anything"
+                        className="w-full bg-transparent text-gray-800 placeholder:text-gray-400 outline-none"
+                      />
+
+                      <button
+                        type="submit"
+                        disabled={isLoading}
+                        className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-gray-700 transition disabled:opacity-60"
+                        aria-label="Send message"
+                      >
+                        <Send size={14} />
+                      </button>
+                    </div>
+                  </form>
+                </div>
               ) : null}
               {messages.map((message, index) => {
                 const isUser = message.role === "user";
@@ -297,29 +387,32 @@ export default function GeminiChatbot() {
               ) : null}
             </div>
 
-            <form
-              onSubmit={onSubmit}
-              className="border-t border-white/10 bg-black p-3"
-            >
-              <div className="flex items-center gap-2">
-                <input
-                  value={input}
-                  onChange={(event) => setInput(event.target.value)}
-                  placeholder="Type your question…"
-                  className="w-full rounded-xl glass-btn border border-white/15 bg-zinc-900 px-3 py-2 text-sm text-white placeholder:text-white/45 outline-none transition focus:border-white/45"
-                />
+            {messages.length > 0 ? (
+              <form
+                onSubmit={onSubmit}
+                className="border-t border-white/10 bg-transparent p-3"
+              >
+                <div className="flex items-center gap-2">
+                  <input
+                    value={input}
+                    onChange={(event) => setInput(event.target.value)}
+                    placeholder="Type your question…"
+                    className="w-full rounded-xl glass-btn border border-white/15 bg-zinc-900 px-3 py-2 text-sm text-white placeholder:text-white/45 outline-none transition focus:border-white/45"
+                  />
 
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-white text-black transition hover:bg-white/90 disabled:opacity-70"
-                  aria-label="Send message"
-                >
-                  <Send size={15} />
-                </button>
-              </div>
-            </form>
-          </motion.section>
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-white text-black transition hover:bg-white/90 disabled:opacity-70"
+                    aria-label="Send message"
+                  >
+                    <Send size={15} />
+                  </button>
+                </div>
+              </form>
+            ) : null}
+            </motion.section>
+          </motion.div>
         ) : null}
       </AnimatePresence>
     </>

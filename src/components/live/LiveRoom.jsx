@@ -328,7 +328,7 @@ export default function LiveRoom({
   const sidebarOpen = sidebarTab !== null;
 
   return (
-    <div className="relative flex flex-1 min-h-0 w-full overflow-hidden bg-[#1c1c1c]">
+    <div className="relative flex w-full overflow-hidden bg-[#1c1c1c] h-[min(1050px,calc(100dvh-10rem))] min-h-[520px]">
 
       {/* ── Video canvas — always fills full space ── */}
       <div className="flex flex-1 min-w-0 flex-col">

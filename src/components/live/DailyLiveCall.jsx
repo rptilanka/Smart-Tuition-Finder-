@@ -40,7 +40,10 @@ export default function DailyLiveCall({ roomUrl, token }) {
 
   return (
     <div className="overflow-hidden rounded-2xl ring-1 ring-slate-200/70 dark:ring-white/10">
-      <div ref={containerRef} className="h-[min(72vh,720px)] w-full min-h-[360px]" />
+      <div
+        ref={containerRef}
+        className="h-full w-full min-h-0"
+      />
     </div>
   );
 }

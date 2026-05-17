@@ -4,7 +4,7 @@ import { ArrowLeft, KeyRound } from "lucide-react";
 
 import LiveRoom from "../components/live/LiveRoom";
 import { useAuth } from "../context/AuthContext";
-import { getMeetingById } from "../lib/liveMeetings";
+import { getMeetingById, getMeetingForJoin } from "../lib/liveMeetings";
 
 export default function StudentLiveJoinPage() {
   const { meetingId } = useParams();
@@ -21,9 +21,24 @@ export default function StudentLiveJoinPage() {
     let mounted = true;
     async function loadMeeting() {
       if (!meetingId) return;
+
+      const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+        String(meetingId).trim(),
+      );
+      if (!isUuid) {
+        if (mounted) {
+          setMeeting(null);
+          setError("Invalid meeting link. Please paste a valid invite link or UUID.");
+          setLoading(false);
+        }
+        return;
+      }
+
       setLoading(true);
       try {
-        const row = await getMeetingById(meetingId);
+        const row = joinToken
+          ? await getMeetingForJoin({ meetingId, joinToken })
+          : await getMeetingById(meetingId);
         if (mounted) setMeeting(row);
       } catch (loadError) {
         if (mounted) setError(loadError.message || "Failed to load meeting.");
@@ -41,7 +56,7 @@ export default function StudentLiveJoinPage() {
 
   return (
     <section className="min-h-screen bg-[#f5f5f7] dark:bg-neutral-950 px-6 py-8 dark:bg-neutral-950">
-      <div className="mx-auto max-w-6xl space-y-4">
+      <div className="mx-auto max-w-[1900px] space-y-4">
         <Link
           to="/student-dashboard"
           className="inline-flex items-center gap-1 rounded-full glass-btn border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 dark:border-white/10 dark:bg-neutral-900 dark:text-slate-200"
@@ -72,15 +87,17 @@ export default function StudentLiveJoinPage() {
                 className="mt-2 h-10 w-full rounded-xl glass-btn border border-slate-200 bg-white px-3 text-sm text-slate-900 dark:border-white/10 dark:bg-neutral-950 dark:text-white"
               />
             </div>
-            <LiveRoom
-              meetingId={meeting.id}
-              currentUser={user}
-              role="student"
-              meetingTitle={meeting.title}
-              passcode={passcode}
-              joinToken={joinToken}
-              meeting={meeting}
-            />
+            <div className="overflow-hidden rounded-2xl ring-1 ring-slate-200/70 dark:ring-white/10">
+              <LiveRoom
+                meetingId={meeting.id}
+                currentUser={user}
+                role="student"
+                meetingTitle={meeting.title}
+                passcode={passcode}
+                joinToken={joinToken}
+                meeting={meeting}
+              />
+            </div>
           </div>
         )}
       </div>

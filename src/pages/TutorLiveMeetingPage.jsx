@@ -166,15 +166,19 @@ export default function TutorLiveMeetingPage() {
           </div>
         </div>
       ) : (
-        <LiveRoom
-          meetingId={meeting.id}
-          currentUser={user}
-          role="tutor"
-          meetingTitle={meeting.title}
-          meeting={meeting}
-          onMeetingUpdated={setMeeting}
-          onEnd={handleEnd}
-        />
+        <div className="flex flex-1 min-h-0 px-4 pb-6">
+          <div className="mx-auto w-full max-w-[1900px] overflow-hidden rounded-2xl ring-1 ring-white/10">
+            <LiveRoom
+              meetingId={meeting.id}
+              currentUser={user}
+              role="tutor"
+              meetingTitle={meeting.title}
+              meeting={meeting}
+              onMeetingUpdated={setMeeting}
+              onEnd={handleEnd}
+            />
+          </div>
+        </div>
       )}
     </div>
   );

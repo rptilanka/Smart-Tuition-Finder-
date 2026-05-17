@@ -166,11 +166,35 @@ export async function getMeetingById(meetingId) {
   return data ?? null;
 }
 
+export async function getMeetingForJoin({ meetingId, joinToken = "" }) {
+  if (!supabase || !meetingId) return null;
+
+  const argsA = {
+    // Keep join token first to match PostgREST schema-cache lookup ordering
+    p_join_token: joinToken || "",
+    p_meeting_id: meetingId,
+  };
+  const { data, error } = await supabase.rpc("get_meeting_for_join", argsA).maybeSingle();
+  if (error) {
+    const msg = String(error.message || "");
+    if (
+      msg.includes("get_meeting_for_join") &&
+      (msg.includes("schema cache") || msg.includes("Could not find the function"))
+    ) {
+      throw new Error(
+        "Join API is not installed in Supabase yet. Run supabase/live_join_rpc.sql in Supabase SQL Editor, then reload the API schema cache (Settings → API → Reload schema).",
+      );
+    }
+    throw error;
+  }
+  return data ?? null;
+}
+
 export function buildSecureJoinLink(meeting) {
   if (!meeting?.id) return "";
   const token = meeting.secure_join_token || "";
-  const query = token ? `?token=${encodeURIComponent(token)}` : "";
-  return `/live/join/${meeting.id}${query}`;
+  const tokenQuery = token ? `&token=${encodeURIComponent(token)}` : "";
+  return `/#join?meetingId=${encodeURIComponent(meeting.id)}${tokenQuery}`;
 }
 
 export async function updateMeetingStatus({ meetingId, tutorId, status }) {
@@ -311,31 +335,59 @@ async function requireJoinChecks({ meeting, userId, role, passcode = "", joinTok
 
 export async function joinMeeting({ meetingId, userId, role, passcode = "", joinToken = "" }) {
   if (!supabase) throw new Error("Supabase is not configured.");
-  const access = await canUserJoinMeeting({ meetingId, userId, role });
-  if (!access.allowed) {
-    throw new Error(access.reason || "You are not allowed to join this meeting.");
-  }
-  const meeting = await getMeetingById(meetingId);
-  if (!meeting) throw new Error("Meeting not found.");
-  await requireJoinChecks({ meeting, userId, role, passcode, joinToken });
+  // Prefer secure, server-side enforced join if the RPC exists.
+  try {
+    const { data, error } = await supabase
+      .rpc("join_meeting_secure", {
+        p_meeting_id: meetingId,
+        p_role: role,
+        p_passcode: passcode || "",
+        p_join_token: joinToken || "",
+      })
+      .single();
+    if (error) throw error;
+    return data;
+  } catch (rpcError) {
+    // If RPC isn't installed, fall back to legacy client-side checks.
+    const message = rpcError?.message || "";
+    const looksLikeMissingRpc =
+      message.includes("function") && message.includes("join_meeting_secure");
+    if (!looksLikeMissingRpc) throw rpcError;
 
-  const payload = {
-    meeting_id: meetingId,
-    user_id: userId,
-    role,
-    joined_at: new Date().toISOString(),
-    left_at: null,
-    hand_raised: false,
-    last_heartbeat_at: new Date().toISOString(),
-  };
-  const { data, error } = await supabase
-    .from(LIVE_MEETING_PARTICIPANTS_TABLE)
-    .upsert(payload, { onConflict: "meeting_id,user_id" })
-    .select("*")
-    .single();
-  if (error) throw error;
-  await addAuditLog(meetingId, userId, "participant_joined", { role });
-  return data;
+    // For students, the legacy path is typically blocked by RLS and results in
+    // confusing errors. Fail fast with a clear setup message.
+    if (role === "student") {
+      throw new Error(
+        "Join API is not installed in Supabase yet. Run supabase/live_join_rpc.sql in Supabase SQL Editor, then reload the API schema cache (Settings → API → Reload schema).",
+      );
+    }
+
+    const access = await canUserJoinMeeting({ meetingId, userId, role });
+    if (!access.allowed) {
+      throw new Error(access.reason || "You are not allowed to join this meeting.");
+    }
+    const meeting = await getMeetingById(meetingId);
+    if (!meeting) throw new Error("Meeting not found.");
+    await requireJoinChecks({ meeting, userId, role, passcode, joinToken });
+
+    const payload = {
+      meeting_id: meetingId,
+      user_id: userId,
+      role,
+      joined_at: new Date().toISOString(),
+      left_at: null,
+      hand_raised: false,
+      last_heartbeat_at: new Date().toISOString(),
+    };
+    const { data, error } = await supabase
+      .from(LIVE_MEETING_PARTICIPANTS_TABLE)
+      .upsert(payload, { onConflict: "meeting_id,user_id" })
+      .select("*")
+      .single();
+    if (error) throw error;
+    await addAuditLog(meetingId, userId, "participant_joined", { role });
+    return data;
+  }
 }
 
 export async function leaveMeeting({ meetingId, userId }) {
