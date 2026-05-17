@@ -300,7 +300,6 @@ const translations = {
     perHourShort: "/hr",
 
     // ── Tutor profile page ───────────────────────────────────────────────────
-    noDetailsAddedYet: "No details added yet.",
     loadingTutorProfile: "Loading tutor profile...",
     profileBoostBadge: "Profile Boost",
     yearsExperienceShort: "{count}+ years experience",
@@ -327,7 +326,6 @@ const translations = {
       "Hi {name}, I saw your profile on Smart Tuition Finder…",
     cancel: "Cancel",
     sendingEllipsis: "Sending…",
-    sendMessage: "Send message",
 
     tutorNotFoundTag: "404 · Tutor not found",
     tutorNotFoundHeadline: "We couldn't find that tutor.",
@@ -887,7 +885,6 @@ const translations = {
     perHourShort: "/පැ",
 
     // ── Tutor profile page ───────────────────────────────────────────────────
-    noDetailsAddedYet: "විස්තර තවම එක් කර නැත.",
     loadingTutorProfile: "ගුරු ප්‍රොෆයිලය පූරණය වෙමින්...",
     profileBoostBadge: "ප්‍රොෆයිල බූස්ට්",
     yearsExperienceShort: "{count}+ අවුරුදු අත්දැකීම",
@@ -914,7 +911,6 @@ const translations = {
       "හෙයි {name}, මම ඔබගේ ප්‍රොෆයිලය Smart Tuition Finder තුළ දැක්කා…",
     cancel: "අහෝසි කරන්න",
     sendingEllipsis: "යවමින්…",
-    sendMessage: "පණිවිඩය යවන්න",
 
     tutorNotFoundTag: "404 · ගුරුවරයා හමු නොවිය",
     tutorNotFoundHeadline: "එම ගුරුවරයා සොයාගත නොහැක.",
@@ -1474,7 +1470,6 @@ const translations = {
     perHourShort: "/மணி",
 
     // ── Tutor profile page ───────────────────────────────────────────────────
-    noDetailsAddedYet: "விவரங்கள் இன்னும் சேர்க்கப்படவில்லை.",
     loadingTutorProfile: "ஆசிரியர் சுயவிவரம் ஏற்றப்படுகிறது...",
     profileBoostBadge: "சுயவிவர ஊக்கம்",
     yearsExperienceShort: "{count}+ ஆண்டுகள் அனுபவம்",
@@ -1501,7 +1496,6 @@ const translations = {
       "வணக்கம் {name}, உங்கள் சுயவிவரத்தை Smart Tuition Finder இல் பார்த்தேன்…",
     cancel: "ரத்து",
     sendingEllipsis: "அனுப்புகிறது…",
-    sendMessage: "செய்தியை அனுப்பவும்",
 
     tutorNotFoundTag: "404 · ஆசிரியர் கிடைக்கவில்லை",
     tutorNotFoundHeadline: "அந்த ஆசிரியரை கண்டுபிடிக்க முடியவில்லை.",
