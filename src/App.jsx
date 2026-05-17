@@ -1188,9 +1188,9 @@ function AppleHomePage() {
           transition={{ delay: 0.22, duration: 0.58, ease: "easeOut" }}
           className="mx-auto mt-16 max-w-6xl"
         >
-          <div className="rounded-[2.75rem] bg-white p-3 shadow-[0_40px_120px_rgba(15,23,42,0.14)] ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10">
-            <div className="overflow-hidden rounded-[2.25rem] border border-slate-200 bg-[#fbfbfd] dark:border-white/10 dark:bg-neutral-950">
-              <div className="flex items-center gap-2 border-b border-slate-200 bg-white px-5 py-4 dark:border-white/10 dark:bg-neutral-900">
+          <div className="glass-frame rounded-[2.75rem] p-3">
+            <div className="glass-frame overflow-hidden rounded-[2.25rem]">
+              <div className="flex items-center gap-2 bg-transparent px-5 py-4">
                 <span className="h-3 w-3 rounded-full bg-slate-300 dark:bg-neutral-700" />
                 <span className="h-3 w-3 rounded-full bg-slate-300 dark:bg-neutral-700" />
                 <span className="h-3 w-3 rounded-full bg-slate-300 dark:bg-neutral-700" />
@@ -1200,31 +1200,33 @@ function AppleHomePage() {
               </div>
 
               <div className="grid gap-6 p-5 text-left md:grid-cols-[0.85fr_1.15fr] md:p-8">
-                <aside className="rounded-[2rem] bg-white p-5 shadow-sm ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10">
+                <aside className="glass-card rounded-[2rem] p-5">
                   <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">
-                    Search
+                    {t.searchLabel}
                   </p>
                   <h2 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-slate-950 dark:text-white">
-                    Match by what matters.
+                    {t.matchByHeadline}
                   </h2>
 
                   <div className="mt-6 space-y-3">
-                    {["Subject: Maths", "Area: Colombo", "Level: A/L"].map(
-                      (item) => (
-                        <div
-                          key={item}
-                          className="flex items-center justify-between rounded-2xl bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-700 dark:bg-neutral-800 dark:text-slate-200"
-                        >
-                          <span>{item}</span>
-                          <CheckCircle2 size={16} />
-                        </div>
-                      ),
-                    )}
+                    {[
+                      `${t.subjectLabel}: ${t.subjectMaths}`,
+                      `${t.areaLabel}: Colombo`,
+                      `${t.levelLabel}: ${t.levelAL}`,
+                    ].map((item) => (
+                      <div
+                        key={item}
+                        className="glass-btn flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold text-slate-700 dark:text-slate-200"
+                      >
+                        <span>{item}</span>
+                        <CheckCircle2 size={16} />
+                      </div>
+                    ))}
                   </div>
 
-                  <div className="mt-6 rounded-3xl bg-neutral-950 p-5 text-white dark:bg-neutral-800 dark:text-white">
+                  <div className="glass-card mt-6 rounded-3xl p-5 text-slate-950 dark:text-white">
                     <p className="text-sm font-medium opacity-70">
-                      Recommended match
+                      {t.recommendedMatch}
                     </p>
                     <p className="mt-2 text-4xl font-semibold tracking-[-0.05em]">
                       96%
@@ -1233,17 +1235,17 @@ function AppleHomePage() {
                 </aside>
 
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between gap-4">
+                    <div className="flex items-center justify-between gap-4">
                     <div>
-                      <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">
-                        Tutor shortlist
-                      </p>
-                      <h2 className="mt-1 text-3xl font-semibold tracking-[-0.04em] text-slate-950 dark:text-white">
-                        Clean profiles. Clear choices.
-                      </h2>
+                        <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">
+                          {t.tutorShortlist}
+                        </p>
+                        <h2 className="mt-1 text-3xl font-semibold tracking-[-0.04em] text-slate-950 dark:text-white">
+                          {t.cleanProfilesHeadline}
+                        </h2>
                     </div>
-                    <span className="hidden rounded-full glass-btn bg-white px-4 py-2 text-sm font-semibold text-slate-600 shadow-sm ring-1 ring-slate-200/70 md:inline-flex dark:bg-neutral-900 dark:text-slate-300 dark:ring-white/10">
-                      12 nearby
+                    <span className="hidden rounded-full glass-btn px-4 py-2 text-sm font-semibold text-slate-600 md:inline-flex dark:text-slate-300">
+                      {t.nearbyCount.replace("{count}", "12")}
                     </span>
                   </div>
 
@@ -1252,9 +1254,9 @@ function AppleHomePage() {
                       return (
                         <div
                           key={tutor.id}
-                          className="rounded-[2rem] bg-white p-5 shadow-sm ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10"
+                          className="glass-card rounded-[2rem] p-5"
                         >
-                          <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-neutral-950 text-sm font-semibold text-white dark:bg-neutral-800 dark:text-white">
+                          <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl glass-btn text-sm font-semibold text-slate-800 dark:text-white">
                             {tutor.avatar_url ? (
                               <img
                                 src={tutor.avatar_url}
@@ -1289,7 +1291,7 @@ function AppleHomePage() {
                     {heroStats.map((stat) => (
                       <div
                         key={stat.label}
-                        className="rounded-[1.75rem] bg-white p-5 shadow-sm ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10"
+                        className="glass-card rounded-[1.75rem] p-5"
                       >
                         <p className="text-3xl font-semibold tracking-[-0.05em] text-slate-950 dark:text-white">
                           {stat.value}

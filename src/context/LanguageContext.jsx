@@ -1,3 +1,4 @@
+/* @refresh reset */
 import { useSyncExternalStore } from "react";
 
 const translations = {
@@ -27,6 +28,17 @@ const translations = {
     heroHeadline2: "Tuition. Simplified.",
     heroSubtitle2:
       "A calm, modern way to discover tutors, compare profiles, and choose the right learning support without clutter.",
+
+    // ── Home component specific ─────────────────────────────────────────────
+    searchLabel: "Search",
+    matchByHeadline: "Match by what matters.",
+    subjectLabel: "Subject",
+    areaLabel: "Area",
+    levelLabel: "Level",
+    recommendedMatch: "Recommended match",
+    tutorShortlist: "Tutor shortlist",
+    cleanProfilesHeadline: "Clean profiles. Clear choices.",
+    nearbyCount: "{count} nearby",
 
     builtForEveryStage: "Built for every learning stage",
     levelSchool: "School",
@@ -627,6 +639,16 @@ const translations = {
     levelUniversity: "විශ්වවිද්‍යාල",
     levelProfessional: "වෘත්තීය කුසලතා",
 
+    searchLabel: "සොයන්න",
+    matchByHeadline: "වැදගත් දෙයින් ගැළපෙන්නාය.",
+    subjectLabel: "විෂය",
+    areaLabel: "ප්‍රදේශ",
+    levelLabel: "මට්ටම",
+    recommendedMatch: "නිර්දේශිත ගැළපීම",
+    tutorShortlist: "ගුරු කෙටි ලැයිස්තුව",
+    cleanProfilesHeadline: "පිරිසිදු ප්‍රොෆයිල. පැහැදිලි තේරීම්.",
+    nearbyCount: "ආසන්නයේ {count}",
+
     exploreSubjectsTag: "විෂයයන් ගවේෂණය කරන්න",
     popularSubjectsHeadline: "සෑම විෂයයක්ම සොයා ගැනීම පහසු.",
     popularSubjectsDesc:
@@ -1210,6 +1232,16 @@ const translations = {
     levelAL: "A/L",
     levelUniversity: "பல்கலைக்கழகம்",
     levelProfessional: "தொழில்முறை திறன்கள்",
+
+    searchLabel: "தேடு",
+    matchByHeadline: "முக்கியமானதால் பொருந்துங்கள்.",
+    subjectLabel: "பாடம்",
+    areaLabel: "பகுதி",
+    levelLabel: "நிலை",
+    recommendedMatch: "பரிந்துரைக்கப்பட்ட பொருத்தம்",
+    tutorShortlist: "ஆசிரியர் குறுகிய பட்டியல்",
+    cleanProfilesHeadline: "சுத்தமான சுயவிவரங்கள். தெளிவான தேர்வுகள்.",
+    nearbyCount: "அருகில் {count}",
 
     exploreSubjectsTag: "பாடங்களை ஆராயுங்கள்",
     popularSubjectsHeadline: "ஒவ்வொரு பாடமும் எளிதாக கண்டுபிடிக்க முடிகிறது.",

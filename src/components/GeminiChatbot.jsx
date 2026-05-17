@@ -300,12 +300,12 @@ export default function GeminiChatbot() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 8, scale: 0.98 }}
               transition={{ duration: 0.22 }}
-              className="relative z-10 mx-auto flex h-[520px] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-md text-white shadow-[0_24px_56px_rgba(0,0,0,0.6)]"
+              className="glass-ultra relative z-10 mx-auto flex h-[520px] w-full max-w-4xl flex-col overflow-hidden rounded-3xl shadow-[0_32px_80px_rgba(0,0,0,0.5)]"
             >
             <div className="relative px-4 py-3">
               <button
                 onClick={() => setIsOpen(false)}
-                className="absolute right-3 top-3 rounded-full p-1 text-white/70 transition hover:bg-white/10 hover:text-white"
+                className="absolute right-3 top-3 rounded-full p-1 text-slate-500 transition hover:bg-black/10 hover:text-slate-900 dark:text-white/70 dark:hover:bg-white/10 dark:hover:text-white"
                 aria-label="Close chatbot"
               >
                 <X size={16} />
@@ -316,11 +316,11 @@ export default function GeminiChatbot() {
               {messages.length === 0 ? (
                 <div className="flex h-full w-full flex-col items-center justify-center gap-8 px-4">
                   <div className="text-center">
-                    <p className="text-2xl md:text-3xl font-extrabold text-white mb-6">{typedTitle}</p>
-                    <h2 className="mx-auto max-w-2xl text-2xl md:text-3xl font-semibold text-black dark:text-white">
+                    <p className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white mb-6">{typedTitle}</p>
+                    <h2 className="mx-auto max-w-2xl text-2xl md:text-3xl font-semibold text-slate-800 dark:text-white">
                       <span>{typedHeading}</span>
                       {isTyping ? (
-                        <span className="ml-1 inline-block w-3 animate-pulse text-black dark:text-white">|</span>
+                        <span className="ml-1 inline-block w-3 animate-pulse text-slate-800 dark:text-white">|</span>
                       ) : null}
                     </h2>
                   </div>
@@ -380,7 +380,7 @@ export default function GeminiChatbot() {
 
               {isLoading ? (
                 <div className="flex justify-start">
-                  <div className="rounded-2xl border border-white/10 bg-zinc-900 px-3 py-2 text-sm text-white/85">
+                  <div className="glass-btn rounded-2xl px-3 py-2 text-sm text-slate-800 dark:text-white/85">
                     Tutor Guide is typing…
                   </div>
                 </div>
@@ -390,14 +390,14 @@ export default function GeminiChatbot() {
             {messages.length > 0 ? (
               <form
                 onSubmit={onSubmit}
-                className="border-t border-white/10 bg-transparent p-3"
+                className="border-t border-slate-200/60 bg-transparent p-3 dark:border-white/10"
               >
                 <div className="flex items-center gap-2">
                   <input
                     value={input}
                     onChange={(event) => setInput(event.target.value)}
                     placeholder="Type your question…"
-                    className="w-full rounded-xl glass-btn border border-white/15 bg-zinc-900 px-3 py-2 text-sm text-white placeholder:text-white/45 outline-none transition focus:border-white/45"
+                    className="w-full rounded-xl glass-btn px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition dark:text-white dark:placeholder:text-white/45"
                   />
 
                   <button

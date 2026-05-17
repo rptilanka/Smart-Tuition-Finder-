@@ -7,62 +7,23 @@ import {
   AccordionItem,
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
-
-const faq = [
-  {
-    question: "How do I find the right tutor?",
-    answer:
-      "Browse tutor profiles by subject, location, grade level, and teaching style. You can compare details before choosing who to contact.",
-  },
-  {
-    question: "Are tutor profiles verified?",
-    answer:
-      "Tutor profiles are designed to show key details like qualifications, subjects, experience, and contact information so students can make informed decisions.",
-  },
-  {
-    question: "Can I find tutors near my area?",
-    answer:
-      "Yes. Smart Tuition Finder supports location-based discovery so you can look for tutors in nearby cities and areas.",
-  },
-  {
-    question: "How do students contact tutors?",
-    answer:
-      "Students can view tutor profiles and use the available contact options to start a conversation directly with a suitable tutor.",
-  },
-  {
-    question: "Is there a fee to use the platform?",
-    answer:
-      "Students can explore the platform and browse tutor information. Any tuition fee is arranged directly based on the tutor and lesson plan.",
-  },
-  {
-    question: "How long does registration take?",
-    answer:
-      "Student and tutor registration only takes a few minutes. After signing up, users can access their relevant dashboard and profile options.",
-  },
-  {
-    question: "Can tutors edit their profile later?",
-    answer:
-      "Yes. Tutors can sign in to their dashboard and update profile details such as subjects, areas, experience, and contact information.",
-  },
-  {
-    question: "Can students save or compare tutors?",
-    answer:
-      "Students can review tutor information and compare key details before deciding which tutor best fits their needs.",
-  },
-  {
-    question: "What subjects are supported?",
-    answer:
-      "The platform supports common school and exam subjects such as Maths, Science, English, Physics, History, Art, and more.",
-  },
-  {
-    question: "Who can join as a tutor?",
-    answer:
-      "Teachers, graduates, undergraduates, and experienced subject specialists can create tutor profiles to connect with students.",
-  },
-];
+import { useLanguage } from "../context/LanguageContext";
 
 const FAQ = () => {
   const [value, setValue] = useState();
+  const { t } = useLanguage();
+
+  const faq = [
+    { question: t.howFindRightTutor, answer: t.howFindRightTutorAns },
+    { question: t.areTutorProfilesVerified, answer: t.areTutorProfilesVerifiedAns },
+    { question: t.howStudentsContactTutors, answer: t.howStudentsContactTutorsAns },
+    { question: t.isThereFee, answer: t.isThereFeAns },
+    { question: t.howLongRegistration, answer: t.howLongRegistrationAns },
+    { question: t.canTutorsEditProfile, answer: t.canTutorsEditProfileAns },
+    { question: t.canStudentsSaveTutors, answer: t.canStudentsSaveTutorsAns },
+    { question: t.whatSubjectsSupported, answer: t.whatSubjectsSupportedAns },
+    { question: t.whoCanJoinAsTutor, answer: t.whoCanJoinAsTutorAns },
+  ];
 
   return (
     <section
@@ -71,11 +32,10 @@ const FAQ = () => {
     >
       <div className="w-full max-w-5xl">
         <h2 className="text-4xl font-medium leading-tight tracking-tight text-foreground md:text-5xl">
-          Frequently Asked Questions
+          {t.frequentlyAskedQuestions}
         </h2>
         <p className="mt-3 max-w-2xl text-lg text-muted-foreground">
-          Quick answers about finding tutors, registering, profiles, and using
-          Smart Tuition Finder.
+          {t.faqSubtitle}
         </p>
 
         <div className="mt-6 grid w-full gap-x-10 md:grid-cols-2">
