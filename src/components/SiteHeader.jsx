@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  GraduationCap,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -18,7 +17,7 @@ const navItems = [
   { label: "Courses", href: "/#features" },
   { label: "Tutors", href: "/tutors", route: true },
   { label: "Reviews", href: "/#reviews" },
-  { label: "Join", href: "/#join" },
+  { label: "Join Meeting", href: "/#join" },
 ];
 
 export default function SiteHeader({ isDark, onToggleDark }) {
@@ -74,14 +73,16 @@ export default function SiteHeader({ isDark, onToggleDark }) {
     <header className="sticky top-0 z-40 border-b border-white/20 bg-white/60 backdrop-blur-xl dark:border-white/10 dark:bg-neutral-950/60">
       <nav className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 md:py-4">
         <Link to="/" className="group flex items-center gap-2.5">
-          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white shadow-[0_8px_20px_rgba(124,58,237,0.45)] transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-105">
-            <GraduationCap size={20} />
-          </div>
+          <img
+            src="/logo.png"
+            alt="Smart Tuition Finder"
+            className="h-10 w-10 object-contain transition-transform duration-300 group-hover:scale-105"
+          />
           <div className="leading-tight">
             <p className="text-[15px] font-extrabold tracking-tight text-slate-900 dark:text-white">
               Smart Tuition Finder
             </p>
-            <p className="hidden text-[10px] font-semibold uppercase tracking-[0.2em] text-purple-600/80 dark:text-purple-300/80 sm:block">
+            <p className="hidden text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500/80 dark:text-slate-400/80 sm:block">
               Find · Learn · Grow
             </p>
           </div>
@@ -93,7 +94,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
               <Link
                 key={item.href}
                 to={item.href}
-                className="rounded-full glass-btn px-3 py-1.5 transition hover:bg-purple-500/10 hover:text-purple-600 dark:hover:text-purple-300"
+                className="rounded-full glass-btn px-3 py-1.5 transition hover:bg-blue-500/10 hover:text-blue-600 dark:hover:text-blue-300"
               >
                 {item.label}
               </Link>
@@ -101,7 +102,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
               <a
                 key={item.href}
                 href={item.href}
-                className="rounded-full glass-btn px-3 py-1.5 transition hover:bg-purple-500/10 hover:text-purple-600 dark:hover:text-purple-300"
+                className="rounded-full glass-btn px-3 py-1.5 transition hover:bg-blue-500/10 hover:text-blue-600 dark:hover:text-blue-300"
               >
                 {item.label}
               </a>
@@ -114,7 +115,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
             type="button"
             onClick={handleSearch}
             aria-label="Search"
-            className="hidden h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/55 text-slate-700 shadow-[0_4px_12px_rgba(15,23,42,0.08)] transition hover:scale-105 hover:text-purple-600 dark:border-white/10 dark:bg-neutral-900/50 dark:text-slate-200 dark:hover:text-purple-300 md:inline-flex"
+            className="hidden h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/55 text-slate-700 shadow-[0_4px_12px_rgba(15,23,42,0.08)] transition hover:scale-105 hover:text-blue-600 dark:border-white/10 dark:bg-neutral-900/50 dark:text-slate-200 dark:hover:text-blue-300 md:inline-flex"
           >
             <Search size={16} />
           </button>
@@ -123,7 +124,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
             type="button"
             onClick={onToggleDark}
             aria-label="Toggle dark mode"
-            className="hidden h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/55 text-slate-700 shadow-[0_4px_12px_rgba(15,23,42,0.08)] transition hover:scale-105 hover:text-purple-600 dark:border-white/10 dark:bg-neutral-900/50 dark:text-slate-200 dark:hover:text-purple-300 sm:inline-flex"
+            className="hidden h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/55 text-slate-700 shadow-[0_4px_12px_rgba(15,23,42,0.08)] transition hover:scale-105 hover:text-blue-600 dark:border-white/10 dark:bg-neutral-900/50 dark:text-slate-200 dark:hover:text-blue-300 sm:inline-flex"
           >
             {isDark ? <Sun size={16} /> : <Moon size={16} />}
           </button>
@@ -137,9 +138,9 @@ export default function SiteHeader({ isDark, onToggleDark }) {
               >
                 <Link
                   to={dashboardPath}
-                  className="inline-flex items-center gap-2 rounded-full glass-btn border-2 border-purple-500/70 bg-transparent px-4 py-2 text-[13px] font-semibold text-purple-600 transition-colors hover:border-purple-500 hover:bg-purple-500/10 dark:text-purple-300 dark:hover:bg-purple-500/15"
+                  className="inline-flex items-center gap-2 rounded-full glass-btn border-2 border-blue-500/70 bg-transparent px-4 py-2 text-[13px] font-semibold text-blue-600 transition-colors hover:border-blue-500 hover:bg-blue-500/10 dark:text-blue-300 dark:hover:bg-blue-500/15"
                 >
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-[10px] font-extrabold text-white">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-500 text-[10px] font-extrabold text-white">
                     {initials}
                   </span>
                   <LayoutDashboard size={14} />
@@ -167,7 +168,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
             >
               <Link
                 to="/tutor-login"
-                className="inline-flex items-center justify-center rounded-full glass-btn border-2 border-purple-500/70 bg-transparent px-4 py-2 text-[13px] font-semibold text-purple-600 transition-colors hover:border-purple-500 hover:bg-purple-500/10 dark:text-purple-300 dark:hover:bg-purple-500/15"
+                className="inline-flex items-center justify-center rounded-full glass-btn border-2 border-blue-500/70 bg-transparent px-4 py-2 text-[13px] font-semibold text-blue-600 transition-colors hover:border-blue-500 hover:bg-blue-500/10 dark:text-blue-300 dark:hover:bg-blue-500/15"
               >
                 Tutor Login
               </Link>
@@ -178,7 +179,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
             whileHover={{
               scale: 1.05,
               y: -1,
-              boxShadow: "0 18px 34px rgba(168,85,247,0.45)",
+              boxShadow: "0 18px 34px rgba(37,99,235,0.45)",
             }}
             whileTap={{ scale: 0.96 }}
             transition={{ type: "spring", stiffness: 320, damping: 22 }}
@@ -186,7 +187,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
           >
             <Link
               to="/students-login"
-              className="inline-flex items-center justify-center rounded-full glass-btn bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-4 py-2 text-[13px] font-semibold text-white shadow-[0_10px_24px_rgba(168,85,247,0.4)]"
+              className="inline-flex items-center justify-center rounded-full glass-btn bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-[13px] font-semibold text-white shadow-[0_10px_24px_rgba(37,99,235,0.4)]"
             >
               Student Login
             </Link>
@@ -238,7 +239,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
                         <Link
                           to={item.href}
                           onClick={() => setMobileOpen(false)}
-                          className="block rounded-xl glass-btn px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-purple-500/10 hover:text-purple-600 dark:text-slate-200 dark:hover:text-purple-300"
+                          className="block rounded-xl glass-btn px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-blue-500/10 hover:text-blue-600 dark:text-slate-200 dark:hover:text-blue-300"
                         >
                           {item.label}
                         </Link>
@@ -246,7 +247,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
                         <a
                           href={item.href}
                           onClick={() => setMobileOpen(false)}
-                          className="block rounded-xl glass-btn px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-purple-500/10 hover:text-purple-600 dark:text-slate-200 dark:hover:text-purple-300"
+                          className="block rounded-xl glass-btn px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-blue-500/10 hover:text-blue-600 dark:text-slate-200 dark:hover:text-blue-300"
                         >
                           {item.label}
                         </a>
@@ -260,7 +261,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
                     <Link
                       to={dashboardPath}
                       onClick={() => setMobileOpen(false)}
-                      className="inline-flex items-center justify-center gap-1 rounded-full glass-btn border-2 border-purple-500/70 px-4 py-2.5 text-sm font-semibold text-purple-600 transition hover:bg-purple-500/10 dark:text-purple-300"
+                      className="inline-flex items-center justify-center gap-1 rounded-full glass-btn border-2 border-blue-500/70 px-4 py-2.5 text-sm font-semibold text-blue-600 transition hover:bg-blue-500/10 dark:text-blue-300"
                     >
                       <LayoutDashboard size={14} />
                       Dashboard
@@ -269,7 +270,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
                     <Link
                       to="/tutor-login"
                       onClick={() => setMobileOpen(false)}
-                      className="inline-flex items-center justify-center rounded-full glass-btn border-2 border-purple-500/70 px-4 py-2.5 text-sm font-semibold text-purple-600 transition hover:bg-purple-500/10 dark:text-purple-300"
+                      className="inline-flex items-center justify-center rounded-full glass-btn border-2 border-blue-500/70 px-4 py-2.5 text-sm font-semibold text-blue-600 transition hover:bg-blue-500/10 dark:text-blue-300"
                     >
                       Tutor Login
                     </Link>
@@ -277,7 +278,7 @@ export default function SiteHeader({ isDark, onToggleDark }) {
                   <Link
                     to="/students-login"
                     onClick={() => setMobileOpen(false)}
-                    className="inline-flex items-center justify-center rounded-full glass-btn bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-4 py-2.5 text-sm font-semibold text-white shadow-[0_10px_22px_rgba(168,85,247,0.35)]"
+                    className="inline-flex items-center justify-center rounded-full glass-btn bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-[0_10px_22px_rgba(37,99,235,0.35)]"
                   >
                     Student Login
                   </Link>

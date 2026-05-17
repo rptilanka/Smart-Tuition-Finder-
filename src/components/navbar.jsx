@@ -67,11 +67,15 @@ const Navbar = () => {
         }}
       >
         <div className="flex items-center gap-4">
-          <Link
-            className="text-xl font-bold tracking-[-0.02em] text-slate-900/90 drop-shadow-sm dark:text-white/90"
-            to="/"
-          >
-            Smart Tuition
+          <Link className="flex items-center gap-2.5" to="/">
+            <img
+              src="/logo.png"
+              alt="Smart Tuition Finder logo"
+              className="h-9 w-9 object-contain drop-shadow-sm"
+            />
+            <span className="text-xl font-bold tracking-[-0.02em] text-slate-900/90 drop-shadow-sm dark:text-white/90">
+              Smart Tuition
+            </span>
           </Link>
         </div>
 

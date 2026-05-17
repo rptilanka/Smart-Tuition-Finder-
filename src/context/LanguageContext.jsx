@@ -11,7 +11,7 @@ const translations = {
     navFeatures: "Features",
     navTutors: "Tutors",
     navReviews: "Reviews",
-    navJoin: "Join",
+    navJoin: "Join Meeting",
 
     // ── Home page ─────────────────────────────────────────────────────────────
     heroTag: "Smart tutor platform",
@@ -236,6 +236,7 @@ const translations = {
     joinRoom: "Join room",
     joinClass: "Join class",
     join: "Join",
+    joinMeeting: "Join meeting",
 
     profileSection: "Profile",
     nameLabel: "Name",
@@ -615,7 +616,7 @@ const translations = {
     navFeatures: "විශේෂාංග",
     navTutors: "ගුරුවරුන්",
     navReviews: "සමාලෝචන",
-    navJoin: "එකතු වන්න",
+    navJoin: "රැස්වීමට සම්බන්ධ වන්න",
 
     // ── Home page ─────────────────────────────────────────────────────────────
     heroTag: "Smart ගුරු platform",
@@ -831,6 +832,7 @@ const translations = {
     joinRoom: "කාමරයට ඇතුළු වන්න",
     joinClass: "පන්තියට ඇතුළු වන්න",
     join: "ඇතුළු වන්න",
+    joinMeeting: "රැස්වීමට එක්වන්න",
 
     profileSection: "ප්‍රොෆයිලය",
     nameLabel: "නම",
@@ -1209,7 +1211,7 @@ const translations = {
     navFeatures: "அம்சங்கள்",
     navTutors: "ஆசிரியர்கள்",
     navReviews: "மதிப்புரைகள்",
-    navJoin: "சேருங்கள்",
+    navJoin: "கூட்டத்தில் சேருங்கள்",
 
     // ── Home page ─────────────────────────────────────────────────────────────
     heroTag: "Smart ஆசிரியர் தளம்",

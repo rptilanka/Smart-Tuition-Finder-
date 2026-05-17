@@ -1143,7 +1143,7 @@ function AppleHomePage() {
         >
           <motion.h1
             variants={heroItem}
-            className="mt-7 max-w-5xl text-6xl font-semibold leading-[0.94] tracking-[-0.075em] text-slate-950 dark:text-white sm:text-7xl md:text-8xl lg:text-9xl"
+            className="mt-7 max-w-5xl text-6xl font-semibold leading-[1.02] text-slate-950 dark:text-white sm:text-7xl md:text-8xl lg:text-9xl whitespace-normal break-words"
           >
             {t.heroHeadline2}
           </motion.h1>
