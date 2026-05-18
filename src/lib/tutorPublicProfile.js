@@ -37,6 +37,7 @@ export function mapTutorRowToProfileModel(row) {
     qualifications_experience: row.qualifications_experience ?? "",
     subjects_grades: row.subjects_grades ?? [],
     demo_videos: row.demo_videos ?? [],
+    profile_photos: Array.isArray(row.profile_photos) ? row.profile_photos : [],
     availability_booking: row.availability_booking ?? "",
     whatsapp_number: row.whatsapp_number ?? "",
     social_facebook_url: row.social_facebook_url ?? "",

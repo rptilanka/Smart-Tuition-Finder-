@@ -53,17 +53,17 @@ const Navbar = () => {
       <nav
         className="pointer-events-auto flex h-[4.5rem] w-full max-w-screen-xl items-center justify-between rounded-full glass-btn px-8 md:px-10"
         style={isDark ? {
-          background: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
-          backdropFilter: 'blur(40px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(40px) saturate(180%)',
-          border: 'none',
-          boxShadow: '0 12px 40px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.25)',
+          background: 'rgba(255,255,255,0.04)',
+          backdropFilter: 'blur(24px) saturate(160%)',
+          WebkitBackdropFilter: 'blur(24px) saturate(160%)',
+          border: '1px solid rgba(255,255,255,0.08)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.35)',
         } : {
-          background: 'linear-gradient(135deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.25) 100%)',
-          backdropFilter: 'blur(40px) saturate(200%) brightness(1.05)',
-          WebkitBackdropFilter: 'blur(40px) saturate(200%) brightness(1.05)',
-          border: 'none',
-          boxShadow: 'inset 0 2px 0 rgba(255,255,255,0.80), 0 12px 40px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.05)',
+          background: 'rgba(255,255,255,0.18)',
+          backdropFilter: 'blur(24px) saturate(180%) brightness(1.04)',
+          WebkitBackdropFilter: 'blur(24px) saturate(180%) brightness(1.04)',
+          border: '1px solid rgba(255,255,255,0.45)',
+          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.70), 0 8px 32px rgba(0,0,0,0.08)',
         }}
       >
         <div className="flex items-center gap-4">

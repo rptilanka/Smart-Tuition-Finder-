@@ -35,6 +35,7 @@ import TutorQualificationsEditor from "../components/tutor-profile/edit/TutorQua
 import TutorSubjectsGradesEditor from "../components/tutor-profile/edit/TutorSubjectsGradesEditor";
 import TutorDemoVideosEditor from "../components/tutor-profile/edit/TutorDemoVideosEditor";
 import TutorAvailabilityBookingEditor from "../components/tutor-profile/edit/TutorAvailabilityBookingEditor";
+import TutorPhotosEditor from "../components/tutor-profile/edit/TutorPhotosEditor";
 
 export default function TutorProfileEditPage() {
   const { user, profile, profileLoading, refreshProfile, isConfigured } =
@@ -726,6 +727,11 @@ export default function TutorProfileEditPage() {
             onPayloadChange={handleDemoVideosPayloadChange}
             disabled={disabled}
             userId={user?.id}
+          />
+
+          <TutorPhotosEditor
+            userId={user?.id}
+            disabled={disabled}
           />
 
           <TutorAvailabilityBookingEditor

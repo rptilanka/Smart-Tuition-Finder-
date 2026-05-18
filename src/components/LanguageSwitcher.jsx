@@ -4,9 +4,9 @@ import { useLanguage } from "../context/LanguageContext";
 import { useTheme } from "./theme-provider";
 
 const LANGS = [
-  { code: "en", label: "EN" },
-  { code: "si", label: "SI" },
-  { code: "ta", label: "TA" },
+  { code: "en", label: "EN",     native: "English"  },
+  { code: "si", label: "සිංහල",  native: "Sinhala"  },
+  { code: "ta", label: "தமிழ்", native: "Tamil"    },
 ];
 
 export default function LanguageSwitcher() {
@@ -60,29 +60,25 @@ export default function LanguageSwitcher() {
         aria-label="Change language"
       >
         <Globe size={16} />
-        <span className="text-[11px] font-bold">{lang?.toUpperCase()}</span>
+        <span className="text-[13px] font-bold">
+          {LANGS.find((l) => l.code === lang)?.label ?? lang?.toUpperCase()}
+        </span>
       </button>
 
       {open ? (
-        <div className="absolute right-0 mt-2 w-32 rounded-md py-1">
-          <div
-            className={`flex flex-col rounded-md overflow-hidden ${
-              isDark ? "bg-black/70 text-white" : "bg-white text-black"
-            }`}
-          >
-            {LANGS.map(({ code, label }) => (
+        <div className="absolute right-0 mt-2 w-40 rounded-xl overflow-hidden shadow-lg">
+          <div className={`flex flex-col ${isDark ? "bg-neutral-900 text-white" : "bg-white text-black"}`}>
+            {LANGS.map(({ code, label, native }) => (
               <button
                 key={code}
                 type="button"
-                onClick={() => {
-                  setLang(code);
-                  setOpen(false);
-                }}
-                className={`text-left px-3 py-2 text-sm hover:bg-white/10 transition ${
-                  lang === code ? "font-bold" : ""
+                onClick={() => { setLang(code); setOpen(false); }}
+                className={`flex items-center justify-between gap-2 px-4 py-2.5 text-left transition hover:bg-slate-100 dark:hover:bg-white/10 ${
+                  lang === code ? "font-bold" : "font-normal"
                 }`}
               >
-                {label}
+                <span className="text-sm">{label}</span>
+                <span className="text-[11px] text-slate-400 dark:text-slate-500">{native}</span>
               </button>
             ))}
           </div>

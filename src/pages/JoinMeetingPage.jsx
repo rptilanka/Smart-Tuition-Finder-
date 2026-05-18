@@ -5,6 +5,7 @@ import { ArrowLeft, KeyRound, Link2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import ShaderBackground from "@/components/ShaderBackground";
 
 export default function JoinMeetingPage() {
   const navigate = useNavigate();
@@ -102,17 +103,20 @@ export default function JoinMeetingPage() {
   };
 
   return (
-    <section className="min-h-screen bg-[#f5f5f7] px-6 py-10 dark:bg-neutral-950">
-      <div className="mx-auto max-w-2xl space-y-6">
+    <section className="relative min-h-screen overflow-hidden bg-[#f5f5f7] px-6 py-10 dark:bg-neutral-950">
+      <div className="absolute inset-0 h-full w-full">
+        <ShaderBackground />
+      </div>
+      <div className="relative z-10 mx-auto max-w-2xl space-y-6">
         <Link
           to="/"
-          className="inline-flex items-center gap-1 rounded-full glass-btn border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 dark:border-white/10 dark:bg-neutral-900 dark:text-slate-200"
+          className="inline-flex items-center gap-1 rounded-full glass-btn px-4 py-2 text-sm font-semibold"
         >
           <ArrowLeft size={13} />
           Back to home
         </Link>
 
-        <div className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-200/70 dark:bg-neutral-900 dark:ring-white/10">
+        <div className="glass-ultra rounded-3xl p-6">
           <h1 className="text-3xl font-semibold tracking-[-0.04em] text-slate-950 dark:text-white">
             Join a meeting
           </h1>
@@ -173,5 +177,6 @@ export default function JoinMeetingPage() {
         </div>
       </div>
     </section>
+
   );
 }

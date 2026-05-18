@@ -16,6 +16,7 @@ import {
 import {
   STUDENT_ACCOUNT_SELECT_COLUMNS,
   TUTOR_ACCOUNT_SELECT_COLUMNS,
+  TUTOR_PROFILE_FULL_COLUMNS,
 } from "../lib/tutorProfileColumns";
 
 const AuthContext = createContext(null);
@@ -106,17 +107,31 @@ export function AuthProvider({ children }) {
       return null;
     }
     const table = await resolveProfileTable(userId, role);
-    const selectColumns =
-      table === TUTOR_PROFILES_TABLE
-        ? TUTOR_ACCOUNT_SELECT_COLUMNS
-        : STUDENT_ACCOUNT_SELECT_COLUMNS;
+    const isTutor = table === TUTOR_PROFILES_TABLE;
     setProfileLoading(true);
     try {
+      // For tutors, try the full column set (includes social links) first.
+      // If those columns don't exist yet (migration not run), fall back to the
+      // safe base set so avatars and core data still load.
+      const preferredColumns = isTutor
+        ? TUTOR_PROFILE_FULL_COLUMNS
+        : STUDENT_ACCOUNT_SELECT_COLUMNS;
+
       let { data, error } = await supabase
         .from(table)
-        .select(selectColumns)
+        .select(preferredColumns)
         .eq("id", userId)
         .maybeSingle();
+
+      if (error && isTutor) {
+        const fallback = await supabase
+          .from(table)
+          .select(TUTOR_ACCOUNT_SELECT_COLUMNS)
+          .eq("id", userId)
+          .maybeSingle();
+        data = fallback.data ?? null;
+        error = fallback.error ?? null;
+      }
 
       if (error) {
         console.error(`Failed to load profile from ${table}`, error);

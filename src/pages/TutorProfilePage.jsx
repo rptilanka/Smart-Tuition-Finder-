@@ -4,9 +4,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowLeft,
   Award,
+  BadgeCheck,
   BookOpen,
   CalendarDays,
-  CheckCircle2,
+  Camera,
+  ChevronLeft,
+  ChevronRight,
   Clock3,
   Facebook,
   Heart,
@@ -29,9 +32,11 @@ import {
   subjectsGradesFromDb,
 } from "../lib/tutorProfileNormalize";
 import { getTutorProfileByIdFromSupabase } from "../lib/tutorPublicProfile";
+import { supabaseStorageImageProps } from "../lib/storage";
 import { useAuth } from "../context/AuthContext";
 import { startStudentTutorSubscriptionCheckout } from "../lib/liveSubscriptionPayment";
 import { saveTutor, unsaveTutor, isTutorSaved } from "../lib/savedTutors";
+import { getTutorPhotos } from "../lib/tutorPhotos";
 import { submitReview, getTutorReviews } from "../lib/reviews";
 import { sendMessage } from "../lib/messages";
 import VideoCard from "../components/tutor-profile/VideoCard";
@@ -218,7 +223,7 @@ function ProfileHero({
       <div className="glass-card overflow-hidden rounded-[2.75rem]">
         {}
         <div
-          className="relative h-32 w-full overflow-hidden sm:h-36 md:h-40 lg:h-44"
+          className="relative h-44 w-full overflow-hidden sm:h-52 md:h-56 lg:h-64"
           style={
             !tutor.coverImage && tutor.accent
               ? { background: tutor.accent }
@@ -243,21 +248,24 @@ function ProfileHero({
           />
         </div>
 
-        {}
-        <div className="relative px-6 pb-8 pt-5 sm:px-8 sm:pb-10 sm:pt-6 md:px-12 md:pb-12 md:pt-8 lg:pt-10">
-          <div className="-mt-9 flex w-full flex-row items-start gap-4 sm:-mt-10 sm:gap-5 md:-mt-12 md:grid md:w-full md:grid-cols-[auto_1fr] md:items-start md:gap-x-10 lg:-mt-14 lg:gap-x-12">
+        {/* ── Profile info ───────────────────────────────────────── */}
+        <div className="relative px-6 pb-6 pt-4 sm:px-8 sm:pb-7 md:px-12 md:pb-8">
+
+          {/* Avatar + name row */}
+          <div className="-mt-10 flex items-end gap-5 sm:-mt-12 md:-mt-14 lg:-mt-16">
             <motion.div
               initial={{ opacity: 0, scale: 0.92 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.45, ease: "easeOut" }}
               className="relative z-10 shrink-0"
             >
-              <div className="flex h-[7.25rem] w-[7.25rem] shrink-0 items-center justify-center overflow-hidden rounded-[2rem] bg-neutral-950 text-3xl font-semibold text-white shadow-xl ring-4 ring-white md:h-36 md:w-36 md:text-5xl dark:bg-neutral-800 dark:text-white dark:ring-slate-900">
+              <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-[1.75rem] bg-neutral-950 text-2xl font-bold text-white shadow-xl ring-4 ring-white sm:h-28 sm:w-28 md:h-32 md:w-32 md:text-4xl dark:bg-neutral-800 dark:ring-neutral-900">
                 {tutor.avatar_url ? (
                   <img
                     src={tutor.avatar_url}
                     alt={`${tutor.name} avatar`}
                     className="h-full w-full object-cover"
+                    {...supabaseStorageImageProps(tutor.avatar_url)}
                   />
                 ) : (
                   tutor.initials
@@ -265,166 +273,172 @@ function ProfileHero({
               </div>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-              className="flex min-h-0 min-w-0 flex-1 flex-col pt-4 text-left sm:pt-5 md:min-h-[min(16rem,28vh)] md:pt-7 lg:min-h-[min(17rem,30vh)] lg:pt-9"
-            >
-              {tutor.subject ? (
-                <p className="inline-flex rounded-full glass-btn bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-600 dark:bg-neutral-800 dark:text-slate-300">
-                  {tutor.subject}
-                </p>
-              ) : null}
-              <p
-                className={`flex flex-wrap items-center gap-2 text-3xl font-semibold leading-[1.02] tracking-[-0.05em] text-slate-950 sm:text-4xl dark:text-white ${
-                  tutor.subject ? "mt-2" : "mt-0"
-                }`}
+            {/* Subject pill — sits right of avatar, vertically centered */}
+            {tutor.subject ? (
+              <motion.p
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.08 }}
+                className="mb-1 inline-flex rounded-full bg-white/90 px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest text-slate-500 shadow-sm ring-1 ring-slate-200/80 dark:bg-neutral-800 dark:text-slate-400 dark:ring-white/10"
               >
-                <span>{tutor.name}</span>
-                {hasVerifiedBlueMark ? (
-                  <CheckCircle2 className="size-5 shrink-0 text-blue-600" />
-                ) : null}
-              </p>
-              <div className="mt-3 flex flex-wrap items-center gap-2">
-                {hasVerifiedBlueMark ? (
-                  <p className="inline-flex items-center gap-1 rounded-full glass-btn bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">
-                    <CheckCircle2 className="size-3.5" />
-                    {t.verifiedBadge}
-                  </p>
-                ) : null}
-                {tutor.isProfileBoosted ? (
-                  <p className="inline-flex items-center gap-1 rounded-full glass-btn bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300">
-                    {t.profileBoostBadge}
-                  </p>
-                ) : null}
-              </div>
-
-              <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm font-semibold text-slate-500 dark:text-slate-400">
-                <span className="inline-flex items-center gap-1.5">
-                  <StarRow value={tutor.rating} size={14} />
-                  <span className="text-slate-950 dark:text-white">
-                    {tutor.rating?.toFixed(1)}
-                  </span>
-                  {Number.isFinite(tutor.reviewsCount) ? (
-                    <span>
-                      ({tutor.reviewsCount}{" "}
-                      {tutor.reviewsCount === 1 ? t.review : t.reviews})
-                    </span>
-                  ) : null}
-                </span>
-                {tutor.location ? (
-                  <span className="inline-flex items-center gap-1">
-                    <MapPin size={14} />
-                    {tutor.location}
-                  </span>
-                ) : null}
-                {Number.isFinite(tutor.yearsExperience) ? (
-                  <span className="inline-flex items-center gap-1">
-                    <Clock3 size={14} />
-                    {formatTemplate(t.yearsExperienceShort, {
-                      count: tutor.yearsExperience,
-                    })}
-                  </span>
-                ) : null}
-              </div>
-
-              <div className="mt-4 flex flex-wrap gap-2">
-                {tutor.subjectsTaught?.map((entry) => (
-                  <span
-                    key={entry.subject}
-                    className="inline-flex rounded-full glass-btn bg-slate-100 px-3 py-1 text-[12px] font-semibold text-slate-600 dark:bg-neutral-800 dark:text-slate-300"
-                  >
-                    {entry.subject}
-                  </span>
-                ))}
-              </div>
-
-              {showSocialRow ? (
-                <div className="mt-auto flex w-full flex-wrap items-end justify-end gap-5 pt-10 md:gap-6 md:pt-14 lg:pt-16">
-                  {twitterHref ? (
-                    <a
-                      href={twitterHref}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`${socialLinkBase} text-[#1D9BF0]`}
-                      aria-label="X (Twitter)"
-                    >
-                      <Twitter className="size-7" strokeWidth={1.5} />
-                    </a>
-                  ) : null}
-                  {instagramHref ? (
-                    <a
-                      href={instagramHref}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`${socialLinkBase} text-[#E4405F]`}
-                      aria-label="Instagram"
-                    >
-                      <Instagram className="size-7" strokeWidth={1.5} />
-                    </a>
-                  ) : null}
-                  {facebookHref ? (
-                    <a
-                      href={facebookHref}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`${socialLinkBase} text-[#1877F2]`}
-                      aria-label="Facebook"
-                    >
-                      <Facebook className="size-7" strokeWidth={1.5} />
-                    </a>
-                  ) : null}
-                  {whatsappHref ? (
-                    <a
-                      href={whatsappHref}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`${socialLinkBase} text-[#25D366]`}
-                      aria-label="WhatsApp"
-                    >
-                      <WhatsAppIcon className="size-7" />
-                    </a>
-                  ) : null}
-                </div>
-              ) : null}
-              {!isOwnProfile ? (
-                <div className="mt-5 flex w-full flex-wrap gap-2 md:max-w-none">
-                  <motion.button type="button" onClick={onBook} whileHover={{ scale: 1.04, y: -1 }} whileTap={{ scale: 0.97 }}
-                    className="inline-flex items-center gap-2 rounded-full glass-btn bg-neutral-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-neutral-800 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700">
-                    <CalendarDays size={15} /> {t.bookSession}
-                  </motion.button>
-                  <motion.button type="button" onClick={onMessage} whileHover={{ scale: 1.04, y: -1 }} whileTap={{ scale: 0.97 }}
-                    className="inline-flex items-center gap-2 rounded-full glass-btn border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-50 dark:border-white/10 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
-                    <MessageSquareText size={15} /> {t.messageButton}
-                  </motion.button>
-                  <motion.button type="button" onClick={onContact} whileHover={{ scale: 1.04, y: -1 }} whileTap={{ scale: 0.97 }}
-                    className="inline-flex items-center gap-2 rounded-full glass-btn border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-50 dark:border-white/10 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
-                    <MessageSquareText size={15} /> {t.whatsappButton}
-                  </motion.button>
-                  {isStudentViewer && (
-                    <>
-                      <motion.button type="button" onClick={onSubscribe} disabled={isSubscriptionPending}
-                        whileHover={isSubscriptionPending ? undefined : { scale: 1.04, y: -1 }}
-                        whileTap={isSubscriptionPending ? undefined : { scale: 0.97 }}
-                        className="inline-flex items-center gap-2 rounded-full glass-btn bg-neutral-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-neutral-800 dark:text-white">
-                        <CalendarDays size={15} />
-                        {isSubscriptionPending
-                          ? t.processingEllipsis
-                          : t.subscribeLiveClasses}
-                      </motion.button>
-                      <motion.button type="button" onClick={onSave} disabled={savePending}
-                        whileHover={{ scale: 1.04, y: -1 }} whileTap={{ scale: 0.97 }}
-                        className={`inline-flex items-center gap-2 rounded-full border px-5 py-3 text-sm font-semibold transition disabled:opacity-60 ${isSaved ? "border-slate-300 bg-slate-100 text-slate-700" : "border-slate-300 bg-white text-slate-950 hover:bg-slate-50 dark:border-white/10 dark:bg-neutral-900 dark:text-white"}`}>
-                        <Heart size={15} className={isSaved ? "fill-current text-red-500" : ""} />
-                        {isSaved ? t.saved : t.saveTutor}
-                      </motion.button>
-                    </>
-                  )}
-                </div>
-              ) : null}
-            </motion.div>
+                {tutor.subject}
+              </motion.p>
+            ) : null}
           </div>
+
+          {/* Name + badges */}
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.12 }}
+            className="mt-4"
+          >
+            <h1 className="flex flex-wrap items-center gap-3 text-4xl font-bold leading-[1] tracking-[-0.055em] text-slate-950 sm:text-5xl md:text-[3.5rem] dark:text-white">
+              {tutor.name}
+              {hasVerifiedBlueMark ? (
+                <span className="relative inline-flex shrink-0 items-center justify-center" aria-label="Verified">
+                  <span className="absolute inset-0 scale-125 rounded-full bg-blue-400/25 blur-[10px]" />
+                  <BadgeCheck
+                    className="relative size-9 sm:size-10 md:size-11 [&>path:first-child]:fill-[#4080F5] [&>path:first-child]:stroke-[#4ECDE8] [&>path:last-child]:stroke-white [&>path:last-child]:stroke-[2.5px]"
+                    strokeWidth={1.8}
+                    aria-hidden="true"
+                  />
+                </span>
+              ) : null}
+            </h1>
+
+            {tutor.isProfileBoosted ? (
+              <div className="mt-3">
+                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-[11px] font-bold tracking-wide text-emerald-700 ring-1 ring-emerald-200/60 dark:bg-emerald-500/15 dark:text-emerald-300 dark:ring-emerald-500/20">
+                  {t.profileBoostBadge}
+                </span>
+              </div>
+            ) : null}
+          </motion.div>
+
+          {/* Stats row */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.18 }}
+            className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2"
+          >
+            <span className="inline-flex items-center gap-2 text-base font-semibold text-slate-700 dark:text-slate-300">
+              <StarRow value={tutor.rating} size={17} />
+              <span className="text-lg font-extrabold text-slate-950 dark:text-white">
+                {tutor.rating?.toFixed(1)}
+              </span>
+              {Number.isFinite(tutor.reviewsCount) ? (
+                <span className="text-base font-medium text-slate-400 dark:text-slate-500">
+                  ({tutor.reviewsCount} {tutor.reviewsCount === 1 ? t.review : t.reviews})
+                </span>
+              ) : null}
+            </span>
+            {tutor.location ? (
+              <span className="inline-flex items-center gap-1.5 text-base font-medium text-slate-500 dark:text-slate-400">
+                <MapPin size={16} className="shrink-0 text-slate-400" />
+                {tutor.location}
+              </span>
+            ) : null}
+            {Number.isFinite(tutor.yearsExperience) ? (
+              <span className="inline-flex items-center gap-1.5 text-base font-medium text-slate-500 dark:text-slate-400">
+                <Clock3 size={16} className="shrink-0 text-slate-400" />
+                {formatTemplate(t.yearsExperienceShort, { count: tutor.yearsExperience })}
+              </span>
+            ) : null}
+          </motion.div>
+
+          {/* Subject tags */}
+          {tutor.subjectsTaught?.length > 0 ? (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.22 }}
+              className="mt-4 flex flex-wrap gap-2"
+            >
+              {tutor.subjectsTaught.map((entry) => (
+                <span
+                  key={entry.subject}
+                  className="inline-flex rounded-full bg-slate-100 px-3.5 py-1.5 text-xs font-semibold text-slate-600 dark:bg-neutral-800 dark:text-slate-300"
+                >
+                  {entry.subject}
+                </span>
+              ))}
+            </motion.div>
+          ) : null}
+
+          {/* ── Bottom bar: action buttons (left) + social icons (right) ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.26 }}
+            className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-slate-100 pt-5 dark:border-white/8"
+          >
+            {/* Action buttons — left side */}
+            {!isOwnProfile ? (
+              <div className="flex flex-wrap gap-2">
+                <motion.button type="button" onClick={onBook} whileHover={{ scale: 1.03, y: -1 }} whileTap={{ scale: 0.97 }}
+                  className="inline-flex items-center gap-2 rounded-full bg-neutral-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-neutral-800 dark:bg-white dark:text-neutral-950 dark:hover:bg-slate-100">
+                  <CalendarDays size={14} /> {t.bookSession}
+                </motion.button>
+                <motion.button type="button" onClick={onMessage} whileHover={{ scale: 1.03, y: -1 }} whileTap={{ scale: 0.97 }}
+                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-800 transition hover:bg-slate-50 dark:border-white/10 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700">
+                  <MessageSquareText size={14} /> {t.messageButton}
+                </motion.button>
+                <motion.button type="button" onClick={onContact} whileHover={{ scale: 1.03, y: -1 }} whileTap={{ scale: 0.97 }}
+                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-800 transition hover:bg-slate-50 dark:border-white/10 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700">
+                  <MessageSquareText size={14} /> {t.whatsappButton}
+                </motion.button>
+                {isStudentViewer && (
+                  <>
+                    <motion.button type="button" onClick={onSubscribe} disabled={isSubscriptionPending}
+                      whileHover={isSubscriptionPending ? undefined : { scale: 1.03, y: -1 }}
+                      whileTap={isSubscriptionPending ? undefined : { scale: 0.97 }}
+                      className="inline-flex items-center gap-2 rounded-full bg-neutral-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-neutral-800 dark:text-white">
+                      <CalendarDays size={14} />
+                      {isSubscriptionPending ? t.processingEllipsis : t.subscribeLiveClasses}
+                    </motion.button>
+                    <motion.button type="button" onClick={onSave} disabled={savePending}
+                      whileHover={{ scale: 1.03, y: -1 }} whileTap={{ scale: 0.97 }}
+                      className={`inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-semibold transition disabled:opacity-60 ${isSaved ? "border-rose-200 bg-rose-50 text-rose-600 dark:border-rose-500/20 dark:bg-rose-500/10 dark:text-rose-300" : "border-slate-200 bg-white text-slate-800 hover:bg-slate-50 dark:border-white/10 dark:bg-neutral-800 dark:text-white"}`}>
+                      <Heart size={14} className={isSaved ? "fill-current" : ""} />
+                      {isSaved ? t.saved : t.saveTutor}
+                    </motion.button>
+                  </>
+                )}
+              </div>
+            ) : <div />}
+
+            {/* Social icons — right side */}
+            {showSocialRow ? (
+              <div className="flex items-center gap-4">
+                {twitterHref ? (
+                  <a href={twitterHref} target="_blank" rel="noopener noreferrer"
+                    className={`${socialLinkBase} text-[#1D9BF0]`} aria-label="X (Twitter)">
+                    <Twitter className="size-6" strokeWidth={1.5} />
+                  </a>
+                ) : null}
+                {instagramHref ? (
+                  <a href={instagramHref} target="_blank" rel="noopener noreferrer"
+                    className={`${socialLinkBase} text-[#E4405F]`} aria-label="Instagram">
+                    <Instagram className="size-6" strokeWidth={1.5} />
+                  </a>
+                ) : null}
+                {facebookHref ? (
+                  <a href={facebookHref} target="_blank" rel="noopener noreferrer"
+                    className={`${socialLinkBase} text-[#1877F2]`} aria-label="Facebook">
+                    <Facebook className="size-6" strokeWidth={1.5} />
+                  </a>
+                ) : null}
+                {whatsappHref ? (
+                  <a href={whatsappHref} target="_blank" rel="noopener noreferrer"
+                    className={`${socialLinkBase} text-[#25D366]`} aria-label="WhatsApp">
+                    <WhatsAppIcon className="size-6" />
+                  </a>
+                ) : null}
+              </div>
+            ) : null}
+          </motion.div>
         </div>
       </div>
     </section>
@@ -613,6 +627,104 @@ function MessageModal({ tutorId, tutorName, userId, onClose, onSent, t }) {
         </form>
       </div>
     </div>
+  );
+}
+
+/* ─── Photo lightbox ──────────────────────────────────────────────────────── */
+function PhotoLightbox({ photos, startIndex, onClose }) {
+  const [idx, setIdx] = useState(startIndex);
+  const prev = () => setIdx((i) => (i - 1 + photos.length) % photos.length);
+  const next = () => setIdx((i) => (i + 1) % photos.length);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowLeft") prev();
+      if (e.key === "ArrowRight") next();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [photos.length]);
+
+  const photo = photos[idx];
+  return (
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/85 backdrop-blur-sm" onClick={onClose}>
+      <div className="relative flex max-h-[90vh] max-w-[92vw] flex-col items-center" onClick={(e) => e.stopPropagation()}>
+        <button type="button" onClick={onClose}
+          className="absolute -right-3 -top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-slate-800 shadow-lg hover:bg-white">
+          <X size={14} />
+        </button>
+        <img src={photo.url} alt={photo.caption || `Photo ${idx + 1}`}
+          className="max-h-[80vh] max-w-full rounded-2xl object-contain shadow-2xl" referrerPolicy="no-referrer" />
+        {photo.caption && <p className="mt-3 text-sm font-medium text-white/90">{photo.caption}</p>}
+        {photos.length > 1 && (
+          <div className="mt-4 flex items-center gap-4">
+            <button type="button" onClick={prev} className="flex h-9 w-9 items-center justify-center rounded-full bg-white/15 text-white hover:bg-white/25 transition">
+              <ChevronLeft size={18} />
+            </button>
+            <span className="text-xs font-semibold text-white/70">{idx + 1} / {photos.length}</span>
+            <button type="button" onClick={next} className="flex h-9 w-9 items-center justify-center rounded-full bg-white/15 text-white hover:bg-white/25 transition">
+              <ChevronRight size={18} />
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ─── Photos section (read-only — manage photos from the edit page) ───────── */
+function PhotosSection({ tutorId }) {
+  const [photos, setPhotos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [lightboxIdx, setLightboxIdx] = useState(null);
+
+  useEffect(() => {
+    if (!tutorId) return;
+    setLoading(true);
+    getTutorPhotos(tutorId).then(setPhotos).catch(() => {}).finally(() => setLoading(false));
+  }, [tutorId]);
+
+  if (!loading && photos.length === 0) return null;
+
+  return (
+    <ProfileSection
+      id="photos"
+      title="Photos"
+      icon={Camera}
+      actions={
+        <span className="rounded-full glass-btn bg-slate-100 px-3 py-1 text-[11px] font-semibold text-slate-600 dark:bg-neutral-800 dark:text-slate-300">
+          {photos.length} {photos.length === 1 ? "photo" : "photos"}
+        </span>
+      }
+    >
+      {loading ? (
+        <p className="text-sm text-slate-400 dark:text-slate-500">Loading photos…</p>
+      ) : (
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+          {photos.map((photo, i) => (
+            <div key={photo.id} className="group relative aspect-square overflow-hidden rounded-2xl bg-slate-100 dark:bg-neutral-800">
+              <img
+                src={photo.url}
+                alt={photo.caption || `Photo ${i + 1}`}
+                className="h-full w-full cursor-pointer object-cover transition duration-200 group-hover:scale-105"
+                referrerPolicy="no-referrer"
+                onClick={() => setLightboxIdx(i)}
+              />
+              {photo.caption && (
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent px-2 pb-2 pt-6">
+                  <p className="truncate text-[10px] font-medium text-white">{photo.caption}</p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {lightboxIdx !== null && (
+        <PhotoLightbox photos={photos} startIndex={lightboxIdx} onClose={() => setLightboxIdx(null)} />
+      )}
+    </ProfileSection>
   );
 }
 
@@ -950,6 +1062,8 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
                 <EmptySectionText text={t.demoVideosEmpty} />
               )}
             </ProfileSection>
+
+            <PhotosSection tutorId={id} />
 
             <ProfileSection
               id="reviews"
