@@ -56,6 +56,8 @@ import StudentLiveJoinPage from "./pages/StudentLiveJoinPage";
 import StudentProfileEditPage from "./pages/StudentProfileEditPage";
 import JoinMeetingPage from "./pages/JoinMeetingPage";
 import AllTutorsPage from "./pages/AllTutorsPage";
+import FeaturesPage from "./pages/FeaturesPage";
+import ReviewsPage from "./pages/ReviewsPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import PublicOnlyRoute from "./components/auth/PublicOnlyRoute";
 import { useAuth } from "./context/AuthContext";
@@ -1499,6 +1501,8 @@ export default function App() {
           <Route path="/" element={<AppleHomePage />} />
           <Route path="/join" element={<JoinMeetingPage />} />
           <Route path="/tutors" element={<AllTutorsPage />} />
+          <Route path="/features" element={<FeaturesPage />} />
+          <Route path="/reviews" element={<ReviewsPage />} />
           <Route path="/tutor/:id" element={<TutorProfilePage />} />
 
           <Route element={<PublicOnlyRoute />}>

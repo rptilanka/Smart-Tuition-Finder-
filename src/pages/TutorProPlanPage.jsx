@@ -237,52 +237,56 @@ export default function TutorProPlanPage() {
             {plans.map((plan, i) => (
               <Card
                 key={plan.id}
-                className={`flex w-80 flex-col justify-between border-slate-200 bg-white text-left shadow-sm ${
-                  i === 1 ? "ring-2 ring-slate-950/10" : ""
+                className={`flex w-80 flex-col justify-between border border-slate-200 bg-white text-left shadow-sm dark:border-white/15 dark:bg-neutral-900 ${
+                  i === 1 ? "ring-2 ring-slate-950/10 dark:ring-white/10" : ""
                 }`}
               >
                 <CardHeader>
                   <CardTitle>
-                    <p className="text-slate-900">{plan.name}</p>
+                    <p className="text-slate-900 dark:text-white">{plan.name}</p>
                   </CardTitle>
-                  <p className="text-sm text-slate-600">{plan.description}</p>
-                  <span className="text-4xl font-bold text-slate-900">
+                  <p className="text-sm text-slate-600 dark:text-slate-300">
+                    {plan.description}
+                  </p>
+                  <span className="text-4xl font-bold text-slate-900 dark:text-white">
                     LKR {plan.price.toLocaleString()}
                   </span>
-                  <p className="text-slate-500">One-time checkout</p>
+                  <p className="text-slate-500 dark:text-slate-400">
+                    One-time checkout
+                  </p>
                 </CardHeader>
 
                 <CardContent>
-                  <Separator className="mb-6 bg-slate-200" />
+                  <Separator className="mb-6 bg-slate-200 dark:bg-white/10" />
                   <ul className="space-y-4">
                     {plan.features.map((feature, index) => (
                       <li
                         key={`${plan.id}-${index}`}
-                        className="flex items-center gap-2 text-slate-700"
+                        className="flex items-center gap-2 text-slate-700 dark:text-slate-200"
                       >
-                        <CircleCheck className="size-4 text-slate-500" />
+                        <CircleCheck className="size-4 text-slate-500 dark:text-slate-400" />
                         <span>{feature.text}</span>
                       </li>
                     ))}
                   </ul>
-                  <div className="mt-4 inline-flex items-center gap-1 rounded-full glass-btn bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+                  <div className="mt-4 inline-flex items-center gap-1 rounded-full border border-emerald-200/70 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 shadow-sm transition-colors dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-300">
                     <Sparkles className="size-3" /> Includes verified blue mark
                     + profile boost
                   </div>
                 </CardContent>
 
                 <CardFooter className="mt-auto bg-transparent p-4">
-                  <Button
+                  <button
                     type="button"
                     onClick={() => handlePay(plan)}
                     disabled={payingPlanId === plan.id}
-                    className="w-full rounded-lg bg-neutral-950 text-white hover:bg-neutral-800"
+                    className="inline-flex w-full items-center justify-center rounded-lg border border-neutral-950 bg-neutral-950 px-4 py-2.5 font-medium text-white shadow-sm transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-70 dark:border-white/20 dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-100"
                   >
                     {payingPlanId === plan.id
                       ? "Processing..."
                       : plan.button.text}
                     <ArrowRight className="ml-2 size-4" />
-                  </Button>
+                  </button>
                 </CardFooter>
               </Card>
             ))}

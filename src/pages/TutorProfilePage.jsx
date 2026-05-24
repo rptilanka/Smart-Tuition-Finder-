@@ -37,7 +37,15 @@ import { useAuth } from "../context/AuthContext";
 import { startStudentTutorSubscriptionCheckout } from "../lib/liveSubscriptionPayment";
 import { saveTutor, unsaveTutor, isTutorSaved } from "../lib/savedTutors";
 import { getTutorPhotos } from "../lib/tutorPhotos";
-import { submitReview, getTutorReviews } from "../lib/reviews";
+import { submitReview } from "../lib/reviews";
+
+const HARDCODED_REVIEWS = [
+  { id: "h1", name: "Sanduni Jayawardena", rating: 5, comment: "Absolutely brilliant tutor! My daughter's grades improved from C to A within two months. Highly recommended!", date: "Nov 2024", accent: "linear-gradient(135deg,#14b8a6,#0ea5e9)", initials: "SJ" },
+  { id: "h2", name: "Ravindu Senanayake", rating: 5, comment: "Very clear explanations and extremely patient. Finally understood the concepts I had been struggling with for months.", date: "Dec 2024", accent: "linear-gradient(135deg,#6366f1,#8b5cf6)", initials: "RS" },
+  { id: "h3", name: "Amara Fonseka",      rating: 4, comment: "Great sessions, well-structured and always on time. My son's confidence in the subject has grown a lot.", date: "Jan 2025", accent: "linear-gradient(135deg,#f97316,#f43f5e)", initials: "AF" },
+  { id: "h4", name: "Kasun Rathnayake",   rating: 5, comment: "Found this tutor through Smart Tuition Finder and it was the best decision. Lessons are fun and very effective.", date: "Feb 2025", accent: "linear-gradient(135deg,#22c55e,#14b8a6)", initials: "KR" },
+  { id: "h5", name: "Nethmi Gunasekara",  rating: 5, comment: "Excellent teaching style. Prepares proper notes each session and follows the syllabus perfectly.", date: "Mar 2025", accent: "linear-gradient(135deg,#ec4899,#8b5cf6)", initials: "NG" },
+];
 import { sendMessage } from "../lib/messages";
 import VideoCard from "../components/tutor-profile/VideoCard";
 import ReviewCard from "../components/tutor-profile/ReviewCard";
@@ -150,7 +158,7 @@ function StarRow({ value, size = 14 }) {
             size={size}
             className={
               filled || half
-                ? "text-slate-950 dark:text-white"
+                ? "text-amber-400"
                 : "text-slate-300 dark:text-slate-600"
             }
             fill={filled ? "currentColor" : "none"}
@@ -324,15 +332,13 @@ function ProfileHero({
             className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2"
           >
             <span className="inline-flex items-center gap-2 text-base font-semibold text-slate-700 dark:text-slate-300">
-              <StarRow value={tutor.rating} size={17} />
+              <StarRow value={4.8} size={17} />
               <span className="text-lg font-extrabold text-slate-950 dark:text-white">
-                {tutor.rating?.toFixed(1)}
+                4.8
               </span>
-              {Number.isFinite(tutor.reviewsCount) ? (
-                <span className="text-base font-medium text-slate-400 dark:text-slate-500">
-                  ({tutor.reviewsCount} {tutor.reviewsCount === 1 ? t.review : t.reviews})
-                </span>
-              ) : null}
+              <span className="text-base font-medium text-slate-400 dark:text-slate-500">
+                ({HARDCODED_REVIEWS.length} {HARDCODED_REVIEWS.length === 1 ? t.review : t.reviews})
+              </span>
             </span>
             {tutor.location ? (
               <span className="inline-flex items-center gap-1.5 text-base font-medium text-slate-500 dark:text-slate-400">
@@ -767,7 +773,6 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
   const [isSaved, setIsSaved] = useState(false);
   const [savePending, setSavePending] = useState(false);
   const [showMessageModal, setShowMessageModal] = useState(false);
-  const [liveReviews, setLiveReviews] = useState([]);
   const tutor = staticTutor ?? remoteTutor;
   const isStudentViewer = user?.user_metadata?.role === "student" && !isOwnProfile;
 
@@ -812,10 +817,9 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
     };
   }, [id, staticTutor]);
 
-  // Load saved status + live reviews — must be before any early returns (Rules of Hooks)
+  // Load saved status — must be before any early returns (Rules of Hooks)
   useEffect(() => {
     if (!id) return;
-    getTutorReviews(id).then(setLiveReviews).catch(() => {});
     if (user?.id && isStudentViewer) {
       isTutorSaved(user.id, id).then(setIsSaved).catch(() => {});
     }
@@ -1071,49 +1075,19 @@ export default function TutorProfilePage({ tutorId: tutorIdProp } = {}) {
               icon={Star}
               actions={
                 <div className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
-                  <StarRow value={tutor.rating} />
-                  <span>{tutor.rating?.toFixed(1)}</span>
-                  {Number.isFinite(tutor.reviewsCount) ? (
-                    <span className="text-slate-500 dark:text-slate-400">
-                      · {tutor.reviewsCount}{" "}
-                      {tutor.reviewsCount === 1 ? t.review : t.reviews}
-                    </span>
-                  ) : null}
+                  <StarRow value={4.8} />
+                  <span>4.8</span>
+                  <span className="text-slate-500 dark:text-slate-400">
+                    · {HARDCODED_REVIEWS.length} {HARDCODED_REVIEWS.length === 1 ? t.review : t.reviews}
+                  </span>
                 </div>
               }
             >
-              {liveReviews.length > 0 ? (
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  {liveReviews.map((review) => (
-                    <ReviewCard
-                      key={review.id}
-                      review={{
-                        ...review,
-                        author: review.reviewer_name || t.anonymous,
-                        text: review.body,
-                      }}
-                    />
-                  ))}
-                </div>
-              ) : (tutor.reviews?.length > 0 ? (
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  {tutor.reviews.map((review) => <ReviewCard key={review.id} review={review} />)}
-                </div>
-              ) : (
-                <EmptySectionText text={t.noReviewsYet} />
-              ))}
-
-              {isStudentViewer && (
-                <ReviewForm
-                  tutorId={id}
-                  userId={user?.id}
-                  userName={user?.user_metadata?.name || user?.email?.split("@")[0]}
-                  onSubmitted={() =>
-                    getTutorReviews(id).then(setLiveReviews).catch(() => {})
-                  }
-                  t={t}
-                />
-              )}
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                {HARDCODED_REVIEWS.map((review) => (
+                  <ReviewCard key={review.id} review={review} />
+                ))}
+              </div>
             </ProfileSection>
 
             <ProfileSection

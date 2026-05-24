@@ -51,9 +51,9 @@ export const NavMenu = ({ className, orientation, ...props }) => {
 
   const links = [
     { href: "/", label: t.navHome },
-    { href: "/#features", label: t.navFeatures },
+    { href: "/features", label: t.navFeatures },
     { href: "/tutors", label: t.navTutors },
-    { href: "/#reviews", label: t.navReviews },
+    { href: "/reviews", label: t.navReviews },
     { href: joinHref, label: t.navJoin },
   ];
 

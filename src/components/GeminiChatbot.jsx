@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Bot, MessageCircle, Send, User, X } from "lucide-react";
+import { fetchTutorDirectoryFromSupabase } from "../lib/tutorDirectory";
 
 const MODEL_FALLBACK_CHAIN = [
   "gemini-2.5-flash-lite",
@@ -9,9 +10,30 @@ const MODEL_FALLBACK_CHAIN = [
   "gemini-2.0-flash",
 ];
 
-const SYSTEM_PROMPT = `You are the in-app assistant for Smart Tuition Finder: students and parents discover tutors by subject, level, and location (including Sri Lanka). Answer clearly. Stay on tutor discovery and how the site works; do not claim live database access. Be concise unless asked for detail.
+function buildSystemPrompt(tutors) {
+  const tutorBlock =
+    tutors.length > 0
+      ? `TUTOR DATABASE (${tutors.length} tutors):\n` +
+        tutors
+          .map(
+            (t, i) =>
+              `${i + 1}. Name: ${t.name} | Subject: ${t.subject} | Location: ${t.location || "Not specified"} | About: ${t.description || "No description available"} | Profile: ${window.location.origin}/tutor/${t.id}`,
+          )
+          .join("\n")
+      : "TUTOR DATABASE: No tutors loaded yet.";
 
-Write in plain text only. Do not use markdown: no asterisks, no hash headings, no backticks, no underscore emphasis. Prefer numbered lists (1. 2. 3.) and short lines. Write labels like Subject: or Level: as plain words with a colon.`;
+  return `You are the assistant for Smart Tuition Finder. You have direct access to the live tutor database below.
+
+${tutorBlock}
+
+RULES:
+- When the user asks about tutors for a subject (e.g. "math tutors", "science teachers"), immediately list matching tutors from the database. Do NOT ask follow-up questions.
+- For each matching tutor show: name (bold), subject, location, a short description of the tutor (from the About field), and a profile link.
+- If no tutors match, say so clearly and suggest visiting /tutors.
+- Answer in clear, well-structured paragraphs. Use **bold** for names and labels. Use numbered or bulleted lists where it helps readability.
+- Be concise and direct. Do not ask clarifying questions unless the request is completely ambiguous.
+- Format profile links as markdown: [View Profile](url).`;
+}
 
 function modelChain() {
   const env = import.meta.env.VITE_GEMINI_MODEL?.trim();
@@ -44,18 +66,18 @@ function friendlyError(raw) {
   return r.length > 1400 ? `${r.slice(0, 1400)}…` : r;
 }
 
-async function callGenerateContent(apiKey, model, contents) {
+async function callGenerateContent(apiKey, model, contents, systemPrompt) {
   const response = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+        systemInstruction: { parts: [{ text: systemPrompt }] },
         contents,
         generationConfig: {
-          temperature: 0.65,
-          maxOutputTokens: 512,
+          temperature: 0.4,
+          maxOutputTokens: 700,
         },
       }),
     },
@@ -64,22 +86,93 @@ async function callGenerateContent(apiKey, model, contents) {
   return { response, data, model };
 }
 
-function plainTextAssistantReply(raw) {
-  if (typeof raw !== "string" || !raw) return raw;
-  let t = raw;
-  t = t.replace(/```[\w]*\r?\n?([\s\S]*?)```/g, "$1");
-  for (let i = 0; i < 4 && /\*\*[^*]+\*\*/.test(t); i += 1) {
-    t = t.replace(/\*\*([^*]+)\*\*/g, "$1");
+function renderInline(text) {
+  const parts = [];
+  const re = /(\*\*(.+?)\*\*|\*(.+?)\*|\[([^\]]+)\]\(([^)]+)\))/g;
+  let last = 0;
+  let match;
+  let key = 0;
+  while ((match = re.exec(text)) !== null) {
+    if (match.index > last) parts.push(text.slice(last, match.index));
+    if (match[2]) {
+      parts.push(<strong key={key++} className="font-semibold text-white">{match[2]}</strong>);
+    } else if (match[3]) {
+      parts.push(<em key={key++} className="italic">{match[3]}</em>);
+    } else if (match[4]) {
+      parts.push(
+        <a key={key++} href={match[5]} target="_blank" rel="noopener noreferrer"
+          className="underline text-blue-300 hover:text-blue-200 break-all">
+          {match[4]}
+        </a>
+      );
+    }
+    last = match.index + match[0].length;
   }
-  t = t.replace(/__([^_]+)__/g, "$1");
-  t = t.replace(/^\s*\*\s+/gm, "");
-  t = t.replace(/\*([^*\n]+)\*/g, "$1");
-  t = t.replace(/`([^`]+)`/g, "$1");
-  t = t.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1 ($2)");
-  t = t.replace(/^#{1,6}\s+/gm, "");
-  t = t.replace(/\*\*/g, "");
-  t = t.replace(/`/g, "");
-  return t;
+  if (last < text.length) parts.push(text.slice(last));
+  return parts;
+}
+
+function MarkdownMessage({ text }) {
+  if (typeof text !== "string" || !text) return null;
+
+  const lines = text.split("\n");
+  const elements = [];
+  let listItems = [];
+  let key = 0;
+
+  const flushList = () => {
+    if (!listItems.length) return;
+    elements.push(
+      <ul key={key++} className="my-2 space-y-1 pl-4">
+        {listItems.map((item, i) => (
+          <li key={i} className="flex gap-2 text-sm leading-relaxed">
+            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400" />
+            <span>{renderInline(item)}</span>
+          </li>
+        ))}
+      </ul>
+    );
+    listItems = [];
+  };
+
+  for (const raw of lines) {
+    const line = raw.trimEnd();
+
+    const numMatch = line.match(/^\s*\d+\.\s+(.*)/);
+    const bulletMatch = line.match(/^\s*[-*]\s+(.*)/);
+
+    if (numMatch || bulletMatch) {
+      listItems.push((numMatch || bulletMatch)[1]);
+      continue;
+    }
+
+    flushList();
+
+    if (!line.trim()) {
+      elements.push(<div key={key++} className="h-2" />);
+      continue;
+    }
+
+    const headingMatch = line.match(/^#{1,3}\s+(.*)/);
+    if (headingMatch) {
+      elements.push(
+        <p key={key++} className="mt-3 mb-1 text-sm font-semibold text-white">
+          {renderInline(headingMatch[1])}
+        </p>
+      );
+      continue;
+    }
+
+    elements.push(
+      <p key={key++} className="text-sm leading-relaxed">
+        {renderInline(line)}
+      </p>
+    );
+  }
+
+  flushList();
+
+  return <div className="space-y-0.5">{elements}</div>;
 }
 
 function extractReplyFromData(data) {
@@ -100,7 +193,7 @@ function extractReplyFromData(data) {
       .join("\n")
       .trim() ?? "";
 
-  if (text) return { ok: true, text: plainTextAssistantReply(text) };
+  if (text) return { ok: true, text };
 
   if (finish === "SAFETY" || finish === "RECITATION") {
     return {
@@ -122,6 +215,11 @@ export default function GeminiChatbot() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [tutors, setTutors] = useState([]);
+
+  useEffect(() => {
+    fetchTutorDirectoryFromSupabase().then(setTutors).catch(() => {});
+  }, []);
   const fullTitle = "Tutor Guide";
   const fullHeading = "How can I help you today?";
   const [typedTitle, setTypedTitle] = useState("");
@@ -161,12 +259,14 @@ export default function GeminiChatbot() {
       }));
 
       let lastError = "Request failed.";
+      const systemPrompt = buildSystemPrompt(tutors);
 
       for (const model of modelChain()) {
         const { response, data } = await callGenerateContent(
           apiKey,
           model,
           contents,
+          systemPrompt,
         );
 
         if (response.ok) {
@@ -368,11 +468,9 @@ export default function GeminiChatbot() {
                         {isUser ? <User size={11} /> : <Bot size={11} />}
                         {isUser ? "You" : "Tutor Guide"}
                       </div>
-                      <p className="whitespace-pre-wrap">
-                        {isUser
-                          ? message.text
-                          : plainTextAssistantReply(message.text)}
-                      </p>
+                      {isUser
+                        ? <p className="text-sm leading-relaxed">{message.text}</p>
+                        : <MarkdownMessage text={message.text} />}
                     </div>
                   </div>
                 );
